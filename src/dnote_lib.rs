@@ -16,6 +16,20 @@ impl FromStr for DnoteBook {
 #[derive(Debug, Clone)]
 pub struct DnotePage {
     pub id: u32,
-    pub uuid: String,
-    pub content: String,
 }
+
+impl FromStr for DnotePage {
+    type Err = ();
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let id = s
+            .trim()
+            .trim_start_matches('(')
+            .split(')')
+            .next()
+            .unwrap()
+            .parse()
+            .unwrap();
+        Ok(DnotePage { id })
+    }
+}
+

@@ -66,4 +66,17 @@ mod tests {
         assert_eq!(page1.id, 21);
         assert_eq!(page2.id, 27);
     }
+
+    #[test]
+    fn should_parse_dnotepageinfo_from_string() {
+        let input1 = "# E2E\n\n- Grab a list of all data test ids on a page\n- Make sure all those data test ids exist";
+        let input2 = "   # E2E   \n\n   - Grab a list of all data test ids on a page   \n   - Make sure all those data test ids exist   ";
+        let input3 = "";
+        let page_info1: DnotePageInfo = input1.parse().unwrap();
+        let page_info2: DnotePageInfo = input2.parse().unwrap();
+        let page_info3: DnotePageInfo = input3.parse().unwrap();
+        assert_eq!(page_info1.content, input1);
+        assert_eq!(page_info2.content, input2.trim());
+        assert_eq!(page_info3.content, input3);
+    }
 }

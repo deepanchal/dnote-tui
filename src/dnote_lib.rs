@@ -33,3 +33,24 @@ impl FromStr for DnotePage {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn should_parse_dnotebook_from_string() {
+        let s = String::from("my notebook");
+        let book: DnoteBook = s.parse().unwrap();
+        assert_eq!(book.name, "my notebook")
+    }
+
+    #[test]
+    fn should_parse_dnotepage_from_string() {
+        let input1 = "(21) # Issues [---More---]";
+        let input2 = "  (27) # Missed [---More---]";
+        let page1: DnotePage = input1.parse().unwrap();
+        let page2: DnotePage = input2.parse().unwrap();
+        assert_eq!(page1.id, 21);
+        assert_eq!(page2.id, 27);
+    }
+}

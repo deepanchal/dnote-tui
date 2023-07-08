@@ -106,14 +106,23 @@ impl DnoteClient {
             Err(e) => Err(DnoteClientError::UnknownError),
         }
     }
-    pub fn view_page_info(&self, book_name: &str, page_id: u32) {
-        // Command: dnote view my_cool_book 10 --content-only
-        // Implementation:
-        println!(
-            "Viewing content for page {} in book: {}",
-            page_id, book_name
-        );
-        // Your implementation here
+    pub fn view_page_info(&self, page_id: u32) -> Result<DnotePageInfo, DnoteClientError> {
+        println!("Viewing content for page with id {}", page_id);
+        let output = Command::new("dnote")
+            .arg("view")
+            .arg(page_id.to_string())
+            .arg("--content-only")
+            .output();
+        match output {
+            Ok(v) => {
+                let stdout = String::from_utf8(v.stdout);
+                match stdout {
+                    Ok(s) => Ok(s.parse().unwrap()),
+                    Err(e) => Err(DnoteClientError::UnknownError),
+                }
+            }
+            Err(e) => Err(DnoteClientError::UnknownError),
+        }
     }
 }
 

@@ -33,6 +33,11 @@ impl FromStr for DnotePage {
     }
 }
 
+#[derive(Debug, Clone)]
+pub struct DnotePageInfo {
+    pub content: String,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

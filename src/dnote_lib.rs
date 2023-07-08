@@ -72,7 +72,7 @@ impl DnoteClient {
                             s.lines().map(|l| l.parse()).collect();
                         match result {
                             Ok(v) => Ok(v),
-                            Err(e) => Err(DnoteClientError::ParseError)
+                            Err(e) => Err(DnoteClientError::ParseError),
                         }
                     }
                     Err(e) => Err(DnoteClientError::UnknownError),
@@ -81,11 +81,30 @@ impl DnoteClient {
             Err(e) => Err(DnoteClientError::UnknownError),
         }
     }
-    pub fn view_pages(&self, book_name: &str) {
-        // Command: dnote view my_cool_book
-        // Implementation:
+    pub fn view_pages(&self, book_name: &str) -> Result<Vec<DnotePage>, DnoteClientError> {
         println!("Viewing pages for book: {}", book_name);
-        // Your implementation here
+        let output = Command::new("dnote").arg("view").arg(book_name).output();
+        match output {
+            Ok(v) => {
+                let stdout = String::from_utf8(v.stdout);
+                match stdout {
+                    Ok(s) => {
+                        let result: Result<Vec<DnotePage>, _> = s
+                            .lines()
+                            // skip first line e.g '  • on book ccu'
+                            .skip(1)
+                            .map(|l| l.parse())
+                            .collect();
+                        match result {
+                            Ok(v) => Ok(v),
+                            Err(e) => Err(DnoteClientError::ParseError),
+                        }
+                    }
+                    Err(e) => Err(DnoteClientError::UnknownError),
+                }
+            }
+            Err(e) => Err(DnoteClientError::UnknownError),
+        }
     }
     pub fn view_page_info(&self, book_name: &str, page_id: u32) {
         // Command: dnote view my_cool_book 10 --content-only

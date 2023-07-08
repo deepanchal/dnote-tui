@@ -38,6 +38,14 @@ pub struct DnotePageInfo {
     pub content: String,
 }
 
+impl FromStr for DnotePageInfo {
+    type Err = ();
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let content = s.trim().to_string();
+        Ok(DnotePageInfo { content })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

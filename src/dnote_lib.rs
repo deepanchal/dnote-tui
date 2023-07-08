@@ -1,4 +1,4 @@
-use std::str::FromStr;
+use std::{process::Command, str::FromStr};
 
 #[derive(Debug, Clone)]
 pub struct DnoteBook {
@@ -43,6 +43,58 @@ impl FromStr for DnotePageInfo {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let content = s.trim().to_string();
         Ok(DnotePageInfo { content })
+    }
+}
+
+#[derive(Debug)]
+pub struct DnoteClient {}
+
+#[derive(Debug)]
+pub enum DnoteClientError {
+    InvalidCommand,
+    ParseError,
+    UnknownError,
+}
+
+impl DnoteClient {
+    pub fn view_books(&self) -> Result<Vec<DnoteBook>, DnoteClientError> {
+        println!("Viewing all books...");
+        let output = Command::new("dnote")
+            .arg("view")
+            .arg("--name-only")
+            .output();
+        match output {
+            Ok(v) => {
+                let stdout = String::from_utf8(v.stdout);
+                match stdout {
+                    Ok(s) => {
+                        let mut result: Vec<DnoteBook> = Vec::new();
+                        s.lines().for_each(|l| {
+                            let book: DnoteBook = l.parse().unwrap();
+                            result.push(book);
+                        });
+                        Ok(result)
+                    }
+                    Err(e) => Err(DnoteClientError::UnknownError),
+                }
+            }
+            Err(e) => Err(DnoteClientError::UnknownError),
+        }
+    }
+    pub fn view_pages(&self, book_name: &str) {
+        // Command: dnote view my_cool_book
+        // Implementation:
+        println!("Viewing pages for book: {}", book_name);
+        // Your implementation here
+    }
+    pub fn view_page_info(&self, book_name: &str, page_id: u32) {
+        // Command: dnote view my_cool_book 10 --content-only
+        // Implementation:
+        println!(
+            "Viewing content for page {} in book: {}",
+            page_id, book_name
+        );
+        // Your implementation here
     }
 }
 

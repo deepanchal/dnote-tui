@@ -68,12 +68,12 @@ impl DnoteClient {
                 let stdout = String::from_utf8(v.stdout);
                 match stdout {
                     Ok(s) => {
-                        let mut result: Vec<DnoteBook> = Vec::new();
-                        s.lines().for_each(|l| {
-                            let book: DnoteBook = l.parse().unwrap();
-                            result.push(book);
-                        });
-                        Ok(result)
+                        let result: Result<Vec<DnoteBook>, _> =
+                            s.lines().map(|l| l.parse()).collect();
+                        match result {
+                            Ok(v) => Ok(v),
+                            Err(e) => Err(DnoteClientError::ParseError)
+                        }
                     }
                     Err(e) => Err(DnoteClientError::UnknownError),
                 }

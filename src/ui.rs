@@ -25,21 +25,25 @@ pub fn render<B: Backend>(_app: &mut App, frame: &mut Frame<'_, B>) {
             .as_ref(),
         )
         .split(frame.size());
+    let books_chunk = chunks[0];
+    let pages_chunk = chunks[1];
+    let page_content_chunk = chunks[2];
+
     let books_block = Block::default()
         .title("Books")
         .title_alignment(Alignment::Center)
         .borders(Borders::ALL);
-    frame.render_widget(books_block, chunks[0]);
+    frame.render_widget(books_block, books_chunk);
 
     let pages_block = Block::default()
         .title("Pages")
         .title_alignment(Alignment::Center)
         .borders(Borders::ALL);
-    frame.render_widget(pages_block, chunks[1]);
+    frame.render_widget(pages_block, pages_chunk);
 
     let content_block = Block::default()
         .title("Content")
         .title_alignment(Alignment::Center)
         .borders(Borders::ALL);
-    frame.render_widget(content_block, chunks[2]);
+    frame.render_widget(content_block, page_content_chunk);
 }

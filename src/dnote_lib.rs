@@ -72,28 +72,20 @@ impl DnoteClient {
     }
     pub fn view_pages(&self, book_name: &str) -> Result<Vec<DnotePage>, DnoteClientError> {
         println!("Viewing pages for book: {}", book_name);
-        let output = Command::new("dnote").arg("view").arg(book_name).output();
-        match output {
-            Ok(v) => {
-                let stdout = String::from_utf8(v.stdout);
-                match stdout {
-                    Ok(s) => {
-                        let result: Result<Vec<DnotePage>, _> = s
-                            .lines()
-                            // skip first line e.g '  • on book ccu'
-                            .skip(1)
-                            .map(|l| l.parse())
-                            .collect();
-                        match result {
-                            Ok(v) => Ok(v),
-                            Err(e) => Err(DnoteClientError::ParseError),
-                        }
-                    }
-                    Err(e) => Err(DnoteClientError::UnknownError),
-                }
-            }
-            Err(e) => Err(DnoteClientError::UnknownError),
-        }
+        let output = Command::new("dnote")
+            .arg("view")
+            .arg(book_name)
+            .output()
+            .map_err(|_| DnoteClientError::DnoteCommand)?;
+        let stdout =
+            String::from_utf8(output.stdout).map_err(|_| DnoteClientError::UTF8ParseError)?;
+        let result: Result<Vec<DnotePage>, _> = stdout
+            .lines()
+            // skip first line e.g '  • on book ccu'
+            .skip(1)
+            .map(|l| l.parse())
+            .collect();
+        result.map_err(|_| DnoteClientError::ParseError)
     }
     pub fn view_page_info(&self, page_id: u32) -> Result<DnotePageInfo, DnoteClientError> {
         println!("Viewing content for page with id {}", page_id);
@@ -101,17 +93,11 @@ impl DnoteClient {
             .arg("view")
             .arg(page_id.to_string())
             .arg("--content-only")
-            .output();
-        match output {
-            Ok(v) => {
-                let stdout = String::from_utf8(v.stdout);
-                match stdout {
-                    Ok(s) => Ok(s.parse().unwrap()),
-                    Err(e) => Err(DnoteClientError::UnknownError),
-                }
-            }
-            Err(e) => Err(DnoteClientError::UnknownError),
-        }
+            .output()
+            .map_err(|_| DnoteClientError::DnoteCommand)?;
+        let stdout =
+            String::from_utf8(output.stdout).map_err(|_| DnoteClientError::UTF8ParseError)?;
+        stdout.parse().map_err(|_| DnoteClientError::ParseError)
     }
 }
 

@@ -51,7 +51,8 @@ pub struct DnoteClient {}
 
 #[derive(Debug)]
 pub enum DnoteClientError {
-    InvalidCommand,
+    DnoteCommand,
+    UTF8ParseError,
     ParseError,
     UnknownError,
 }
@@ -62,24 +63,12 @@ impl DnoteClient {
         let output = Command::new("dnote")
             .arg("view")
             .arg("--name-only")
-            .output();
-        match output {
-            Ok(v) => {
-                let stdout = String::from_utf8(v.stdout);
-                match stdout {
-                    Ok(s) => {
-                        let result: Result<Vec<DnoteBook>, _> =
-                            s.lines().map(|l| l.parse()).collect();
-                        match result {
-                            Ok(v) => Ok(v),
-                            Err(e) => Err(DnoteClientError::ParseError),
-                        }
-                    }
-                    Err(e) => Err(DnoteClientError::UnknownError),
-                }
-            }
-            Err(e) => Err(DnoteClientError::UnknownError),
-        }
+            .output()
+            .map_err(|_| DnoteClientError::DnoteCommand)?;
+        let stdout: String =
+            String::from_utf8(output.stdout).map_err(|_| DnoteClientError::UTF8ParseError)?;
+        let result: Result<Vec<DnoteBook>, _> = stdout.lines().map(|l| l.parse()).collect();
+        result.map_err(|_| DnoteClientError::ParseError)
     }
     pub fn view_pages(&self, book_name: &str) -> Result<Vec<DnotePage>, DnoteClientError> {
         println!("Viewing pages for book: {}", book_name);

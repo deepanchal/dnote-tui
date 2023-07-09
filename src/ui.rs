@@ -1,14 +1,15 @@
 use tui::{
     backend::Backend,
     layout::{Alignment, Constraint, Direction, Layout},
-    widgets::{Block, Borders},
+    style::{Color, Modifier, Style},
+    widgets::{Block, Borders, List, ListItem},
     Frame,
 };
 
 use crate::app::App;
 
 /// Renders the user interface widgets.
-pub fn render<B: Backend>(_app: &mut App, frame: &mut Frame<'_, B>) {
+pub fn render<B: Backend>(app: &mut App, frame: &mut Frame<'_, B>) {
     // This is where you add new widgets.
     // See the following resources:
     // - https://docs.rs/ratatui/latest/ratatui/widgets/index.html
@@ -33,7 +34,30 @@ pub fn render<B: Backend>(_app: &mut App, frame: &mut Frame<'_, B>) {
         .title("Books")
         .title_alignment(Alignment::Center)
         .borders(Borders::ALL);
-    frame.render_widget(books_block, books_chunk);
+
+    let items: Vec<ListItem> = app
+        .books
+        .items
+        .iter()
+        .map(|i| {
+            ListItem::new(i.name.to_string())
+                .style(Style::default().fg(Color::White))
+        })
+        .collect();
+
+    // Create a List from all list items and highlight the currently selected one
+    let items = List::new(items)
+        .block(books_block)
+        .highlight_style(
+            Style::default()
+                .bg(Color::LightGreen)
+                .fg(Color::Black)
+                .add_modifier(Modifier::BOLD),
+        )
+        .highlight_symbol(">> ");
+
+    // We can now render the item list
+    frame.render_stateful_widget(items, books_chunk, &mut app.books.state);
 
     let pages_block = Block::default()
         .title("Pages")

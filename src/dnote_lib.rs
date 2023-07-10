@@ -59,7 +59,7 @@ pub enum DnoteClientError {
 
 impl DnoteClient {
     pub fn get_books(&self) -> Result<Vec<DnoteBook>, DnoteClientError> {
-        println!("Viewing all books...");
+        // println!("Viewing all books...");
         let output = Command::new("dnote")
             .arg("view")
             .arg("--name-only")
@@ -71,7 +71,7 @@ impl DnoteClient {
         result.map_err(|_| DnoteClientError::ParseError)
     }
     pub fn get_pages(&self, book_name: &str) -> Result<Vec<DnotePage>, DnoteClientError> {
-        println!("Viewing pages for book: {}", book_name);
+        // println!("Viewing pages for book: {}", book_name);
         let output = Command::new("dnote")
             .arg("view")
             .arg(book_name)
@@ -88,7 +88,7 @@ impl DnoteClient {
         result.map_err(|_| DnoteClientError::ParseError)
     }
     pub fn get_page_content(&self, page_id: u32) -> Result<DnotePageInfo, DnoteClientError> {
-        println!("Viewing content for page with id {}", page_id);
+        // println!("Viewing content for page with id {}", page_id);
         let output = Command::new("dnote")
             .arg("view")
             .arg(page_id.to_string())

@@ -59,8 +59,6 @@ impl<T> StatefulList<T> {
 pub struct App {
     /// Is the application running?
     pub running: bool,
-    /// counter
-    pub counter: u8,
     /// Dnote Client instance
     pub dnote_client: DnoteClient,
     /// Books list
@@ -76,7 +74,6 @@ impl Default for App {
         match books_result {
             Ok(books) => Self {
                 running: true,
-                counter: 0,
                 dnote_client: DnoteClient {},
                 books: StatefulList::with_items(books),
                 pages: StatefulList::with_items(vec![]),
@@ -85,7 +82,6 @@ impl Default for App {
                 println!("Something went wrong {:?}", e);
                 Self {
                     running: true,
-                    counter: 0,
                     dnote_client: DnoteClient {},
                     books: StatefulList::with_items(vec![]),
                     pages: StatefulList::with_items(vec![]),
@@ -135,17 +131,5 @@ impl App {
             }
         }
         self.pages.clone()
-    }
-
-    pub fn increment_counter(&mut self) {
-        if let Some(res) = self.counter.checked_add(1) {
-            self.counter = res;
-        }
-    }
-
-    pub fn decrement_counter(&mut self) {
-        if let Some(res) = self.counter.checked_sub(1) {
-            self.counter = res;
-        }
     }
 }

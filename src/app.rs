@@ -2,12 +2,12 @@ use std::error;
 
 use tui::widgets::ListState;
 
-use crate::dnote_lib::{DnoteBook, DnoteClient};
+use crate::dnote_lib::{DnoteBook, DnoteClient, DnotePage};
 
 /// Application result type.
 pub type AppResult<T> = std::result::Result<T, Box<dyn error::Error>>;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct StatefulList<T> {
     pub state: ListState,
     pub items: Vec<T>,
@@ -65,6 +65,8 @@ pub struct App {
     pub dnote_client: DnoteClient,
     /// Books list
     pub books: StatefulList<DnoteBook>,
+    /// Pages List
+    pub pages: StatefulList<DnotePage>,
 }
 
 impl Default for App {
@@ -77,6 +79,7 @@ impl Default for App {
                 counter: 0,
                 dnote_client: DnoteClient {},
                 books: StatefulList::with_items(books),
+                pages: StatefulList::with_items(vec![]),
             },
             Err(e) => {
                 println!("Something went wrong {:?}", e);
@@ -85,6 +88,7 @@ impl Default for App {
                     counter: 0,
                     dnote_client: DnoteClient {},
                     books: StatefulList::with_items(vec![]),
+                    pages: StatefulList::with_items(vec![]),
                 }
             }
         }
@@ -103,6 +107,34 @@ impl App {
     /// Set running to false to quit the application.
     pub fn quit(&mut self) {
         self.running = false;
+    }
+
+    pub fn get_books(&mut self) -> StatefulList<DnoteBook> {
+        let books_result = self.dnote_client.get_books();
+        match books_result {
+            Ok(books) => self.books.items = books,
+            Err(e) => println!("Error getting books {:?}", e),
+        }
+        self.books.clone()
+    }
+
+    pub fn get_pages(&mut self) -> StatefulList<DnotePage> {
+        let books = self.get_books();
+        let selected_book_index = books.state.selected();
+        if selected_book_index.is_none() {
+            return self.pages.clone();
+        }
+        let selected_book = &books.items[selected_book_index.unwrap()];
+        let dnote_pages = self.dnote_client.get_pages(&selected_book.name);
+        match dnote_pages {
+            Ok(pages) => {
+                self.pages.items = pages;
+            }
+            Err(e) => {
+                println!("Error getting pages {:?}", e);
+            }
+        }
+        self.pages.clone()
     }
 
     pub fn increment_counter(&mut self) {

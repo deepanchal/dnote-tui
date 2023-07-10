@@ -36,7 +36,7 @@ pub fn render<B: Backend>(app: &mut App, frame: &mut Frame<'_, B>) {
         .borders(Borders::ALL);
 
     let items: Vec<ListItem> = app
-        .books
+        .get_books()
         .items
         .iter()
         .map(|i| {
@@ -56,14 +56,35 @@ pub fn render<B: Backend>(app: &mut App, frame: &mut Frame<'_, B>) {
         )
         .highlight_symbol(">> ");
 
-    // We can now render the item list
     frame.render_stateful_widget(items, books_chunk, &mut app.books.state);
 
     let pages_block = Block::default()
         .title("Pages")
         .title_alignment(Alignment::Center)
         .borders(Borders::ALL);
-    frame.render_widget(pages_block, pages_chunk);
+
+    let items: Vec<ListItem> = app
+        .get_pages()
+        .items
+        .iter()
+        .map(|i| {
+            ListItem::new(i.id.to_string())
+                .style(Style::default().fg(Color::White))
+        })
+        .collect();
+
+    // Create a List from all list items and highlight the currently selected one
+    let items = List::new(items)
+        .block(pages_block)
+        .highlight_style(
+            Style::default()
+                .bg(Color::LightBlue)
+                .fg(Color::Black)
+                .add_modifier(Modifier::BOLD),
+        )
+        .highlight_symbol(">> ");
+    
+    frame.render_stateful_widget(items, pages_chunk, &mut app.pages.state);
 
     let content_block = Block::default()
         .title("Content")

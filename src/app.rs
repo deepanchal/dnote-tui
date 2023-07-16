@@ -2,7 +2,7 @@ use std::error;
 
 use tui::widgets::ListState;
 
-use crate::dnote_lib::{DnoteBook, DnoteClient, DnotePage};
+use crate::dnote_lib::{DnoteBook, DnoteClient, DnotePage, DnotePageInfo};
 
 /// Application result type.
 pub type AppResult<T> = std::result::Result<T, Box<dyn error::Error>>;
@@ -74,6 +74,8 @@ pub struct App {
     pub books: StatefulList<DnoteBook>,
     /// Pages List
     pub pages: StatefulList<DnotePage>,
+    /// Page Info
+    pub page_info: DnotePageInfo,
 }
 
 impl Default for App {
@@ -87,6 +89,9 @@ impl Default for App {
                 selected_chunk: TuiChunk::BOOKS,
                 books: StatefulList::with_items(books),
                 pages: StatefulList::with_items(vec![]),
+                page_info: DnotePageInfo {
+                    content: String::from(""),
+                },
             },
             Err(e) => {
                 println!("Something went wrong {:?}", e);
@@ -96,6 +101,9 @@ impl Default for App {
                     selected_chunk: TuiChunk::BOOKS,
                     books: StatefulList::with_items(vec![]),
                     pages: StatefulList::with_items(vec![]),
+                    page_info: DnotePageInfo {
+                        content: String::from(""),
+                    },
                 }
             }
         }
@@ -142,6 +150,27 @@ impl App {
             }
         }
         self.pages.clone()
+    }
+
+    pub fn get_page_content(&mut self) -> DnotePageInfo {
+        let pages = self.get_pages();
+        let selected_page_index = pages.state.selected();
+        if selected_page_index.is_none() {
+            return DnotePageInfo {
+                content: String::from(""),
+            };
+        }
+        let selected_page = &pages.items[selected_page_index.unwrap()];
+        let selected_page_info = self.dnote_client.get_page_content(selected_page.id);
+        match selected_page_info {
+            Ok(page_info) => {
+                self.page_info = page_info;
+            }
+            Err(e) => {
+                println!("Error getting page content {:?}", e);
+            }
+        }
+        self.page_info.clone()
     }
 
     pub fn select_next_chunk(&mut self) {

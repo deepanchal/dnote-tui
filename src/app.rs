@@ -54,6 +54,13 @@ impl<T> StatefulList<T> {
     }
 }
 
+#[derive(Debug, PartialEq, Clone, Copy)]
+pub enum TuiChunk {
+    BOOKS,
+    PAGES,
+    CONTENT,
+}
+
 /// Application.
 #[derive(Debug)]
 pub struct App {
@@ -61,6 +68,8 @@ pub struct App {
     pub running: bool,
     /// Dnote Client instance
     pub dnote_client: DnoteClient,
+    /// Order of TuiChunk
+    pub selected_chunk: TuiChunk,
     /// Books list
     pub books: StatefulList<DnoteBook>,
     /// Pages List
@@ -75,6 +84,7 @@ impl Default for App {
             Ok(books) => Self {
                 running: true,
                 dnote_client: DnoteClient {},
+                selected_chunk: TuiChunk::BOOKS,
                 books: StatefulList::with_items(books),
                 pages: StatefulList::with_items(vec![]),
             },
@@ -83,6 +93,7 @@ impl Default for App {
                 Self {
                     running: true,
                     dnote_client: DnoteClient {},
+                    selected_chunk: TuiChunk::BOOKS,
                     books: StatefulList::with_items(vec![]),
                     pages: StatefulList::with_items(vec![]),
                 }
@@ -131,5 +142,23 @@ impl App {
             }
         }
         self.pages.clone()
+    }
+
+    pub fn select_next_chunk(&mut self) {
+        let new_chunk = match self.selected_chunk {
+            TuiChunk::BOOKS => TuiChunk::PAGES,
+            TuiChunk::PAGES => TuiChunk::CONTENT,
+            TuiChunk::CONTENT => TuiChunk::CONTENT,
+        };
+        self.selected_chunk = new_chunk
+    }
+
+    pub fn select_prev_chunk(&mut self) {
+        let new_chunk = match self.selected_chunk {
+            TuiChunk::BOOKS => TuiChunk::BOOKS,
+            TuiChunk::PAGES => TuiChunk::BOOKS,
+            TuiChunk::CONTENT => TuiChunk::PAGES,
+        };
+        self.selected_chunk = new_chunk
     }
 }

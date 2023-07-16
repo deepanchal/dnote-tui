@@ -2,7 +2,7 @@ use tui::{
     backend::Backend,
     layout::{Alignment, Constraint, Direction, Layout},
     style::{Color, Modifier, Style},
-    widgets::{Block, Borders, List, ListItem},
+    widgets::{Block, Borders, List, ListItem, Paragraph},
     Frame,
 };
 
@@ -39,10 +39,7 @@ pub fn render<B: Backend>(app: &mut App, frame: &mut Frame<'_, B>) {
         .get_books()
         .items
         .iter()
-        .map(|i| {
-            ListItem::new(i.name.to_string())
-                .style(Style::default().fg(Color::White))
-        })
+        .map(|i| ListItem::new(i.name.to_string()).style(Style::default().fg(Color::White)))
         .collect();
 
     // Create a List from all list items and highlight the currently selected one
@@ -67,10 +64,7 @@ pub fn render<B: Backend>(app: &mut App, frame: &mut Frame<'_, B>) {
         .get_pages()
         .items
         .iter()
-        .map(|i| {
-            ListItem::new(i.id.to_string())
-                .style(Style::default().fg(Color::White))
-        })
+        .map(|i| ListItem::new(i.id.to_string()).style(Style::default().fg(Color::White)))
         .collect();
 
     // Create a List from all list items and highlight the currently selected one
@@ -83,12 +77,16 @@ pub fn render<B: Backend>(app: &mut App, frame: &mut Frame<'_, B>) {
                 .add_modifier(Modifier::BOLD),
         )
         .highlight_symbol(">> ");
-    
+
     frame.render_stateful_widget(items, pages_chunk, &mut app.pages.state);
 
     let content_block = Block::default()
         .title("Content")
         .title_alignment(Alignment::Center)
         .borders(Borders::ALL);
-    frame.render_widget(content_block, page_content_chunk);
+    let page_content = app.get_page_content();
+    let paragraph = Paragraph::new(page_content.content.clone())
+        .style(Style::default().fg(Color::Gray))
+        .block(content_block);
+    frame.render_widget(paragraph, page_content_chunk);
 }

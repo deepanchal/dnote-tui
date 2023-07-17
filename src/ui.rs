@@ -20,8 +20,8 @@ pub fn render<B: Backend>(app: &mut App, frame: &mut Frame<'_, B>) {
         .constraints(
             [
                 Constraint::Percentage(20),
-                Constraint::Percentage(30),
-                Constraint::Percentage(50),
+                Constraint::Percentage(20),
+                Constraint::Percentage(60),
             ]
             .as_ref(),
         )

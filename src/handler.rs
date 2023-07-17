@@ -25,12 +25,12 @@ pub fn handle_key_events(key_event: KeyEvent, app: &mut App) -> AppResult<()> {
             }
         }
         KeyCode::Right | KeyCode::Char('l') => {
-            app.select_next_chunk();
             match app.selected_chunk {
                 TuiSection::BOOKS => app.pages.next(),
                 TuiSection::PAGES => {}
                 _ => {}
             }
+            app.select_next_chunk();
         }
         KeyCode::Up | KeyCode::Char('k') => match app.selected_chunk {
             TuiSection::BOOKS => app.books.previous(),

@@ -17,27 +17,27 @@ pub fn handle_key_events(key_event: KeyEvent, app: &mut App) -> AppResult<()> {
         // Counter handlers
         KeyCode::Left | KeyCode::Char('h') => {
             app.pages.unselect();
-            app.select_prev_chunk();
-            match app.selected_chunk {
+            app.select_prev_section();
+            match app.selected_section {
                 TuiSection::BOOKS => {}
                 TuiSection::PAGES => app.books.previous(),
                 TuiSection::CONTENT => app.pages.previous(),
             }
         }
         KeyCode::Right | KeyCode::Char('l') => {
-            match app.selected_chunk {
+            match app.selected_section {
                 TuiSection::BOOKS => app.pages.next(),
                 TuiSection::PAGES => {}
                 _ => {}
             }
-            app.select_next_chunk();
+            app.select_next_section();
         }
-        KeyCode::Up | KeyCode::Char('k') => match app.selected_chunk {
+        KeyCode::Up | KeyCode::Char('k') => match app.selected_section {
             TuiSection::BOOKS => app.books.previous(),
             TuiSection::PAGES => app.pages.previous(),
             _ => {}
         },
-        KeyCode::Down | KeyCode::Char('j') => match app.selected_chunk {
+        KeyCode::Down | KeyCode::Char('j') => match app.selected_section {
             TuiSection::BOOKS => app.books.next(),
             TuiSection::PAGES => app.pages.next(),
             _ => {}

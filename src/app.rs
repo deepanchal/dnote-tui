@@ -55,7 +55,7 @@ impl<T> StatefulList<T> {
 }
 
 #[derive(Debug, PartialEq, Clone, Copy)]
-pub enum TuiChunk {
+pub enum TuiSection {
     BOOKS,
     PAGES,
     CONTENT,
@@ -69,7 +69,7 @@ pub struct App {
     /// Dnote Client instance
     pub dnote_client: DnoteClient,
     /// Order of TuiChunk
-    pub selected_chunk: TuiChunk,
+    pub selected_chunk: TuiSection,
     /// Books list
     pub books: StatefulList<DnoteBook>,
     /// Pages List
@@ -86,7 +86,7 @@ impl Default for App {
             Ok(books) => Self {
                 running: true,
                 dnote_client: DnoteClient {},
-                selected_chunk: TuiChunk::BOOKS,
+                selected_chunk: TuiSection::BOOKS,
                 books: StatefulList::with_items(books),
                 pages: StatefulList::with_items(vec![]),
                 page_info: DnotePageInfo {
@@ -98,7 +98,7 @@ impl Default for App {
                 Self {
                     running: true,
                     dnote_client: DnoteClient {},
-                    selected_chunk: TuiChunk::BOOKS,
+                    selected_chunk: TuiSection::BOOKS,
                     books: StatefulList::with_items(vec![]),
                     pages: StatefulList::with_items(vec![]),
                     page_info: DnotePageInfo {
@@ -175,18 +175,18 @@ impl App {
 
     pub fn select_next_chunk(&mut self) {
         let new_chunk = match self.selected_chunk {
-            TuiChunk::BOOKS => TuiChunk::PAGES,
-            TuiChunk::PAGES => TuiChunk::CONTENT,
-            TuiChunk::CONTENT => TuiChunk::CONTENT,
+            TuiSection::BOOKS => TuiSection::PAGES,
+            TuiSection::PAGES => TuiSection::CONTENT,
+            TuiSection::CONTENT => TuiSection::CONTENT,
         };
         self.selected_chunk = new_chunk
     }
 
     pub fn select_prev_chunk(&mut self) {
         let new_chunk = match self.selected_chunk {
-            TuiChunk::BOOKS => TuiChunk::BOOKS,
-            TuiChunk::PAGES => TuiChunk::BOOKS,
-            TuiChunk::CONTENT => TuiChunk::PAGES,
+            TuiSection::BOOKS => TuiSection::BOOKS,
+            TuiSection::PAGES => TuiSection::BOOKS,
+            TuiSection::CONTENT => TuiSection::PAGES,
         };
         self.selected_chunk = new_chunk
     }

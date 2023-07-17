@@ -1,4 +1,4 @@
-use crate::app::{App, AppResult, TuiChunk};
+use crate::app::{App, AppResult, TuiSection};
 use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
 
 /// Handles the key events and updates the state of [`App`].
@@ -19,27 +19,27 @@ pub fn handle_key_events(key_event: KeyEvent, app: &mut App) -> AppResult<()> {
             app.pages.unselect();
             app.select_prev_chunk();
             match app.selected_chunk {
-                TuiChunk::BOOKS => {}
-                TuiChunk::PAGES => app.books.previous(),
-                TuiChunk::CONTENT => app.pages.previous(),
+                TuiSection::BOOKS => {}
+                TuiSection::PAGES => app.books.previous(),
+                TuiSection::CONTENT => app.pages.previous(),
             }
         }
         KeyCode::Right | KeyCode::Char('l') => {
             app.select_next_chunk();
             match app.selected_chunk {
-                TuiChunk::BOOKS => app.pages.next(),
-                TuiChunk::PAGES => {}
+                TuiSection::BOOKS => app.pages.next(),
+                TuiSection::PAGES => {}
                 _ => {}
             }
         }
         KeyCode::Up | KeyCode::Char('k') => match app.selected_chunk {
-            TuiChunk::BOOKS => app.books.previous(),
-            TuiChunk::PAGES => app.pages.previous(),
+            TuiSection::BOOKS => app.books.previous(),
+            TuiSection::PAGES => app.pages.previous(),
             _ => {}
         },
         KeyCode::Down | KeyCode::Char('j') => match app.selected_chunk {
-            TuiChunk::BOOKS => app.books.next(),
-            TuiChunk::PAGES => app.pages.next(),
+            TuiSection::BOOKS => app.books.next(),
+            TuiSection::PAGES => app.pages.next(),
             _ => {}
         },
         // Other handlers you could add here.

@@ -16,9 +16,10 @@ pub fn handle_key_events(key_event: KeyEvent, app: &mut App) -> AppResult<()> {
         }
         // Counter handlers
         KeyCode::Left | KeyCode::Char('h') => {
+            app.pages.unselect();
             app.select_prev_chunk();
             match app.selected_chunk {
-                TuiChunk::BOOKS => {},
+                TuiChunk::BOOKS => {}
                 TuiChunk::PAGES => app.books.previous(),
                 TuiChunk::CONTENT => app.pages.previous(),
             }
@@ -27,7 +28,7 @@ pub fn handle_key_events(key_event: KeyEvent, app: &mut App) -> AppResult<()> {
             app.select_next_chunk();
             match app.selected_chunk {
                 TuiChunk::BOOKS => app.pages.next(),
-                TuiChunk::PAGES => {},
+                TuiChunk::PAGES => {}
                 _ => {}
             }
         }

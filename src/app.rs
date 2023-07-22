@@ -176,7 +176,7 @@ impl App {
     pub fn select_next_section(&mut self) {
         let new_section = match self.selected_section {
             TuiSection::BOOKS => TuiSection::PAGES,
-            TuiSection::PAGES => TuiSection::CONTENT,
+            TuiSection::PAGES => TuiSection::PAGES,
             TuiSection::CONTENT => TuiSection::CONTENT,
         };
         self.selected_section = new_section

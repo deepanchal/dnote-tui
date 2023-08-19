@@ -50,9 +50,8 @@
 </div>
 
 
-
 <!-- ABOUT THE PROJECT -->
-## About The Project
+## 🌟 About The Project
 
 > Note: This is still a **WORK IN PROGRESS**
 
@@ -64,7 +63,7 @@ A TUI (Terminal User Interface) for [`dnote`](https://www.getdnote.com/).
 
 
 
-### Built With
+### 🏗️ Built With
 
 - [`rust`](https://www.rust-lang.org/)
 - [`ratatui`](https://github.com/ratatui-org/ratatui)
@@ -74,24 +73,28 @@ A TUI (Terminal User Interface) for [`dnote`](https://www.getdnote.com/).
 
 
 <!-- GETTING STARTED -->
-## Getting Started
+## 🚀 Getting Started
 
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
-### Prerequisites
+### 🛠️ Prerequisites
 
 1. Install rust: https://www.rust-lang.org/
 2. Install dnote: https://github.com/dnote/dnote#installation
 
-### Running project
+### 🏃 Running project
 
 1. Clone the repo.
+
 2. cd into repo.
+
     ```sh
     cd dnote-tui
     ```
+
 3. Run tui
+
     ```sh
     cargo run
     ```
@@ -101,21 +104,21 @@ To get a local copy up and running follow these simple example steps.
 
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## 📝 Usage
 
-### Run
+### 🏃 Run
 
 ```sh
 cargo run
 ```
 
-### Build
+### 🏗️ Build
 
 ```sh
 cargo build
 ```
 
-### Run Tests
+### 🧪 Run Tests
 
 ```sh
 cargo test
@@ -126,7 +129,7 @@ cargo test
 
 
 <!-- ROADMAP -->
-## Roadmap
+## 🎯 Roadmap
 
 - [x] Show basic TUI with three sections (Books, Pages, & Content)
 - [x] Create a dnote client
@@ -153,7 +156,7 @@ See the [open issues](https://github.com/deepanchal/dnote-tui/issues) for a full
 
 
 <!-- CONTRIBUTING -->
-## Contributing
+## 🤝 Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -171,7 +174,7 @@ Don't forget to give the project a star! Thanks again!
 
 
 <!-- LICENSE -->
-## License
+## 📄 License
 
 Distributed under the MIT License. See [`LICENSE.txt`](LICENSE) for more information.
 

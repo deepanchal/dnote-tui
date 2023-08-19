@@ -191,5 +191,5 @@ Distributed under the MIT License. See [`LICENSE`](LICENSE) for more information
 [issues-shield]: https://img.shields.io/github/issues/deepanchal/dnote-tui.svg?style=for-the-badge
 [issues-url]: https://github.com/deepanchal/dnote-tui/issues
 [license-shield]: https://img.shields.io/github/license/deepanchal/dnote-tui.svg?style=for-the-badge
-[license-url]: https://github.com/deepanchal/dnote-tui/blob/master/LICENSE.txt
+[license-url]: https://github.com/deepanchal/dnote-tui/blob/main/LICENSE
 [product-screenshot]: ./.github/images/screenshot1.png

@@ -1,10 +1,10 @@
-use std::io;
-use tui::backend::CrosstermBackend;
-use tui::Terminal;
 use dnote_tui::app::{App, AppResult};
 use dnote_tui::event::{Event, EventHandler};
 use dnote_tui::handler::handle_key_events;
 use dnote_tui::tui::Tui;
+use std::io;
+use tui::backend::CrosstermBackend;
+use tui::Terminal;
 
 fn main() -> AppResult<()> {
     // Create an application.

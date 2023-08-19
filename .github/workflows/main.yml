@@ -1,0 +1,49 @@
+name: Main
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  build:
+    name: Build 🏗️, Lint 💅, & Test 🧪
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛎️ Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: 📥 Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          components: rustfmt, clippy
+          override: true
+
+      - name: ⚡ Cache
+        uses: Swatinem/rust-cache@v1
+
+      - name: 🏗️ Build
+        run: cargo build --verbose
+
+      - name: 📎 Clippy warnings
+        uses: actions-rs/cargo@v1
+        with:
+          command: clippy
+          args: -- -D warnings
+
+      - name: 💅 Cargo Fmt Check
+        uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: --all -- --check
+
+      - name: 🧪 Run Tests
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --all --verbose

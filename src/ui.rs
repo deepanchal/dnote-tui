@@ -85,7 +85,7 @@ pub fn render<B: Backend>(app: &mut App, frame: &mut Frame<'_, B>) {
         .title_alignment(Alignment::Center)
         .borders(Borders::ALL);
     let page_content = app.get_page_content();
-    let paragraph = Paragraph::new(page_content.content.clone())
+    let paragraph = Paragraph::new(page_content.content)
         .style(Style::default().fg(Color::Gray))
         .block(content_block);
     frame.render_widget(paragraph, page_content_chunk);

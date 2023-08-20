@@ -1,7 +1,15 @@
 [package]
 name = "dnote-tui"
+description = "TUI for dnote"
+keywords = ["tui", "dnote", "ratatui"]
+authors = ["Deep Panchal"]
 version = "0.1.0"
 edition = "2021"
+documentation = "https://github.com/deepanchal/dnote-tui"
+homepage = "https://github.com/deepanchal/dnote-tui"
+repository = "https://github.com/deepanchal/dnote-tui"
+license = "MIT"
+license-file = "LICENSE"
 default-run = "dnote-tui"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

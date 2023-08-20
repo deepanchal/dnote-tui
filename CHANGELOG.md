@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.1.0 (2023-08-20)
+
+## What's Changed
+* feat: Repo improvements, setup release, git, renovate, etc by @deepanchal in https://github.com/deepanchal/dnote-tui/pull/2
+* fix(deps): update rust crate tui to 0.22.0 by @renovate in https://github.com/deepanchal/dnote-tui/pull/4
+* fix(deps): update rust crate crossterm to 0.27.0 by @renovate in https://github.com/deepanchal/dnote-tui/pull/3
+* chore: add .release-please-manifest.json by @deepanchal in https://github.com/deepanchal/dnote-tui/pull/6
+* chore: bootstrap releases for path: . by @deepanchal in https://github.com/deepanchal/dnote-tui/pull/7
+* chore(deps): update swatinem/rust-cache action to v2 by @renovate in https://github.com/deepanchal/dnote-tui/pull/8
+
+## New Contributors
+* @deepanchal made their first contribution in https://github.com/deepanchal/dnote-tui/pull/2
+* @renovate made their first contribution in https://github.com/deepanchal/dnote-tui/pull/4
+
+**Full Changelog**: https://github.com/deepanchal/dnote-tui/commits/dnote-tui-v0.1.0
+
 ## [0.1.0] - 2023-08-20
 
 ### Bug Fixes

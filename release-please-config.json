@@ -8,7 +8,6 @@
       "draft": false,
       "prerelease": true,
       "include-v-in-tag": true,
-      "changelog-type": "github",
       "changelog-sections": [
         {
           "type": "feat",

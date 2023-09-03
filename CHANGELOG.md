@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.1](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.1.0...dnote-tui-v0.1.1) (2023-09-03)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate tui to 0.23.0 ([0f988e4](https://github.com/deepanchal/dnote-tui/commit/0f988e4ab4a8815b2521d6bdf6a00e80bde2b3e9))
+
+
+### Continuous Integration
+
+* **release:** add publish to crates.io job in release.yml to auto-publish on release please pr merge ([c915ff5](https://github.com/deepanchal/dnote-tui/commit/c915ff549ad600868674a34d810514678bf2b518))
+
 ## 0.1.0 (2023-08-20)
 
 

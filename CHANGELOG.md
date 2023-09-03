@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.2.0...dnote-tui-v0.2.1) (2023-09-03)
+
+
+### Documentation
+
+* **README:** update roadmap in README.md ([731234c](https://github.com/deepanchal/dnote-tui/commit/731234c316f439f041ab5fc2796783f59d767515))
+* **README:** use relative path for screenshot1.png ([bb52e66](https://github.com/deepanchal/dnote-tui/commit/bb52e664561d68dacd52f083708e59f44414cb7c))
+
 ## [0.2.0](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.1.1...dnote-tui-v0.2.0) (2023-09-03)
 
 

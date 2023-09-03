@@ -136,11 +136,11 @@ cargo test
     - [x] Parse output from dnote cli to structs used by dnote client
     - [ ] Add methods to perform write operations with dnote cli in dnote client
 - [ ] Functionalities 
-    - [ ] Read Operations
+    - [x] Read Operations
         - [x] Read books from dnote cli into tui
         - [x] Read pages from dnote cli into tui
         - [x] Read pages content from dnote cli into tui
-        - [ ] Show truncated pages content beside page id in pages section
+        - [x] Show truncated pages content beside page id in pages section
     - [ ] Write Operations
         - [ ] Create a new book with page
         - [ ] Edit a book's name

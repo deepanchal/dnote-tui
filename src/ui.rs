@@ -64,7 +64,12 @@ pub fn render<B: Backend>(app: &mut App, frame: &mut Frame<'_, B>) {
         .get_pages()
         .items
         .iter()
-        .map(|i| ListItem::new(i.id.to_string()).style(Style::default().fg(Color::White)))
+        .map(|i| {
+            let _id = i.id.to_string();
+            let _summary = i.summary.to_string();
+            ListItem::new(format!("({}) {}...", _id, _summary))
+                .style(Style::default().fg(Color::White))
+        })
         .collect();
 
     // Create a List from all list items and highlight the currently selected one

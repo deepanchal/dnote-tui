@@ -55,7 +55,7 @@
 
 > Note: This is still a **WORK IN PROGRESS**
 
-[![Screenshot1][product-screenshot]](.github/images/screenshot1.png)
+![Screenshot1](./.github/images/screenshot1.png)
 
 A TUI (Terminal User Interface) for [`dnote`](https://www.getdnote.com/).
 
@@ -192,4 +192,3 @@ Distributed under the MIT License. See [`LICENSE`](LICENSE) for more information
 [issues-url]: https://github.com/deepanchal/dnote-tui/issues
 [license-shield]: https://img.shields.io/github/license/deepanchal/dnote-tui.svg?style=for-the-badge
 [license-url]: https://github.com/deepanchal/dnote-tui/blob/main/LICENSE
-[product-screenshot]: ./.github/images/screenshot1.png

@@ -24,11 +24,7 @@ impl FromStr for DnotePage {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let parts: Vec<&str> = s.split(')').collect();
-        let id = parts[0]
-            .trim()
-            .trim_start_matches('(')
-            .parse()
-            .unwrap();
+        let id = parts[0].trim().trim_start_matches('(').parse().unwrap();
         let summary = parts[1]
             .trim()
             .trim_end_matches("[---More---]")

@@ -38,7 +38,7 @@
   <p align="center">
     TUI for dnote (https://www.getdnote.com/)
     <br />
-    <a href="https://github.com/deepanchal/dnote-tui"><strong>Explore the docs »</strong></a>
+    <a href="https://docs.rs/dnote-tui"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/deepanchal/dnote-tui">View Demo</a>

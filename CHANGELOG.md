@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.1.1...dnote-tui-v0.2.0) (2023-09-03)
+
+
+### Features
+
+* **dnote_lib:** add summary field on `DnotePage`. update FromStr impl & tests ([08c0757](https://github.com/deepanchal/dnote-tui/commit/08c0757133b49dfd04c9925b257caa0bf9bf9b86))
+* **ui:** use new summary field from `DnotePage` to display truncated page content besides page id in pages section ([3683ecf](https://github.com/deepanchal/dnote-tui/commit/3683ecf596060f6d4eac000fb8fd8726d12b7fad))
+
+
+### Documentation
+
+* **README:** update documentation url in README.md ([34b9292](https://github.com/deepanchal/dnote-tui/commit/34b9292d48c6db758cfda03f4ffbc3635269f54a))
+
 ## [0.1.1](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.1.0...dnote-tui-v0.1.1) (2023-09-03)
 
 

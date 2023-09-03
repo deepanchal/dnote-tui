@@ -16,20 +16,25 @@ impl FromStr for DnoteBook {
 #[derive(Debug, Clone)]
 pub struct DnotePage {
     pub id: u32,
+    /// Truncated content from page
+    pub summary: String,
 }
 
 impl FromStr for DnotePage {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let id = s
+        let parts: Vec<&str> = s.split(')').collect();
+        let id = parts[0]
             .trim()
             .trim_start_matches('(')
-            .split(')')
-            .next()
-            .unwrap()
             .parse()
             .unwrap();
-        Ok(DnotePage { id })
+        let summary = parts[1]
+            .trim()
+            .trim_end_matches("[---More---]")
+            .trim()
+            .to_string();
+        Ok(DnotePage { id, summary })
     }
 }
 
@@ -119,7 +124,9 @@ mod tests {
         let page1: DnotePage = input1.parse().unwrap();
         let page2: DnotePage = input2.parse().unwrap();
         assert_eq!(page1.id, 21);
+        assert_eq!(page1.summary, "# Issues");
         assert_eq!(page2.id, 27);
+        assert_eq!(page2.summary, "# Missed");
     }
 
     #[test]

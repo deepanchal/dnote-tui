@@ -76,6 +76,8 @@ pub struct App {
     pub pages: StatefulList<DnotePage>,
     /// Page Info
     pub page_info: DnotePageInfo,
+    pub show_popup: bool,
+    pub popup_content: String,
 }
 
 impl Default for App {
@@ -85,6 +87,8 @@ impl Default for App {
         match books_result {
             Ok(books) => Self {
                 running: true,
+                show_popup: false,
+                popup_content: String::from(""),
                 dnote_client: DnoteClient {},
                 selected_section: TuiSection::BOOKS,
                 books: StatefulList::with_items(books),
@@ -97,6 +101,8 @@ impl Default for App {
                 println!("Something went wrong {:?}", e);
                 Self {
                     running: true,
+                    show_popup: false,
+                    popup_content: String::from(""),
                     dnote_client: DnoteClient {},
                     selected_section: TuiSection::BOOKS,
                     books: StatefulList::with_items(vec![]),

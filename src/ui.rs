@@ -1,8 +1,10 @@
 use tui::{
     backend::Backend,
     layout::{Alignment, Constraint, Direction, Layout},
+    prelude::Rect,
     style::{Color, Modifier, Style},
-    widgets::{Block, Borders, List, ListItem, Paragraph},
+    text::Text,
+    widgets::{Block, Borders, Clear, List, ListItem, Paragraph},
     Frame,
 };
 
@@ -94,4 +96,40 @@ pub fn render<B: Backend>(app: &mut App, frame: &mut Frame<'_, B>) {
         .style(Style::default().fg(Color::Gray))
         .block(content_block);
     frame.render_widget(paragraph, page_content_chunk);
+
+    if app.show_popup {
+        let input = Paragraph::new(Text::from(app.popup_content.as_str()))
+            .style(Style::default().fg(Color::White))
+            .block(Block::default().borders(Borders::ALL).title("Rename Book"));
+        let area = centered_rect(60, 20, frame.size());
+        frame.render_widget(Clear, area); // Clear the background
+        frame.render_widget(input, area);
+    }
+}
+
+/// helper function to create a centered rect using up certain percentage of the available rect `r`
+fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -> Rect {
+    let popup_layout = Layout::default()
+        .direction(Direction::Vertical)
+        .constraints(
+            [
+                Constraint::Percentage((100 - percent_y) / 2),
+                Constraint::Percentage(percent_y),
+                Constraint::Percentage((100 - percent_y) / 2),
+            ]
+            .as_ref(),
+        )
+        .split(r);
+
+    Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints(
+            [
+                Constraint::Percentage((100 - percent_x) / 2),
+                Constraint::Percentage(percent_x),
+                Constraint::Percentage((100 - percent_x) / 2),
+            ]
+            .as_ref(),
+        )
+        .split(popup_layout[1])[1]
 }

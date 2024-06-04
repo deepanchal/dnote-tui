@@ -1,4 +1,6 @@
-use std::{process::Command, str::FromStr};
+use std::{io::Error, process::Command, str::FromStr};
+
+type NoteId = u32;
 
 #[derive(Debug, Clone)]
 pub struct DnoteBook {
@@ -15,7 +17,7 @@ impl FromStr for DnoteBook {
 
 #[derive(Debug, Clone)]
 pub struct DnotePage {
-    pub id: u32,
+    pub id: NoteId,
     /// Truncated content from page
     pub summary: String,
 }
@@ -48,6 +50,36 @@ impl FromStr for DnotePageInfo {
 }
 
 #[derive(Debug)]
+pub enum DnoteCommand {
+    Add {
+        book_name: String,
+        note: String,
+    },
+    ViewBooks,
+    ViewByBook {
+        book_name: String,
+    },
+    ViewByNoteId {
+        note_id: NoteId,
+    },
+    EditNoteById {
+        note_id: String,
+        new_content: Option<String>,
+        new_book: Option<String>,
+    },
+    EditBook {
+        book_name: String,
+        new_name: Option<String>,
+    },
+    RemoveBook {
+        book_name: String,
+    },
+    RemoveNoteById {
+        note_id: NoteId,
+    },
+}
+
+#[derive(Debug)]
 pub struct DnoteClient {}
 
 #[derive(Debug)]
@@ -59,6 +91,59 @@ pub enum DnoteClientError {
 }
 
 impl DnoteClient {
+    fn execute_command(&self, command: DnoteCommand) -> Result<String, DnoteClientError> {
+        let (cmd, args) = match command {
+            DnoteCommand::Add { book_name, note } => {
+                let args = vec![book_name, "-c".to_string(), note];
+                ("add", args)
+            }
+            DnoteCommand::ViewBooks {} => {
+                let args = vec!["--name-only".to_string()];
+                ("view", args)
+            }
+            DnoteCommand::ViewByBook { book_name } => {
+                let args = vec![book_name];
+                ("view", args)
+            }
+            DnoteCommand::EditNoteById {
+                note_id,
+                new_content,
+                new_book,
+            } => {
+                let mut args = vec![note_id];
+                if let Some(content) = new_content {
+                    args.push("-c".to_string());
+                    args.push(content);
+                }
+                if let Some(book) = new_book {
+                    args.push("-b".to_string());
+                    args.push(book);
+                }
+                ("edit", args)
+            }
+            DnoteCommand::EditBook {
+                book_name,
+                new_name,
+            } => {
+                let mut args = vec![book_name];
+                if let Some(name) = new_name {
+                    args.push("-n".to_string());
+                    args.push(name);
+                }
+                ("edit", args)
+            }
+            _ => todo!(),
+        };
+        let output = Command::new("dnote")
+            .arg(cmd)
+            .args(args)
+            .output()
+            .map_err(|_| DnoteClientError::DnoteCommand)?;
+        let stdout: String =
+            String::from_utf8(output.stdout).map_err(|_| DnoteClientError::UTF8ParseError)?;
+        Ok(stdout)
+    }
+
     pub fn get_books(&self) -> Result<Vec<DnoteBook>, DnoteClientError> {
         // println!("Viewing all books...");
         let output = Command::new("dnote")
@@ -70,6 +155,23 @@ impl DnoteClient {
             String::from_utf8(output.stdout).map_err(|_| DnoteClientError::UTF8ParseError)?;
         let result: Result<Vec<DnoteBook>, _> = stdout.lines().map(|l| l.parse()).collect();
         result.map_err(|_| DnoteClientError::ParseError)
+    }
+    pub fn rename_book(
+        &self,
+        book_name: &str,
+        new_book_name: &str,
+    ) -> Result<(), DnoteClientError> {
+        // dnote edit stm -n t3
+        let output = Command::new("dnote")
+            .arg("edit")
+            .arg(book_name)
+            .arg("-n")
+            .arg(new_book_name)
+            .output()
+            .map_err(|_| DnoteClientError::DnoteCommand)?;
+        let _stdout: String =
+            String::from_utf8(output.stdout).map_err(|_| DnoteClientError::UTF8ParseError)?;
+        Ok(())
     }
     pub fn get_pages(&self, book_name: &str) -> Result<Vec<DnotePage>, DnoteClientError> {
         // println!("Viewing pages for book: {}", book_name);
@@ -88,7 +190,7 @@ impl DnoteClient {
             .collect();
         result.map_err(|_| DnoteClientError::ParseError)
     }
-    pub fn get_page_content(&self, page_id: u32) -> Result<DnotePageInfo, DnoteClientError> {
+    pub fn get_page_content(&self, page_id: NoteId) -> Result<DnotePageInfo, DnoteClientError> {
         // println!("Viewing content for page with id {}", page_id);
         let output = Command::new("dnote")
             .arg("view")

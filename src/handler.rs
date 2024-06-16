@@ -21,7 +21,7 @@ pub fn handle_key_events(key_event: KeyEvent, app: &mut App) -> AppResult<()> {
                         // Handle error (e.g., show an error message to the user)
                     } else {
                         // Update the book's name in the UI
-                        app.books.items[selected_index].name = new_name.clone();
+                        app.books.items[selected_index].name.clone_from(new_name);
                         app.show_popup = false;
                     }
                 }
@@ -75,10 +75,9 @@ pub fn handle_key_events(key_event: KeyEvent, app: &mut App) -> AppResult<()> {
                 if app.selected_section == TuiSection::BOOKS {
                     app.show_popup = true;
                     if app.show_popup {
-                        app.popup_content = app.books.items
+                        app.popup_content.clone_from(&app.books.items
                             [app.books.state.selected().unwrap_or(0)]
-                        .name
-                        .clone();
+                        .name);
                     }
                 }
             }

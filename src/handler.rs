@@ -75,9 +75,9 @@ pub fn handle_key_events(key_event: KeyEvent, app: &mut App) -> AppResult<()> {
                 if app.selected_section == TuiSection::BOOKS {
                     app.show_popup = true;
                     if app.show_popup {
-                        app.popup_content.clone_from(&app.books.items
-                            [app.books.state.selected().unwrap_or(0)]
-                        .name);
+                        app.popup_content.clone_from(
+                            &app.books.items[app.books.state.selected().unwrap_or(0)].name,
+                        );
                     }
                 }
             }

@@ -2,7 +2,7 @@ use std::error;
 
 use ratatui::widgets::ListState;
 
-use crate::dnote_lib::{DnoteBook, DnoteClient, DnotePage, DnotePageInfo};
+use crate::dnote::{DnoteBook, DnoteClient, DnotePage, DnotePageInfo};
 
 /// Application result type.
 pub type AppResult<T> = std::result::Result<T, Box<dyn error::Error>>;

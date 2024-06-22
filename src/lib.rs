@@ -1,5 +1,5 @@
 /// Dnote Lib
-pub mod dnote_lib;
+pub mod dnote;
 
 /// Application.
 pub mod app;

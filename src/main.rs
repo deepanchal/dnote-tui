@@ -2,9 +2,9 @@ use dnote_tui::app::{App, AppResult};
 use dnote_tui::event::{Event, EventHandler};
 use dnote_tui::handler::handle_key_events;
 use dnote_tui::tui::Tui;
-use std::io;
 use ratatui::backend::CrosstermBackend;
 use ratatui::Terminal;
+use std::io;
 
 fn main() -> AppResult<()> {
     // Create an application.

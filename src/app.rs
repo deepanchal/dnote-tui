@@ -1,199 +1,151 @@
-use std::error;
+use color_eyre::eyre::Result;
+use crossterm::event::KeyEvent;
+use ratatui::prelude::Rect;
+use serde::{Deserialize, Serialize};
+use tokio::sync::mpsc;
 
-use ratatui::widgets::ListState;
+use crate::{
+  action::Action,
+  components::{home::Home, fps::FpsCounter, Component},
+  config::Config,
+  mode::Mode,
+  tui,
+};
 
-use crate::dnote::{DnoteBook, DnoteClient, DnotePage, DnotePageInfo};
-
-/// Application result type.
-pub type AppResult<T> = std::result::Result<T, Box<dyn error::Error>>;
-
-#[derive(Debug, Clone)]
-pub struct StatefulList<T> {
-    pub state: ListState,
-    pub items: Vec<T>,
-}
-
-impl<T> StatefulList<T> {
-    fn with_items(items: Vec<T>) -> StatefulList<T> {
-        StatefulList {
-            state: ListState::default(),
-            items,
-        }
-    }
-
-    pub fn next(&mut self) {
-        let i = match self.state.selected() {
-            Some(i) => {
-                if i >= self.items.len() - 1 {
-                    0
-                } else {
-                    i + 1
-                }
-            }
-            None => 0,
-        };
-        self.state.select(Some(i));
-    }
-
-    pub fn previous(&mut self) {
-        let i = match self.state.selected() {
-            Some(i) => {
-                if i == 0 {
-                    self.items.len() - 1
-                } else {
-                    i - 1
-                }
-            }
-            None => 0,
-        };
-        self.state.select(Some(i));
-    }
-
-    pub fn unselect(&mut self) {
-        self.state.select(None);
-    }
-}
-
-#[derive(Debug, PartialEq, Clone, Copy)]
-pub enum TuiSection {
-    BOOKS,
-    PAGES,
-    CONTENT,
-}
-
-/// Application.
-#[derive(Debug)]
 pub struct App {
-    /// Is the application running?
-    pub running: bool,
-    /// Dnote Client instance
-    pub dnote_client: DnoteClient,
-    /// Order of TuiSection
-    pub selected_section: TuiSection,
-    /// Books list
-    pub books: StatefulList<DnoteBook>,
-    /// Pages List
-    pub pages: StatefulList<DnotePage>,
-    /// Page Info
-    pub page_info: DnotePageInfo,
-    pub show_popup: bool,
-    pub popup_content: String,
-}
-
-impl Default for App {
-    fn default() -> Self {
-        let client = DnoteClient {};
-        let books_result = client.get_books();
-        match books_result {
-            Ok(books) => Self {
-                running: true,
-                show_popup: false,
-                popup_content: String::from(""),
-                dnote_client: DnoteClient {},
-                selected_section: TuiSection::BOOKS,
-                books: StatefulList::with_items(books),
-                pages: StatefulList::with_items(vec![]),
-                page_info: DnotePageInfo {
-                    content: String::from(""),
-                },
-            },
-            Err(e) => {
-                println!("Something went wrong {:?}", e);
-                Self {
-                    running: true,
-                    show_popup: false,
-                    popup_content: String::from(""),
-                    dnote_client: DnoteClient {},
-                    selected_section: TuiSection::BOOKS,
-                    books: StatefulList::with_items(vec![]),
-                    pages: StatefulList::with_items(vec![]),
-                    page_info: DnotePageInfo {
-                        content: String::from(""),
-                    },
-                }
-            }
-        }
-    }
+  pub config: Config,
+  pub tick_rate: f64,
+  pub frame_rate: f64,
+  pub components: Vec<Box<dyn Component>>,
+  pub should_quit: bool,
+  pub should_suspend: bool,
+  pub mode: Mode,
+  pub last_tick_key_events: Vec<KeyEvent>,
 }
 
 impl App {
-    /// Constructs a new instance of [`App`].
-    pub fn new() -> Self {
-        Self::default()
+  pub fn new(tick_rate: f64, frame_rate: f64) -> Result<Self> {
+    let home = Home::new();
+    let fps = FpsCounter::default();
+    let config = Config::new()?;
+    let mode = Mode::Home;
+    Ok(Self {
+      tick_rate,
+      frame_rate,
+      components: vec![Box::new(home), Box::new(fps)],
+      should_quit: false,
+      should_suspend: false,
+      config,
+      mode,
+      last_tick_key_events: Vec::new(),
+    })
+  }
+
+  pub async fn run(&mut self) -> Result<()> {
+    let (action_tx, mut action_rx) = mpsc::unbounded_channel();
+
+    let mut tui = tui::Tui::new()?.tick_rate(self.tick_rate).frame_rate(self.frame_rate);
+    // tui.mouse(true);
+    tui.enter()?;
+
+    for component in self.components.iter_mut() {
+      component.register_action_handler(action_tx.clone())?;
     }
 
-    /// Handles the tick event of the terminal.
-    pub fn tick(&self) {}
-
-    /// Set running to false to quit the application.
-    pub fn quit(&mut self) {
-        self.running = false;
+    for component in self.components.iter_mut() {
+      component.register_config_handler(self.config.clone())?;
     }
 
-    pub fn get_books(&mut self) -> StatefulList<DnoteBook> {
-        let books_result = self.dnote_client.get_books();
-        match books_result {
-            Ok(books) => self.books.items = books,
-            Err(e) => println!("Error getting books {:?}", e),
-        }
-        self.books.clone()
+    for component in self.components.iter_mut() {
+      component.init(tui.size()?)?;
     }
 
-    pub fn get_pages(&mut self) -> StatefulList<DnotePage> {
-        let books = self.get_books();
-        let selected_book_index = books.state.selected();
-        if selected_book_index.is_none() {
-            return self.pages.clone();
-        }
-        let selected_book = &books.items[selected_book_index.unwrap()];
-        let dnote_pages = self.dnote_client.get_pages(&selected_book.name);
-        match dnote_pages {
-            Ok(pages) => {
-                self.pages.items = pages;
-            }
-            Err(e) => {
-                println!("Error getting pages {:?}", e);
-            }
-        }
-        self.pages.clone()
-    }
+    loop {
+      if let Some(e) = tui.next().await {
+        match e {
+          tui::Event::Quit => action_tx.send(Action::Quit)?,
+          tui::Event::Tick => action_tx.send(Action::Tick)?,
+          tui::Event::Render => action_tx.send(Action::Render)?,
+          tui::Event::Resize(x, y) => action_tx.send(Action::Resize(x, y))?,
+          tui::Event::Key(key) => {
+            if let Some(keymap) = self.config.keybindings.get(&self.mode) {
+              if let Some(action) = keymap.get(&vec![key]) {
+                log::info!("Got action: {action:?}");
+                action_tx.send(action.clone())?;
+              } else {
+                // If the key was not handled as a single key action,
+                // then consider it for multi-key combinations.
+                self.last_tick_key_events.push(key);
 
-    pub fn get_page_content(&mut self) -> DnotePageInfo {
-        let pages = self.get_pages();
-        let selected_page_index = pages.state.selected();
-        if selected_page_index.is_none() {
-            return DnotePageInfo {
-                content: String::from(""),
+                // Check for multi-key combinations
+                if let Some(action) = keymap.get(&self.last_tick_key_events) {
+                  log::info!("Got action: {action:?}");
+                  action_tx.send(action.clone())?;
+                }
+              }
             };
+          },
+          _ => {},
         }
-        let selected_page = &pages.items[selected_page_index.unwrap()];
-        let selected_page_info = self.dnote_client.get_page_content(selected_page.id);
-        match selected_page_info {
-            Ok(page_info) => {
-                self.page_info = page_info;
-            }
-            Err(e) => {
-                println!("Error getting page content {:?}", e);
-            }
+        for component in self.components.iter_mut() {
+          if let Some(action) = component.handle_events(Some(e.clone()))? {
+            action_tx.send(action)?;
+          }
         }
-        self.page_info.clone()
-    }
+      }
 
-    pub fn select_next_section(&mut self) {
-        let new_section = match self.selected_section {
-            TuiSection::BOOKS => TuiSection::PAGES,
-            TuiSection::PAGES => TuiSection::PAGES,
-            TuiSection::CONTENT => TuiSection::CONTENT,
-        };
-        self.selected_section = new_section
+      while let Ok(action) = action_rx.try_recv() {
+        if action != Action::Tick && action != Action::Render {
+          log::debug!("{action:?}");
+        }
+        match action {
+          Action::Tick => {
+            self.last_tick_key_events.drain(..);
+          },
+          Action::Quit => self.should_quit = true,
+          Action::Suspend => self.should_suspend = true,
+          Action::Resume => self.should_suspend = false,
+          Action::Resize(w, h) => {
+            tui.resize(Rect::new(0, 0, w, h))?;
+            tui.draw(|f| {
+              for component in self.components.iter_mut() {
+                let r = component.draw(f, f.size());
+                if let Err(e) = r {
+                  action_tx.send(Action::Error(format!("Failed to draw: {:?}", e))).unwrap();
+                }
+              }
+            })?;
+          },
+          Action::Render => {
+            tui.draw(|f| {
+              for component in self.components.iter_mut() {
+                let r = component.draw(f, f.size());
+                if let Err(e) = r {
+                  action_tx.send(Action::Error(format!("Failed to draw: {:?}", e))).unwrap();
+                }
+              }
+            })?;
+          },
+          _ => {},
+        }
+        for component in self.components.iter_mut() {
+          if let Some(action) = component.update(action.clone())? {
+            action_tx.send(action)?
+          };
+        }
+      }
+      if self.should_suspend {
+        tui.suspend()?;
+        action_tx.send(Action::Resume)?;
+        tui = tui::Tui::new()?.tick_rate(self.tick_rate).frame_rate(self.frame_rate);
+        // tui.mouse(true);
+        tui.enter()?;
+      } else if self.should_quit {
+        tui.stop()?;
+        break;
+      }
     }
-
-    pub fn select_prev_section(&mut self) {
-        let new_section = match self.selected_section {
-            TuiSection::BOOKS => TuiSection::BOOKS,
-            TuiSection::PAGES => TuiSection::BOOKS,
-            TuiSection::CONTENT => TuiSection::PAGES,
-        };
-        self.selected_section = new_section
-    }
+    tui.exit()?;
+    Ok(())
+  }
 }

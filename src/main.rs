@@ -1,36 +1,43 @@
-use dnote_tui::app::{App, AppResult};
-use dnote_tui::event::{Event, EventHandler};
-use dnote_tui::handler::handle_key_events;
-use dnote_tui::tui::Tui;
-use ratatui::backend::CrosstermBackend;
-use ratatui::Terminal;
-use std::io;
+#![allow(dead_code)]
+#![allow(unused_imports)]
+#![allow(unused_variables)]
 
-fn main() -> AppResult<()> {
-    // Create an application.
-    let mut app = App::new();
+pub mod action;
+pub mod app;
+pub mod cli;
+pub mod components;
+pub mod config;
+pub mod mode;
+pub mod tui;
+pub mod utils;
 
-    // Initialize the terminal user interface.
-    let backend = CrosstermBackend::new(io::stderr());
-    let terminal = Terminal::new(backend)?;
-    let events = EventHandler::new(250);
-    let mut tui = Tui::new(terminal, events);
-    tui.init()?;
+use clap::Parser;
+use cli::Cli;
+use color_eyre::eyre::Result;
 
-    // Start the main loop.
-    while app.running {
-        // Render the user interface.
-        tui.draw(&mut app)?;
-        // Handle events.
-        match tui.events.next()? {
-            Event::Tick => app.tick(),
-            Event::Key(key_event) => handle_key_events(key_event, &mut app)?,
-            Event::Mouse(_) => {}
-            Event::Resize(_, _) => {}
-        }
-    }
+use crate::{
+  app::App,
+  utils::{initialize_logging, initialize_panic_handler, version},
+};
 
-    // Exit the user interface.
-    tui.exit()?;
+async fn tokio_main() -> Result<()> {
+  initialize_logging()?;
+
+  initialize_panic_handler()?;
+
+  let args = Cli::parse();
+  let mut app = App::new(args.tick_rate, args.frame_rate)?;
+  app.run().await?;
+
+  Ok(())
+}
+
+#[tokio::main]
+async fn main() -> Result<()> {
+  if let Err(e) = tokio_main().await {
+    eprintln!("{} error: Something went wrong", env!("CARGO_PKG_NAME"));
+    Err(e)
+  } else {
     Ok(())
+  }
 }

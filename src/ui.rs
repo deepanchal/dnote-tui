@@ -52,8 +52,7 @@ pub fn render<B: Backend>(app: &mut App, frame: &mut Frame) {
                 .bg(Color::LightGreen)
                 .fg(Color::Black)
                 .add_modifier(Modifier::BOLD),
-        )
-        .highlight_symbol(">> ");
+        );
 
     frame.render_stateful_widget(items, books_chunk, &mut app.books.state);
 
@@ -79,11 +78,10 @@ pub fn render<B: Backend>(app: &mut App, frame: &mut Frame) {
         .block(pages_block)
         .highlight_style(
             Style::default()
-                .bg(Color::LightBlue)
+                .bg(Color::Yellow)
                 .fg(Color::Black)
                 .add_modifier(Modifier::BOLD),
-        )
-        .highlight_symbol(">> ");
+        );
 
     frame.render_stateful_widget(items, pages_chunk, &mut app.pages.state);
 

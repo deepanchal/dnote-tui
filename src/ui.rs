@@ -21,9 +21,9 @@ pub fn render<B: Backend>(app: &mut App, frame: &mut Frame) {
         .margin(1)
         .constraints(
             [
+                Constraint::Percentage(10),
                 Constraint::Percentage(20),
-                Constraint::Percentage(20),
-                Constraint::Percentage(60),
+                Constraint::Percentage(70),
             ]
             .as_ref(),
         )

@@ -1,6 +1,6 @@
 use std::error;
 
-use tui::widgets::ListState;
+use ratatui::widgets::ListState;
 
 use crate::dnote_lib::{DnoteBook, DnoteClient, DnotePage, DnotePageInfo};
 

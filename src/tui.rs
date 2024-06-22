@@ -4,8 +4,8 @@ use crate::ui;
 use crossterm::event::{DisableMouseCapture, EnableMouseCapture};
 use crossterm::terminal::{self, EnterAlternateScreen, LeaveAlternateScreen};
 use std::io;
-use tui::backend::Backend;
-use tui::Terminal;
+use ratatui::backend::Backend;
+use ratatui::Terminal;
 
 /// Representation of a terminal user interface.
 ///
@@ -41,7 +41,7 @@ impl<B: Backend> Tui<B> {
     /// [`Draw`]: tui::Terminal::draw
     /// [`rendering`]: crate::ui:render
     pub fn draw(&mut self, app: &mut App) -> AppResult<()> {
-        self.terminal.draw(|frame| ui::render(app, frame))?;
+        self.terminal.draw(|frame| ui::render::<B>(app, frame))?;
         Ok(())
     }
 

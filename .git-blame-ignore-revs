@@ -1,2 +1,8 @@
 # style: format project with cargo fmt
 8e61cd93f29104cccbf25d18e7c87dc425a17aa9
+# style(fmt): run cargo fmt on repo
+84ec1d7cec44cdde4d365b279b317b763d07fd0e
+# style(fmt): run cargo fmt on repo
+8b886bf279f3fe22e433e67e67c40f2d6ba29566
+# style(fmt): run cargo fmt on repo
+231c1938ac6e2ed7e2e786f11854ec1dc50a4b1c

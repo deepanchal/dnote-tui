@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.3.0](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.2.1...dnote-tui-v0.3.0) (2024-06-29)
+
+
+### Features
+
+* **app:** add rename book functionality ([#15](https://github.com/deepanchal/dnote-tui/issues/15)) ([e819df3](https://github.com/deepanchal/dnote-tui/commit/e819df310d7ea2833a22debe4624a75988661ed8))
+* **app:** replace tui with ratatui, bump ratatui version, fix errors after changes ([66c09b0](https://github.com/deepanchal/dnote-tui/commit/66c09b079fc938eebf0b0ba44c98cb51aa5ed11a))
+* **dnote_lib:** use execute_command in other funcs, other improvements in lib ([728aae5](https://github.com/deepanchal/dnote-tui/commit/728aae5fc35957362decbd48067776981b4ac36d))
+
+
+### Bug Fixes
+
+* **bin:** fix dnote import in dnote_client_test bin ([4658b44](https://github.com/deepanchal/dnote-tui/commit/4658b4478ac5ec6cfb82dbe7aee8179ab3ff8bd0))
+* **deps:** update rust crate ratatui to 0.27.0 ([5b5e87e](https://github.com/deepanchal/dnote-tui/commit/5b5e87ec6ecec708d432bc6c715c1309980a98d3))
+* **lint:** fix clippy warnings ([bd644b0](https://github.com/deepanchal/dnote-tui/commit/bd644b01caf9e724c52dbdf973218db92d067692))
+* **ui:** remove highlight symbol from book & pages section, change pages highlight color ([f114454](https://github.com/deepanchal/dnote-tui/commit/f1144548ed275a3294a63e2c0429927b0b057739))
+* **ui:** update constraint percentage for sections in ui ([2fc985c](https://github.com/deepanchal/dnote-tui/commit/2fc985cdf6c213dfc1ac61095645b93c2e7f818a))
+
+
+### Code Refactoring
+
+* **lib:** rename dnote_lib to dnote, update usages ([3bb0716](https://github.com/deepanchal/dnote-tui/commit/3bb07161c20548ec7aab5d1e88c4b9381734ea27))
+
 ## [0.2.1](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.2.0...dnote-tui-v0.2.1) (2023-09-03)
 
 

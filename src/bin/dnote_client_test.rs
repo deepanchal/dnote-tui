@@ -1,4 +1,4 @@
-use dnote_tui::dnote_lib::*;
+use dnote_tui::dnote::*;
 
 fn main() -> Result<(), DnoteClientError> {
     let client = DnoteClient {};

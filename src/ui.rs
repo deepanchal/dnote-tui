@@ -45,14 +45,12 @@ pub fn render<B: Backend>(app: &mut App, frame: &mut Frame) {
         .collect();
 
     // Create a List from all list items and highlight the currently selected one
-    let items = List::new(items)
-        .block(books_block)
-        .highlight_style(
-            Style::default()
-                .bg(Color::LightGreen)
-                .fg(Color::Black)
-                .add_modifier(Modifier::BOLD),
-        );
+    let items = List::new(items).block(books_block).highlight_style(
+        Style::default()
+            .bg(Color::LightGreen)
+            .fg(Color::Black)
+            .add_modifier(Modifier::BOLD),
+    );
 
     frame.render_stateful_widget(items, books_chunk, &mut app.books.state);
 
@@ -74,14 +72,12 @@ pub fn render<B: Backend>(app: &mut App, frame: &mut Frame) {
         .collect();
 
     // Create a List from all list items and highlight the currently selected one
-    let items = List::new(items)
-        .block(pages_block)
-        .highlight_style(
-            Style::default()
-                .bg(Color::Yellow)
-                .fg(Color::Black)
-                .add_modifier(Modifier::BOLD),
-        );
+    let items = List::new(items).block(pages_block).highlight_style(
+        Style::default()
+            .bg(Color::Yellow)
+            .fg(Color::Black)
+            .add_modifier(Modifier::BOLD),
+    );
 
     frame.render_stateful_widget(items, pages_chunk, &mut app.pages.state);
 

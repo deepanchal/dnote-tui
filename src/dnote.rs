@@ -3,7 +3,7 @@ use std::{process::Command, str::FromStr};
 
 type NoteId = u32;
 
-#[derive(Debug, Clone)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Hash)]
 pub struct DnoteBook {
     pub name: String,
 }
@@ -16,7 +16,7 @@ impl FromStr for DnoteBook {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Hash)]
 pub struct DnotePage {
     pub id: NoteId,
     pub summary: String,

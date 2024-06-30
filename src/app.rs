@@ -8,7 +8,9 @@ use crate::{
     action::Action,
     components::{fps::FpsCounter, home::Home, Component},
     config::Config,
+    dnote::Dnote,
     mode::Mode,
+    state::State,
     tui,
 };
 
@@ -21,10 +23,14 @@ pub struct App {
     pub should_suspend: bool,
     pub mode: Mode,
     pub last_tick_key_events: Vec<KeyEvent>,
+    pub dnote: Dnote,
+    pub state: State,
 }
 
 impl App {
     pub fn new(tick_rate: f64, frame_rate: f64) -> Result<Self> {
+        let state = State::new();
+        let dnote = Dnote::new();
         let home = Home::new();
         let fps = FpsCounter::default();
         let config = Config::new()?;
@@ -38,6 +44,8 @@ impl App {
             config,
             mode,
             last_tick_key_events: Vec::new(),
+            dnote,
+            state,
         })
     }
 

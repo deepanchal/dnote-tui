@@ -84,9 +84,9 @@ pub enum DnoteCommand {
 }
 
 #[derive(Debug)]
-pub struct DnoteClient {}
+pub struct Dnote {}
 
-impl DnoteClient {
+impl Dnote {
     fn execute_command(&self, command: DnoteCommand) -> Result<String> {
         let (cmd, args) = match command {
             DnoteCommand::Add { book_name, note } => {

@@ -115,6 +115,7 @@ impl App {
                     Action::Quit => self.should_quit = true,
                     Action::Suspend => self.should_suspend = true,
                     Action::Resume => self.should_suspend = false,
+                    Action::Refresh => tui.terminal.clear()?,
                     Action::Resize(w, h) => {
                         tui.resize(Rect::new(0, 0, w, h))?;
                         tui.draw(|f| {
@@ -151,9 +152,7 @@ impl App {
             if self.should_suspend {
                 tui.suspend()?;
                 action_tx.send(Action::Resume)?;
-                tui = tui::Tui::new()?
-                    .tick_rate(self.tick_rate)
-                    .frame_rate(self.frame_rate);
+                action_tx.send(Action::Refresh)?;
                 // tui.mouse(true);
                 tui.enter()?;
             } else if self.should_quit {

@@ -1,9 +1,13 @@
 use std::{collections::HashMap, time::Duration};
 
 use color_eyre::eyre::Result;
-use crossterm::event::{KeyCode, KeyEvent};
+use crossterm::{
+    event::{KeyCode, KeyEvent},
+    style::Color,
+};
 use ratatui::{
     prelude::*,
+    style::Styled,
     symbols::border,
     widgets::{block::Title, *},
 };
@@ -15,6 +19,7 @@ use crate::{
     action::Action,
     config::{Config, KeyBindings},
     dnote::DnoteBook,
+    mode::Mode,
     state::State,
 };
 
@@ -73,16 +78,23 @@ impl Component for BooksPane {
         let title_bottom =
             Line::from(format!(" {} of {} ", current_item_index, total_items)).right_aligned();
         let title_padding = Line::from("");
+        let border_style = match state.mode {
+            Mode::Book => Style::default().blue(),
+            _ => Style::default(),
+        };
         let block = Block::default()
             .borders(Borders::ALL)
             .border_set(border::ROUNDED)
+            .style(border_style)
             .title(title_padding.clone().left_aligned())
             .title(title)
             .title_bottom(title_bottom.blue().bold())
             .title_bottom(title_padding.clone().right_aligned());
-        let highlight_style = Style::default().on_black().blue().bold();
+        let highlight_style = Style::default().on_black().white().bold();
         let list = List::new(items)
             .block(block)
+            .style(Style::default().white())
+            // .highlight_symbol("→ ")
             .highlight_style(highlight_style);
         f.render_stateful_widget(list, area, &mut state.books.state);
         Ok(())

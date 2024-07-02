@@ -1,16 +1,19 @@
 use color_eyre::eyre::Result;
 use crossterm::event::KeyEvent;
-use ratatui::prelude::Rect;
+use ratatui::{
+    layout::{Constraint, Direction, Layout},
+    prelude::Rect,
+};
 use serde::{Deserialize, Serialize};
 use tokio::sync::mpsc;
 
 use crate::{
     action::Action,
-    components::{fps::FpsCounter, home::Home, Component},
+    components::{books::BooksPane, content::ContentPane, pages::PagesPane, Component},
     config::Config,
     dnote::Dnote,
     mode::Mode,
-    state::State,
+    state::{State, StatefulList},
     tui,
 };
 
@@ -19,6 +22,8 @@ pub struct App {
     pub tick_rate: f64,
     pub frame_rate: f64,
     pub components: Vec<Box<dyn Component>>,
+    // pub header: Box<dyn Component>,
+    // pub footer: Box<dyn Component>,
     pub should_quit: bool,
     pub should_suspend: bool,
     pub mode: Mode,
@@ -31,14 +36,20 @@ impl App {
     pub fn new(tick_rate: f64, frame_rate: f64) -> Result<Self> {
         let state = State::new();
         let dnote = Dnote::new();
-        let home = Home::new();
-        let fps = FpsCounter::default();
+        let books = BooksPane::default();
+        let pages = PagesPane::default();
+        let content = ContentPane::default();
         let config = Config::new()?;
-        let mode = Mode::Home;
+        let mode = Mode::Book;
         Ok(Self {
             tick_rate,
             frame_rate,
-            components: vec![Box::new(home), Box::new(fps)],
+            components: vec![
+                // Note: ordering is important as layout constraints draw components in order
+                Box::new(books),
+                Box::new(pages),
+                Box::new(content),
+            ],
             should_quit: false,
             should_suspend: false,
             config,
@@ -119,27 +130,71 @@ impl App {
                     Action::Resize(w, h) => {
                         tui.resize(Rect::new(0, 0, w, h))?;
                         tui.draw(|f| {
-                            for component in self.components.iter_mut() {
-                                let r = component.draw(f, f.size());
-                                if let Err(e) = r {
-                                    action_tx
-                                        .send(Action::Error(format!("Failed to draw: {:?}", e)))
-                                        .unwrap();
-                                }
-                            }
+                            self.draw(f).unwrap_or_else(|err| {
+                                action_tx
+                                    .send(Action::Error(format!("Failed to draw: {:?}", err)))
+                                    .unwrap();
+                            });
                         })?;
                     }
                     Action::Render => {
                         tui.draw(|f| {
-                            for component in self.components.iter_mut() {
-                                let r = component.draw(f, f.size());
-                                if let Err(e) = r {
-                                    action_tx
-                                        .send(Action::Error(format!("Failed to draw: {:?}", e)))
-                                        .unwrap();
-                                }
-                            }
+                            self.draw(f).unwrap_or_else(|err| {
+                                action_tx
+                                    .send(Action::Error(format!("Failed to draw: {:?}", err)))
+                                    .unwrap();
+                            });
                         })?;
+                    }
+                    Action::FocusNext => match self.mode {
+                        Mode::Book => self.mode = Mode::Page,
+                        Mode::Page => self.mode = Mode::Content,
+                        _ => {}
+                    },
+                    Action::FocusPrev => match self.mode {
+                        Mode::Content => self.mode = Mode::Page,
+                        Mode::Page => self.mode = Mode::Book,
+                        _ => {}
+                    },
+                    Action::LoadBooks => {
+                        let books = self.dnote.get_books()?;
+                        self.state.books = StatefulList::with_items(books);
+                    }
+                    Action::SelectNextBook => {
+                        self.state.books.next();
+                        if let Some(book_index) = self.state.books.state.selected() {
+                            let selected_book = &self.state.books.items[book_index];
+                            action_tx.send(Action::LoadPages(selected_book.name.to_string()))?;
+                        }
+                    }
+                    Action::SelectPrevBook => {
+                        self.state.books.previous();
+                        if let Some(book_index) = self.state.books.state.selected() {
+                            let selected_book = &self.state.books.items[book_index];
+                            action_tx.send(Action::LoadPages(selected_book.name.to_string()))?;
+                        }
+                    }
+                    Action::SelectNextPage => {
+                        self.state.pages.next();
+                        if let Some(page_index) = self.state.pages.state.selected() {
+                            let selected_page = &self.state.pages.items[page_index];
+                            action_tx.send(Action::LoadContent(selected_page.id))?;
+                        }
+                    }
+                    Action::SelectPrevPage => {
+                        self.state.pages.previous();
+                        if let Some(page_index) = self.state.pages.state.selected() {
+                            let selected_page = &self.state.pages.items[page_index];
+                            action_tx.send(Action::LoadContent(selected_page.id))?;
+                        }
+                    }
+                    Action::LoadPages(ref book_name) => {
+                        let pages = self.dnote.get_pages(book_name)?;
+                        self.state.pages = StatefulList::with_items(pages);
+                    }
+                    Action::LoadContent(page_id) => {
+                        let page_info = self.dnote.get_page_content(page_id)?;
+                        self.state.page_content = Some(page_info.content);
                     }
                     _ => {}
                 }
@@ -161,6 +216,40 @@ impl App {
             }
         }
         tui.exit()?;
+        Ok(())
+    }
+
+    fn draw(&mut self, f: &mut tui::Frame<'_>) -> Result<()> {
+        let vertical_layout = Layout::vertical(vec![
+            Constraint::Max(1),
+            Constraint::Fill(1),
+            Constraint::Max(1),
+        ])
+        .split(f.size());
+        let header_chunk = vertical_layout[0];
+        let main_chunk = vertical_layout[1];
+        let footer_chunk = vertical_layout[2];
+
+        let chunks = Layout::default()
+            .direction(Direction::Horizontal)
+            .margin(1)
+            .constraints(
+                [
+                    Constraint::Percentage(25),
+                    Constraint::Percentage(25),
+                    Constraint::Percentage(50),
+                ]
+                .as_ref(),
+            )
+            .split(main_chunk);
+
+        // self.header.draw(f, header_chunk, &self.state)?;
+
+        for (index, component) in self.components.iter_mut().enumerate() {
+            component.draw(f, chunks[index], &mut self.state)?;
+        }
+
+        // self.footer.draw(f, footer_chunk, &self.state)?;
         Ok(())
     }
 }

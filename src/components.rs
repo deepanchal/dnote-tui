@@ -6,11 +6,15 @@ use tokio::sync::mpsc::UnboundedSender;
 use crate::{
     action::Action,
     config::Config,
+    state::State,
     tui::{Event, Frame},
 };
 
+pub mod books;
 pub mod fps;
 pub mod home;
+pub mod pages;
+pub mod content;
 
 /// `Component` is a trait that represents a visual and interactive element of the user interface.
 /// Implementors of this trait can be registered with the main application loop and will be able to receive events,
@@ -120,5 +124,5 @@ pub trait Component {
     /// # Returns
     ///
     /// * `Result<()>` - An Ok result or an error.
-    fn draw(&mut self, f: &mut Frame<'_>, area: Rect) -> Result<()>;
+    fn draw(&mut self, f: &mut Frame<'_>, area: Rect, state: &mut State) -> Result<()>;
 }

@@ -147,7 +147,10 @@ impl App {
                         })?;
                     }
                     Action::FocusNext => match self.mode {
-                        Mode::Book => self.mode = Mode::Page,
+                        Mode::Book => {
+                            self.mode = Mode::Page;
+                            action_tx.send(Action::SelectNextPage)?;
+                        }
                         Mode::Page => self.mode = Mode::Content,
                         _ => {}
                     },

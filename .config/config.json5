@@ -27,6 +27,7 @@
       "up": "SelectPrevPage",
       "<h>": "FocusPrev",
       "<l>": "FocusNext",
+      "<e>": "EditPage",
     }
   }
 }

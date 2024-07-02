@@ -187,6 +187,7 @@ impl Tui {
         if self.paste {
             crossterm::execute!(io(), EnableBracketedPaste)?;
         }
+        self.terminal.clear()?;
         self.start();
         Ok(())
     }

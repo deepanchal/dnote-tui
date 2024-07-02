@@ -1,3 +1,5 @@
+use std::process::Command;
+
 use color_eyre::eyre::Result;
 use crossterm::event::KeyEvent;
 use ratatui::{
@@ -199,6 +201,18 @@ impl App {
                     Action::LoadContent(page_id) => {
                         let page_info = self.dnote.get_page_content(page_id)?;
                         self.state.page_content = Some(page_info.content);
+                    }
+                    Action::EditPage => {
+                        if let Some(page_index) = self.state.pages.state.selected() {
+                            let selected_page = &self.state.pages.items[page_index];
+                            action_tx.send(Action::LoadContent(selected_page.id))?;
+                            tui.exit()?;
+                            std::process::Command::new("dnote")
+                                .arg("edit")
+                                .arg(selected_page.id.to_string())
+                                .status()?;
+                            tui.enter()?;
+                        }
                     }
                     _ => {}
                 }

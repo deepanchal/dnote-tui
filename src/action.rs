@@ -32,4 +32,5 @@ pub enum Action {
     SelectNextPage,
     SelectPrevPage,
     LoadContent(DnoteBookPageId),
+    EditPage,
 }

@@ -11,8 +11,6 @@ use crate::{
 };
 
 pub mod books;
-pub mod fps;
-pub mod home;
 pub mod pages;
 pub mod content;
 

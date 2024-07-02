@@ -6,6 +6,11 @@ use serde::{
 };
 use strum::Display;
 
+use crate::dnote::DnoteBook;
+
+type DnoteBookName = String;
+type DnoteBookPageId = u32;
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Display, Deserialize)]
 pub enum Action {
     Tick,
@@ -17,4 +22,14 @@ pub enum Action {
     Refresh,
     Error(String),
     Help,
+    StatusLine(String),
+    FocusNext,
+    FocusPrev,
+    LoadBooks,
+    SelectNextBook,
+    SelectPrevBook,
+    LoadPages(DnoteBookName),
+    SelectNextPage,
+    SelectPrevPage,
+    LoadContent(DnoteBookPageId),
 }

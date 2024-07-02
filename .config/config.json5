@@ -6,5 +6,27 @@
       "<Ctrl-c>": "Quit", // Yet another way to quit
       "<Ctrl-z>": "Suspend" // Suspend the application
     },
+    "Book": {
+      "<q>": "Quit",
+      "<Ctrl-c>": "Quit",
+      "<Ctrl-z>": "Suspend",
+      "<j>": "SelectNextBook",
+      "down": "SelectNextBook",
+      "<k>": "SelectPrevBook",
+      "up": "SelectPrevBook",
+      "<h>": "FocusPrev",
+      "<l>": "FocusNext",
+    },
+    "Page": {
+      "<q>": "Quit",
+      "<Ctrl-c>": "Quit",
+      "<Ctrl-z>": "Suspend",
+      "<j>": "SelectNextPage",
+      "down": "SelectNextPage",
+      "<k>": "SelectPrevPage",
+      "up": "SelectPrevPage",
+      "<h>": "FocusPrev",
+      "<l>": "FocusNext",
+    }
   }
 }

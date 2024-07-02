@@ -58,19 +58,28 @@ impl Component for BooksPane {
     }
 
     fn draw(&mut self, f: &mut Frame<'_>, area: Rect, state: &mut State) -> Result<()> {
-        let title = Title::from(" Books ".blue().bold());
-        // let block = Block::default().borders(Borders::ALL).title(title);
-        let block = Block::default()
-            .borders(Borders::ALL)
-            // .padding(Padding::proportional(1))
-            .border_set(border::ROUNDED)
-            .title(title);
         let items: Vec<ListItem> = state
             .books
             .items
             .iter()
             .map(|i| ListItem::new(i.name.clone()))
             .collect();
+        let total_items = items.len();
+        let current_item_index = match state.books.state.selected() {
+            Some(v) => v + 1,
+            None => 0,
+        };
+        let title = Title::from(" Books ".blue().bold());
+        let title_bottom =
+            Line::from(format!(" {} of {} ", current_item_index, total_items)).right_aligned();
+        let title_padding = Line::from("");
+        let block = Block::default()
+            .borders(Borders::ALL)
+            .border_set(border::ROUNDED)
+            .title(title_padding.clone().left_aligned())
+            .title(title)
+            .title_bottom(title_bottom.blue().bold())
+            .title_bottom(title_padding.clone().right_aligned());
         let highlight_style = Style::default().on_black().blue().bold();
         let list = List::new(items)
             .block(block)

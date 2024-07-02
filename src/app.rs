@@ -26,7 +26,6 @@ pub struct App {
     // pub footer: Box<dyn Component>,
     pub should_quit: bool,
     pub should_suspend: bool,
-    pub mode: Mode,
     pub last_tick_key_events: Vec<KeyEvent>,
     pub dnote: Dnote,
     pub state: State,
@@ -34,13 +33,13 @@ pub struct App {
 
 impl App {
     pub fn new(tick_rate: f64, frame_rate: f64) -> Result<Self> {
-        let state = State::new();
+        let mut state = State::new();
+        state.mode = Mode::Book;
         let dnote = Dnote::new();
         let books = BooksPane::default();
         let pages = PagesPane::default();
         let content = ContentPane::default();
         let config = Config::new()?;
-        let mode = Mode::Book;
         Ok(Self {
             tick_rate,
             frame_rate,
@@ -53,7 +52,6 @@ impl App {
             should_quit: false,
             should_suspend: false,
             config,
-            mode,
             last_tick_key_events: Vec::new(),
             dnote,
             state,
@@ -89,7 +87,7 @@ impl App {
                     tui::Event::Render => action_tx.send(Action::Render)?,
                     tui::Event::Resize(x, y) => action_tx.send(Action::Resize(x, y))?,
                     tui::Event::Key(key) => {
-                        if let Some(keymap) = self.config.keybindings.get(&self.mode) {
+                        if let Some(keymap) = self.config.keybindings.get(&self.state.mode) {
                             if let Some(action) = keymap.get(&vec![key]) {
                                 log::info!("Got action: {action:?}");
                                 action_tx.send(action.clone())?;
@@ -146,17 +144,20 @@ impl App {
                             });
                         })?;
                     }
-                    Action::FocusNext => match self.mode {
+                    Action::FocusNext => match self.state.mode {
                         Mode::Book => {
-                            self.mode = Mode::Page;
+                            self.state.mode = Mode::Page;
                             action_tx.send(Action::SelectNextPage)?;
                         }
-                        Mode::Page => self.mode = Mode::Content,
+                        Mode::Page => {}
                         _ => {}
                     },
-                    Action::FocusPrev => match self.mode {
-                        Mode::Content => self.mode = Mode::Page,
-                        Mode::Page => self.mode = Mode::Book,
+                    Action::FocusPrev => match self.state.mode {
+                        Mode::Content => {}
+                        Mode::Page => {
+                            self.state.mode = Mode::Book;
+                            self.state.page_content = None;
+                        }
                         _ => {}
                     },
                     Action::LoadBooks => {

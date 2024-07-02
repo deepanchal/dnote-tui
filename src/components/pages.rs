@@ -12,7 +12,11 @@ use tokio::sync::mpsc::UnboundedSender;
 
 use super::{Component, Frame};
 use crate::{
-    action::Action, config::{Config, KeyBindings}, dnote::DnoteBook, mode::Mode, state::State
+    action::Action,
+    config::{Config, KeyBindings},
+    dnote::DnoteBook,
+    mode::Mode,
+    state::State,
 };
 
 #[derive(Default)]

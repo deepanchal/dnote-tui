@@ -228,12 +228,15 @@ impl App {
                     Action::EditPage => {
                         if let Some(page_index) = self.state.pages.state.selected() {
                             let selected_page = &self.state.pages.items[page_index];
-                            action_tx.send(Action::LoadContent(selected_page.id))?;
                             tui.exit()?;
                             std::process::Command::new("dnote")
                                 .arg("edit")
                                 .arg(selected_page.id.to_string())
                                 .status()?;
+                            if let Some(book) = self.state.get_active_book() {
+                                action_tx.send(Action::LoadPages(book.name))?;
+                            }
+                            action_tx.send(Action::LoadContent(selected_page.id))?;
                             tui.enter()?;
                         }
                     }

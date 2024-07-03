@@ -1,5 +1,7 @@
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
+
 <a name="readme-top"></a>
+
 <!--
 *** Thanks for checking out the Best-README-Template. If you have a suggestion
 *** that would make this better, please fork the repo and create a pull request
@@ -7,8 +9,6 @@
 *** Don't forget to give the project a star!
 *** Thanks again! Now go create something AMAZING! :D
 -->
-
-
 
 <!-- PROJECT SHIELDS -->
 <!--
@@ -18,13 +18,12 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-
-
 
 <!-- PROJECT LOGO -->
 <br />
@@ -49,8 +48,8 @@
   </p>
 </div>
 
-
 <!-- ABOUT THE PROJECT -->
+
 ## 🌟 About The Project
 
 > Note: This is still a **WORK IN PROGRESS**
@@ -61,8 +60,6 @@ A TUI (Terminal User Interface) for [`dnote`](https://www.getdnote.com/).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 ### 🏗️ Built With
 
 - [`rust`](https://www.rust-lang.org/)
@@ -70,9 +67,8 @@ A TUI (Terminal User Interface) for [`dnote`](https://www.getdnote.com/).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- GETTING STARTED -->
+
 ## 🚀 Getting Started
 
 This is an example of how you may give instructions on setting up your project locally.
@@ -87,23 +83,52 @@ To get a local copy up and running follow these simple example steps.
 
 1. Clone the repo.
 
+```bash
+git clone https://github.com/deepanchal/dnote-tui.git
+```
+
 2. cd into repo.
 
-    ```sh
-    cd dnote-tui
-    ```
+```bash
+cd dnote-tui
+```
 
 3. Run tui
 
-    ```sh
-    cargo run
-    ```
+```sh
+cargo run
+```
+
+### 🐳 Try with Docker
+
+Get started with dnote-tui quickly using Docker! This setup comes with pre-loaded test data so you can dive right into exploring the TUI features.
+
+1. Clone the repository and navigate to the project directory
+
+```bash
+git clone https://github.com/deepanchal/dnote-tui.git
+cd dnote-tui
+```
+
+2. To build the Docker image and run the dnote-tui container using Docker Compose, execute the following command:
+
+```bash
+docker compose run --rm dnote-tui
+```
+
+Or if you prefer to use Docker directly without Docker Compose, you can follow these steps:
+
+```bash
+# Build the docker image
+docker build --build-arg RUST_VERSION=1.76.0 --build-arg DNOTE_VERSION=0.15.1 -t dnote-tui .
+# Run the docker container
+docker run --rm -it dnote-tui
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- USAGE EXAMPLES -->
+
 ## 📝 Usage
 
 ### 🏃 Run
@@ -126,36 +151,33 @@ cargo test
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- ROADMAP -->
+
 ## 🎯 Roadmap
 
 - [x] Show basic TUI with three sections (Books, Pages, & Content)
 - [x] Create a dnote client
-    - [x] Parse output from dnote cli to structs used by dnote client
-    - [ ] Add methods to perform write operations with dnote cli in dnote client
-- [ ] Functionalities 
-    - [x] Read Operations
-        - [x] Read books from dnote cli into tui
-        - [x] Read pages from dnote cli into tui
-        - [x] Read pages content from dnote cli into tui
-        - [x] Show truncated pages content beside page id in pages section
-    - [ ] Write Operations
-        - [ ] Create a new book with page
-        - [ ] Edit a book's name
-        - [ ] Edit a page's content
-        - [ ] Delete a book's page
-        - [ ] Delete a book and all it's pages
-        
+  - [x] Parse output from dnote cli to structs used by dnote client
+  - [ ] Add methods to perform write operations with dnote cli in dnote client
+- [ ] Functionalities
+  - [x] Read Operations
+    - [x] Read books from dnote cli into tui
+    - [x] Read pages from dnote cli into tui
+    - [x] Read pages content from dnote cli into tui
+    - [x] Show truncated pages content beside page id in pages section
+  - [ ] Write Operations
+    - [ ] Create a new book with page
+    - [ ] Edit a book's name
+    - [ ] Edit a page's content
+    - [ ] Delete a book's page
+    - [ ] Delete a book and all it's pages
 
 See the [open issues](https://github.com/deepanchal/dnote-tui/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- CONTRIBUTING -->
+
 ## 🤝 Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -171,9 +193,8 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- LICENSE -->
+
 ## 📄 License
 
 Distributed under the MIT License. See [`LICENSE`](LICENSE) for more information.
@@ -182,6 +203,7 @@ Distributed under the MIT License. See [`LICENSE`](LICENSE) for more information
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/deepanchal/dnote-tui.svg?style=for-the-badge
 [contributors-url]: https://github.com/deepanchal/dnote-tui/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/deepanchal/dnote-tui.svg?style=for-the-badge

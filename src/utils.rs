@@ -20,6 +20,7 @@ const VERSION_MESSAGE: &str = concat!(
 
 lazy_static! {
     pub static ref PROJECT_NAME: String = env!("CARGO_CRATE_NAME").to_uppercase().to_string();
+    pub static ref PROJECT_VERSION: String = env!("CARGO_PKG_VERSION").to_string();
     pub static ref DATA_FOLDER: Option<PathBuf> =
         std::env::var(format!("{}_DATA", PROJECT_NAME.clone()))
             .ok()

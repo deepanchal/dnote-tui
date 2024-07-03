@@ -63,7 +63,7 @@ impl Component for PagesPane {
         if let Some(tx) = &self.command_tx {
             if is_focused {
                 let status_line = format!(
-                    "[j/{ARROW_UP} {ARROW} up] [k/{ARROW_DOWN} {ARROW} down] [e {ARROW} edit]"
+                    "[j/{ARROW_UP} {ARROW} up] [k/{ARROW_DOWN} {ARROW} down] | [e {ARROW} edit] | [a {ARROW} add]"
                 );
                 tx.send(Action::StatusLine(status_line))?;
             }

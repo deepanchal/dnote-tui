@@ -247,7 +247,7 @@ impl App {
 
     fn draw(&mut self, f: &mut tui::Frame<'_>) -> Result<()> {
         let vertical_layout = Layout::vertical(vec![
-            Constraint::Max(2),
+            Constraint::Max(3),
             Constraint::Fill(1),
             Constraint::Max(1),
         ])
@@ -259,7 +259,7 @@ impl App {
 
         let chunks = Layout::default()
             .direction(Direction::Horizontal)
-            .vertical_margin(1)
+            .horizontal_margin(1)
             .constraints(
                 [
                     Constraint::Percentage(25),

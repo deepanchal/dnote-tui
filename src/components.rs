@@ -12,6 +12,7 @@ use crate::{
 
 pub mod books;
 pub mod content;
+pub mod footer;
 pub mod header;
 pub mod pages;
 

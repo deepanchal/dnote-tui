@@ -56,6 +56,16 @@ impl Component for PagesPane {
     }
 
     fn draw(&mut self, f: &mut Frame<'_>, area: Rect, state: &mut State) -> Result<()> {
+        let is_focused = state.mode == Mode::Page;
+        if let Some(tx) = &self.command_tx {
+            if is_focused {
+                const ARROW: &str = symbols::scrollbar::HORIZONTAL.end;
+                const ARROW_UP: &str = symbols::scrollbar::VERTICAL.begin;
+                const ARROW_DOWN: &str = symbols::scrollbar::VERTICAL.begin;
+                let status_line = format!("[j/{ARROW_UP} {ARROW} up] [k/{ARROW_DOWN} {ARROW} down] [e {ARROW} edit]");
+                tx.send(Action::StatusLine(status_line))?;
+            }
+        }
         let items: Vec<ListItem> = state
             .pages
             .items
@@ -75,9 +85,9 @@ impl Component for PagesPane {
         let title_bottom =
             Line::from(format!(" {} of {} ", current_item_index, total_items)).right_aligned();
         let title_padding = Line::from("");
-        let border_style = match state.mode {
-            Mode::Page => Style::default().green(),
-            _ => Style::default(),
+        let border_style = match is_focused {
+            true => Style::default().green(),
+            false => Style::default(),
         };
         let block = Block::default()
             .borders(Borders::ALL)

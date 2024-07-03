@@ -1,5 +1,61 @@
 # Changelog
 
+## [0.4.0](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.3.0...dnote-tui-v0.4.0) (2024-07-03)
+
+
+### Features
+
+* **action:** add new actions ([bf1afd8](https://github.com/deepanchal/dnote-tui/commit/bf1afd8eb945bf35e11bcf1f137b39d1c7d31e6b))
+* **app:** add dnote and state members in App struct, initialize them ([5ecc01d](https://github.com/deepanchal/dnote-tui/commit/5ecc01d12b30ac16d59603f9288ba0d079355324))
+* **app:** define Action::Refresh handler, send refresh action once app returns from suspend ([0974ab9](https://github.com/deepanchal/dnote-tui/commit/0974ab99d8e52dd95b590bf591257bc569b1b26a))
+* **app:** implement EditPage functionality on &lt;e&gt; keypress in PagesPane ([40bbb22](https://github.com/deepanchal/dnote-tui/commit/40bbb22cf7c7a74fc0311570ab796504777b427f))
+* **app:** move mode to State struct ([08f1bb4](https://github.com/deepanchal/dnote-tui/commit/08f1bb40cdb7bacc5dbc60faf93f69457cd13a55))
+* **app:** register header component in app, update component mod ([fd8f2fd](https://github.com/deepanchal/dnote-tui/commit/fd8f2fd63d786114426a8acbd633ff1ae91256fd))
+* **app:** update app setup with state, add books, pages, content components, other improvements ([9fe4aac](https://github.com/deepanchal/dnote-tui/commit/9fe4aac0a21b722f535c334bb7a87add3dfe6b54))
+* **comps:** add focus highlight, other improvements on books and pages pane ([257e5b7](https://github.com/deepanchal/dnote-tui/commit/257e5b799fcd41935a4394ea18578bea67830a60))
+* **comps:** add header component ([d2cf6f1](https://github.com/deepanchal/dnote-tui/commit/d2cf6f12b12c7ed54fe8d85530c404497f629f5b))
+* **comps:** show current of total books in BooksPane ([4031cb2](https://github.com/deepanchal/dnote-tui/commit/4031cb20e67a286fd3fd6abe1779aef0775d0989))
+* **comps:** show current of total pages in PagesPane ([bea45e1](https://github.com/deepanchal/dnote-tui/commit/bea45e135efafc32b3f9e31f393056df6981fbc1))
+* **config:** add keybindings for Book, Page mode ([ced9f0d](https://github.com/deepanchal/dnote-tui/commit/ced9f0d865665734056d36465311e3e9510f4274))
+* **dnote:** derive Default for Dnote, add new fn ([39154ce](https://github.com/deepanchal/dnote-tui/commit/39154ce62254f55f9cdd620fad4de667503a4a63))
+* **dnote:** derive useful traits for DnoteBook & DnotePage ([b714bd9](https://github.com/deepanchal/dnote-tui/commit/b714bd9c27f8ff3848d0505a398fd0f4ba31697f))
+* **footer:** add keybindings info with footer status line ([e464a7c](https://github.com/deepanchal/dnote-tui/commit/e464a7c300d26ac1b29991349164a86ec9ac12a0))
+* **main:** set dnote module as pub in main.rs ([40fe7f5](https://github.com/deepanchal/dnote-tui/commit/40fe7f589cbe2db0400408b5fc1926c748972a3f))
+* **mode:** add Book, Page, Content enum variants ([cddfd51](https://github.com/deepanchal/dnote-tui/commit/cddfd51f418b163ca20eaba09dd0d38f0a71fe31))
+* **state:** add app state mod ([84dbaf6](https://github.com/deepanchal/dnote-tui/commit/84dbaf620a1dfdff37a2c781a30bd7b609449aa3))
+* **state:** add StatefulList struct, update members of State struct ([cdd4c63](https://github.com/deepanchal/dnote-tui/commit/cdd4c63b7c87fa483ec340cb3e861da211465d04))
+* **utils:** add PROJECT_VERSION static var ([0bc53f0](https://github.com/deepanchal/dnote-tui/commit/0bc53f06b3572f4e6345da88f6ead907d13275d0))
+
+
+### Bug Fixes
+
+* **app:** auto select first page when focusing book -&gt; pages ([799f0dd](https://github.com/deepanchal/dnote-tui/commit/799f0dda941e776e7f462d59a92ce312a0ee451c))
+* **app:** fix app crash when no book is selected and FocusNext is sent ([8988506](https://github.com/deepanchal/dnote-tui/commit/89885068de3cfa7f5238cd9f3c77aa863a560b84))
+* **app:** fix layout formatting between header, main, footer ([28ccfb1](https://github.com/deepanchal/dnote-tui/commit/28ccfb17aa24c5877ec3c1ce1690f9c5c54a33ae))
+* **app:** fix lint issue with string cloning ([e6d43d9](https://github.com/deepanchal/dnote-tui/commit/e6d43d9218649c28ae29eab74c035d34e8883678))
+* **cli:** set default app frame rate to 30 fps ([aaae1d6](https://github.com/deepanchal/dnote-tui/commit/aaae1d616e7a8637fec80c13a535cc15c9426d55))
+* **components:** remove deleted mods from components ([6ddf7eb](https://github.com/deepanchal/dnote-tui/commit/6ddf7eb1a559f72a486deb9b454c64307d4d1e61))
+* **comps:** add title padding in content pane title ([dce000e](https://github.com/deepanchal/dnote-tui/commit/dce000e82aee46f8711f53a19f55ff4599d9eeef))
+* **deps:** update rust crate human-panic to v2 ([d7744e9](https://github.com/deepanchal/dnote-tui/commit/d7744e95a6482e4caa2a37effedb43330ba59448))
+* **deps:** update rust crate serde_json to v1.0.120 ([0f4e2a7](https://github.com/deepanchal/dnote-tui/commit/0f4e2a768431169078d945a2b499c2b29f7392af))
+* **deps:** update rust crate strum to v0.26.3 ([b717c1a](https://github.com/deepanchal/dnote-tui/commit/b717c1a06d4a6a33dd8d6219a7402b9a94dc4409))
+* **dnote:** update dnote lib to use color_eyre errors ([1323d70](https://github.com/deepanchal/dnote-tui/commit/1323d709cb9de06149439d075724f9299a4cbeba))
+* **lint:** fix clippy warnings ([2412bf0](https://github.com/deepanchal/dnote-tui/commit/2412bf0309b085f12f32d2b885f3ce1be986f509))
+* **pkg:** update package metadata, add missing deps, update lockfile ([ff903eb](https://github.com/deepanchal/dnote-tui/commit/ff903eb6df591348fe86a4ec6b337f6940076ee4))
+* **src:** delete unused files from old repo structure ([3955f13](https://github.com/deepanchal/dnote-tui/commit/3955f133573e5a2676edf82392c84694f5700cfa))
+* **state:** disable rolling over index when it's out of bound in StatefulList ([56075ba](https://github.com/deepanchal/dnote-tui/commit/56075ba3ddd8530dbd61f51093b84acf877d66c2))
+
+
+### Code Refactoring
+
+* **dnote:** rename DnoteClient to Dnote ([2b3569f](https://github.com/deepanchal/dnote-tui/commit/2b3569f83f917ff92c6face95f157cac06ed991d))
+* **src:** replace app code with ratatui component template ([cf08f5a](https://github.com/deepanchal/dnote-tui/commit/cf08f5af93ad64188b264805e1dcdbcb94488aa3))
+
+
+### Continuous Integration
+
+* remove unused github workflows ([0781910](https://github.com/deepanchal/dnote-tui/commit/0781910e360dc988d188e36449271a052b24ab15))
+
 ## [0.3.0](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.2.1...dnote-tui-v0.3.0) (2024-06-29)
 
 

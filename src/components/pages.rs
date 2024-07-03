@@ -62,7 +62,9 @@ impl Component for PagesPane {
                 const ARROW: &str = symbols::scrollbar::HORIZONTAL.end;
                 const ARROW_UP: &str = symbols::scrollbar::VERTICAL.begin;
                 const ARROW_DOWN: &str = symbols::scrollbar::VERTICAL.begin;
-                let status_line = format!("[j/{ARROW_UP} {ARROW} up] [k/{ARROW_DOWN} {ARROW} down] [e {ARROW} edit]");
+                let status_line = format!(
+                    "[j/{ARROW_UP} {ARROW} up] [k/{ARROW_DOWN} {ARROW} down] [e {ARROW} edit]"
+                );
                 tx.send(Action::StatusLine(status_line))?;
             }
         }

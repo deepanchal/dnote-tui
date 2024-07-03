@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.4.0...dnote-tui-v0.4.1) (2024-07-03)
+
+
+### Bug Fixes
+
+* **app:** fix build issues in initialize_panic_handler util ([bc1287c](https://github.com/deepanchal/dnote-tui/commit/bc1287c98b66c47a3448556933cd3159f22f2dbb))
+
 ## [0.4.0](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.3.0...dnote-tui-v0.4.0) (2024-07-03)
 
 

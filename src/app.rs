@@ -11,7 +11,7 @@ use tokio::sync::mpsc;
 
 use crate::{
     action::Action,
-    components::{books::BooksPane, content::ContentPane, pages::PagesPane, Component},
+    components::{books::BooksPane, content::ContentPane, header::HeaderPane, pages::PagesPane, Component},
     config::Config,
     dnote::Dnote,
     mode::Mode,
@@ -24,7 +24,7 @@ pub struct App {
     pub tick_rate: f64,
     pub frame_rate: f64,
     pub components: Vec<Box<dyn Component>>,
-    // pub header: Box<dyn Component>,
+    pub header: Box<dyn Component>,
     // pub footer: Box<dyn Component>,
     pub should_quit: bool,
     pub should_suspend: bool,
@@ -38,6 +38,7 @@ impl App {
         let mut state = State::new();
         state.mode = Mode::Book;
         let dnote = Dnote::new();
+        let header = HeaderPane::default();
         let books = BooksPane::default();
         let pages = PagesPane::default();
         let content = ContentPane::default();
@@ -51,6 +52,7 @@ impl App {
                 Box::new(pages),
                 Box::new(content),
             ],
+            header: Box::new(header),
             should_quit: false,
             should_suspend: false,
             config,
@@ -239,7 +241,7 @@ impl App {
 
     fn draw(&mut self, f: &mut tui::Frame<'_>) -> Result<()> {
         let vertical_layout = Layout::vertical(vec![
-            Constraint::Max(1),
+            Constraint::Max(2),
             Constraint::Fill(1),
             Constraint::Max(1),
         ])
@@ -261,7 +263,7 @@ impl App {
             )
             .split(main_chunk);
 
-        // self.header.draw(f, header_chunk, &self.state)?;
+        self.header.draw(f, header_chunk, &mut self.state)?;
 
         for (index, component) in self.components.iter_mut().enumerate() {
             component.draw(f, chunks[index], &mut self.state)?;

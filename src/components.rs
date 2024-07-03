@@ -12,6 +12,7 @@ use crate::{
 
 pub mod books;
 pub mod content;
+pub mod header;
 pub mod pages;
 
 /// `Component` is a trait that represents a visual and interactive element of the user interface.

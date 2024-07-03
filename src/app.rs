@@ -153,7 +153,7 @@ impl App {
                             });
                         })?;
                     }
-                    Action::StatusLine(ref s) => self.state.status_line = s.clone(),
+                    Action::StatusLine(ref s) => self.state.status_line.clone_from(s),
                     Action::FocusNext => match self.state.mode {
                         Mode::Book => {
                             self.state.mode = Mode::Page;

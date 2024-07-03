@@ -156,8 +156,10 @@ impl App {
                     Action::StatusLine(ref s) => self.state.status_line.clone_from(s),
                     Action::FocusNext => match self.state.mode {
                         Mode::Book => {
-                            self.state.mode = Mode::Page;
-                            action_tx.send(Action::SelectNextPage)?;
+                            if let Some(book_index) = self.state.books.state.selected() {
+                                self.state.mode = Mode::Page;
+                                action_tx.send(Action::SelectNextPage)?;
+                            }
                         }
                         Mode::Page => {}
                         _ => {}

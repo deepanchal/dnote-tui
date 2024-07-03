@@ -67,4 +67,38 @@ impl State {
     pub fn new() -> Self {
         Self::default()
     }
+
+    pub fn get_active_book(&self) -> Option<DnoteBook> {
+        if let Some(book_index) = self.books.state.selected() {
+            let selected_book = &self.books.items[book_index];
+            Some(selected_book.clone())
+        } else {
+            None
+        }
+    }
+
+    pub fn get_active_page(&self) -> Option<DnotePage> {
+        if let Some(page_index) = self.pages.state.selected() {
+            let selected_page = &self.pages.items[page_index];
+            Some(selected_page.clone())
+        } else {
+            None
+        }
+    }
+
+    pub fn select_next_book(&mut self) {
+        self.books.next()
+    }
+
+    pub fn select_prev_book(&mut self) {
+        self.books.previous()
+    }
+
+    pub fn select_next_page(&mut self) {
+        self.pages.next()
+    }
+
+    pub fn select_prev_page(&mut self) {
+        self.pages.previous()
+    }
 }

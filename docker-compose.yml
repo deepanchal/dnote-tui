@@ -1,0 +1,14 @@
+services:
+  dnote-tui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        RUST_VERSION: 1.76.0
+        DNOTE_VERSION: 0.15.1
+    image: dnote-tui:latest
+    container_name: dnote-tui
+    environment:
+      - EDITOR=vim.tiny
+    stdin_open: true
+    tty: true

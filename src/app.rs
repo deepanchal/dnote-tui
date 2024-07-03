@@ -212,6 +212,19 @@ impl App {
                         let page_info = self.dnote.get_page_content(page_id)?;
                         self.state.page_content = Some(page_info.content);
                     }
+                    Action::AddPageToActiveBook => {
+                        if let Some(book) = self.state.get_active_book() {
+                            tui.exit()?;
+                            std::process::Command::new("dnote")
+                                .arg("add")
+                                .arg(&book.name)
+                                .status()?;
+                            tui.enter()?;
+                            action_tx.send(Action::LoadPages(book.name))?;
+                        } else {
+                            log::error!("No active book to add page to");
+                        }
+                    }
                     Action::EditPage => {
                         if let Some(page_index) = self.state.pages.state.selected() {
                             let selected_page = &self.state.pages.items[page_index];

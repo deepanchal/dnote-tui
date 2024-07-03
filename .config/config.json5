@@ -28,6 +28,7 @@
       "<h>": "FocusPrev",
       "<l>": "FocusNext",
       "<e>": "EditPage",
+      "<a>": "AddPageToActiveBook",
     }
   }
 }

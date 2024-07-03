@@ -60,6 +60,7 @@ pub struct State {
     pub books: StatefulList<DnoteBook>,
     pub pages: StatefulList<DnotePage>,
     pub page_content: Option<String>,
+    pub status_line: String,
 }
 
 impl State {

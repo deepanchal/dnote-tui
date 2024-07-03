@@ -11,7 +11,10 @@ use tokio::sync::mpsc;
 
 use crate::{
     action::Action,
-    components::{books::BooksPane, content::ContentPane, header::HeaderPane, pages::PagesPane, Component},
+    components::{
+        books::BooksPane, content::ContentPane, footer::FooterPane, header::HeaderPane,
+        pages::PagesPane, Component,
+    },
     config::Config,
     dnote::Dnote,
     mode::Mode,
@@ -25,7 +28,7 @@ pub struct App {
     pub frame_rate: f64,
     pub components: Vec<Box<dyn Component>>,
     pub header: Box<dyn Component>,
-    // pub footer: Box<dyn Component>,
+    pub footer: Box<dyn Component>,
     pub should_quit: bool,
     pub should_suspend: bool,
     pub last_tick_key_events: Vec<KeyEvent>,
@@ -39,6 +42,7 @@ impl App {
         state.mode = Mode::Book;
         let dnote = Dnote::new();
         let header = HeaderPane::default();
+        let footer = FooterPane::default();
         let books = BooksPane::default();
         let pages = PagesPane::default();
         let content = ContentPane::default();
@@ -53,6 +57,7 @@ impl App {
                 Box::new(content),
             ],
             header: Box::new(header),
+            footer: Box::new(footer),
             should_quit: false,
             should_suspend: false,
             config,
@@ -148,6 +153,7 @@ impl App {
                             });
                         })?;
                     }
+                    Action::StatusLine(ref s) => self.state.status_line = s.clone(),
                     Action::FocusNext => match self.state.mode {
                         Mode::Book => {
                             self.state.mode = Mode::Page;
@@ -245,6 +251,7 @@ impl App {
             Constraint::Fill(1),
             Constraint::Max(1),
         ])
+        .horizontal_margin(1)
         .split(f.size());
         let header_chunk = vertical_layout[0];
         let main_chunk = vertical_layout[1];
@@ -252,7 +259,7 @@ impl App {
 
         let chunks = Layout::default()
             .direction(Direction::Horizontal)
-            .margin(1)
+            .vertical_margin(1)
             .constraints(
                 [
                     Constraint::Percentage(25),
@@ -269,7 +276,7 @@ impl App {
             component.draw(f, chunks[index], &mut self.state)?;
         }
 
-        // self.footer.draw(f, footer_chunk, &self.state)?;
+        self.footer.draw(f, footer_chunk, &mut self.state)?;
         Ok(())
     }
 }

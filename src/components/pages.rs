@@ -56,12 +56,12 @@ impl Component for PagesPane {
     }
 
     fn draw(&mut self, f: &mut Frame<'_>, area: Rect, state: &mut State) -> Result<()> {
+        const ARROW: &str = symbols::scrollbar::HORIZONTAL.end;
+        const ARROW_UP: &str = symbols::scrollbar::VERTICAL.begin;
+        const ARROW_DOWN: &str = symbols::scrollbar::VERTICAL.begin;
         let is_focused = state.mode == Mode::Page;
         if let Some(tx) = &self.command_tx {
             if is_focused {
-                const ARROW: &str = symbols::scrollbar::HORIZONTAL.end;
-                const ARROW_UP: &str = symbols::scrollbar::VERTICAL.begin;
-                const ARROW_DOWN: &str = symbols::scrollbar::VERTICAL.begin;
                 let status_line = format!(
                     "[j/{ARROW_UP} {ARROW} up] [k/{ARROW_DOWN} {ARROW} down] [e {ARROW} edit]"
                 );
@@ -85,7 +85,15 @@ impl Component for PagesPane {
         };
         let title = Title::from(" Pages ".green().bold());
         let title_bottom =
-            Line::from(format!(" {} of {} ", current_item_index, total_items)).right_aligned();
+            Line::from(format!(" {current_item_index} of {total_items} ")).right_aligned();
+        let title_right = match state.get_active_book() {
+            Some(book) => Line::styled(
+                format!("[{}]", book.name),
+                Style::default().add_modifier(Modifier::ITALIC),
+            ),
+            None => Line::default(),
+        }
+        .right_aligned();
         let title_padding = Line::from("");
         let border_style = match is_focused {
             true => Style::default().green(),
@@ -97,6 +105,7 @@ impl Component for PagesPane {
             .style(border_style)
             .title(title_padding.clone().left_aligned())
             .title(title)
+            .title(title_right)
             .title_bottom(title_bottom.green().bold())
             .title_bottom(title_padding.clone().right_aligned());
         let highlight_style = Style::default().on_black().white().bold();

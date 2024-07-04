@@ -396,4 +396,91 @@ mod tests {
         });
         assert_eq!(state.pages.state.selected(), Some(0));
     }
+
+    #[test]
+    fn state_updates_existing_pages_correctly() {
+        let initial_pages = vec![
+            DnotePage {
+                id: 1,
+                summary: String::from("Initial Page 1"),
+            },
+            DnotePage {
+                id: 2,
+                summary: String::from("Initial Page 2"),
+            },
+        ];
+        let new_pages = vec![
+            DnotePage {
+                id: 1,
+                summary: String::from("Updated Page 1"),
+            },
+            DnotePage {
+                id: 2,
+                summary: String::from("Updated Page 2"),
+            },
+        ];
+
+        let mut state = State::new();
+        state.pages = StatefulList::with_items(initial_pages);
+
+        state.update_pages(new_pages);
+
+        assert_eq!(state.pages.items.len(), 2);
+        assert_eq!(state.pages.items[0].summary, "Updated Page 1");
+        assert_eq!(state.pages.items[1].summary, "Updated Page 2");
+    }
+
+    #[test]
+    fn state_adds_new_pages_correctly() {
+        let initial_pages = vec![DnotePage {
+            id: 1,
+            summary: String::from("Initial Page 1"),
+        }];
+        let new_pages = vec![
+            DnotePage {
+                id: 1,
+                summary: String::from("Updated Page 1"),
+            },
+            DnotePage {
+                id: 2,
+                summary: String::from("New Page 2"),
+            },
+        ];
+
+        let mut state = State::new();
+        state.pages = StatefulList::with_items(initial_pages);
+
+        state.update_pages(new_pages);
+
+        assert_eq!(state.pages.items.len(), 2);
+        assert_eq!(state.pages.items[0].summary, "Updated Page 1");
+        assert_eq!(state.pages.items[1].summary, "New Page 2");
+    }
+
+    #[test]
+    fn state_keeps_existing_pages_not_in_new_pages() {
+        let initial_pages = vec![
+            DnotePage {
+                id: 1,
+                summary: String::from("Initial Page 1"),
+            },
+            DnotePage {
+                id: 2,
+                summary: String::from("Initial Page 2"),
+            },
+        ];
+        let new_pages = vec![DnotePage {
+            id: 1,
+            summary: String::from("Updated Page 1"),
+        }];
+
+        let mut state = State::new();
+        state.pages = StatefulList::with_items(initial_pages);
+
+        state.update_pages(new_pages);
+
+        assert_eq!(state.pages.items.len(), 2);
+        assert_eq!(state.pages.items[0].summary, "Updated Page 1");
+        assert_eq!(state.pages.items[1].summary, "Initial Page 2");
+    }
 }

@@ -155,7 +155,6 @@ impl App {
                             });
                         })?;
                     }
-                    Action::StatusLine(ref s) => self.state.status_line.clone_from(s),
                     Action::AddPageToActiveBook => {
                         if let Some(book) = self.state.get_active_book() {
                             tui.exit()?;

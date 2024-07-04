@@ -22,7 +22,6 @@ pub enum Action {
     Refresh,
     Error(String),
     Help,
-    StatusLine(String),
     FocusNext,
     FocusPrev,
     LoadBooks,

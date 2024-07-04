@@ -156,62 +156,6 @@ impl App {
                         })?;
                     }
                     Action::StatusLine(ref s) => self.state.status_line.clone_from(s),
-                    Action::FocusNext => match self.state.mode {
-                        Mode::Book => {
-                            if let Some(book_index) = self.state.books.state.selected() {
-                                self.state.mode = Mode::Page;
-                                action_tx.send(Action::SelectNextPage)?;
-                            }
-                        }
-                        Mode::Page => {}
-                        _ => {}
-                    },
-                    Action::FocusPrev => match self.state.mode {
-                        Mode::Content => {}
-                        Mode::Page => {
-                            self.state.mode = Mode::Book;
-                            self.state.page_content = None;
-                        }
-                        _ => {}
-                    },
-                    Action::LoadBooks => {
-                        let books = self.dnote.get_books()?;
-                        self.state.books = StatefulList::with_items(books);
-                    }
-                    Action::LoadActiveBookPages => {
-                        if let Some(book) = self.state.get_active_book() {
-                            let pages = self.dnote.get_pages(&book.name)?;
-                            self.state.pages = StatefulList::with_items(pages);
-                        }
-                    }
-                    Action::UpdateActiveBookPages => {
-                        if let Some(book) = self.state.get_active_book() {
-                            let new_pages = self.dnote.get_pages(&book.name)?;
-                            self.state.update_pages(new_pages);
-                        }
-                    }
-                    Action::LoadActivePageContent => {
-                        if let Some(page) = self.state.get_active_page() {
-                            let page_info = self.dnote.get_page_content(page.id)?;
-                            self.state.page_content = Some(page_info.content);
-                        }
-                    }
-                    Action::SelectNextBook => {
-                        self.state.select_next_book();
-                        action_tx.send(Action::LoadActiveBookPages)?;
-                    }
-                    Action::SelectPrevBook => {
-                        self.state.select_prev_book();
-                        action_tx.send(Action::LoadActiveBookPages)?;
-                    }
-                    Action::SelectNextPage => {
-                        self.state.select_next_page();
-                        action_tx.send(Action::LoadActivePageContent)?;
-                    }
-                    Action::SelectPrevPage => {
-                        self.state.select_prev_page();
-                        action_tx.send(Action::LoadActivePageContent)?;
-                    }
                     Action::AddPageToActiveBook => {
                         if let Some(book) = self.state.get_active_book() {
                             tui.exit()?;

@@ -280,8 +280,8 @@ impl App {
             .horizontal_margin(1)
             .constraints(
                 [
-                    Constraint::Percentage(25),
-                    Constraint::Percentage(25),
+                    Constraint::Percentage(15),
+                    Constraint::Percentage(35),
                     Constraint::Percentage(50),
                 ]
                 .as_ref(),

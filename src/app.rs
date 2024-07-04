@@ -182,6 +182,12 @@ impl App {
                             self.state.pages = StatefulList::with_items(pages);
                         }
                     }
+                    Action::UpdateActiveBookPages => {
+                        if let Some(book) = self.state.get_active_book() {
+                            let new_pages = self.dnote.get_pages(&book.name)?;
+                            self.state.update_pages(new_pages);
+                        }
+                    }
                     Action::LoadActivePageContent => {
                         if let Some(page) = self.state.get_active_page() {
                             let page_info = self.dnote.get_page_content(page.id)?;
@@ -224,7 +230,7 @@ impl App {
                                 .arg("edit")
                                 .arg(page.id.to_string())
                                 .status()?;
-                            action_tx.send(Action::LoadActiveBookPages)?;
+                            action_tx.send(Action::UpdateActiveBookPages)?;
                             action_tx.send(Action::LoadActivePageContent)?;
                             tui.enter()?;
                         } else {

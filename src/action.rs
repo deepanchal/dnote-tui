@@ -27,6 +27,7 @@ pub enum Action {
     FocusPrev,
     LoadBooks,
     LoadActiveBookPages,
+    UpdateActiveBookPages,
     LoadActivePageContent,
     SelectNextBook,
     SelectPrevBook,

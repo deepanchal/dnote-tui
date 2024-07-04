@@ -101,6 +101,18 @@ impl State {
     pub fn select_prev_page(&mut self) {
         self.pages.previous()
     }
+
+    pub fn select_book(&mut self, book: DnoteBook) {
+        if let Some(index) = self.books.items.iter().position(|b| *b == book) {
+            self.books.state.select(Some(index));
+        }
+    }
+
+    pub fn select_page(&mut self, page: DnotePage) {
+        if let Some(index) = self.pages.items.iter().position(|p| *p == page) {
+            self.pages.state.select(Some(index));
+        }
+    }
 }
 
 #[cfg(test)]

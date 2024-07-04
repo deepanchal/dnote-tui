@@ -93,6 +93,12 @@ If you wish to install from the main branch directly, use
 cargo install --git https://github.com/deepanchal/dnote-tui
 ```
 
+Once it's installed, simply run
+
+```bash
+dnote-tui
+```
+
 I will offer additional installation methods once the project reaches a more stable state.
 
 ### 🏃 Running project locally

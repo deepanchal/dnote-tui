@@ -45,7 +45,7 @@ impl Component for ContentPane {
         Ok(())
     }
 
-    fn update(&mut self, action: Action) -> Result<Option<Action>> {
+    fn update(&mut self, action: Action, state: &mut State) -> Result<Option<Action>> {
         match action {
             Action::Tick => {}
             Action::Render => {}

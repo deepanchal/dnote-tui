@@ -116,7 +116,9 @@ impl App {
                     _ => {}
                 }
                 for component in self.components.iter_mut() {
-                    if let Some(action) = component.handle_events(Some(e.clone()))? {
+                    if let Some(action) =
+                        component.handle_events(Some(e.clone()), &mut self.state)?
+                    {
                         action_tx.send(action)?;
                     }
                 }
@@ -240,7 +242,7 @@ impl App {
                     _ => {}
                 }
                 for component in self.components.iter_mut() {
-                    if let Some(action) = component.update(action.clone())? {
+                    if let Some(action) = component.update(action.clone(), &mut self.state)? {
                         action_tx.send(action)?
                     };
                 }

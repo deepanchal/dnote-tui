@@ -67,10 +67,10 @@ pub trait Component {
     /// # Returns
     ///
     /// * `Result<Option<Action>>` - An action to be processed or none.
-    fn handle_events(&mut self, event: Option<Event>) -> Result<Option<Action>> {
+    fn handle_events(&mut self, event: Option<Event>, state: &mut State) -> Result<Option<Action>> {
         let r = match event {
-            Some(Event::Key(key_event)) => self.handle_key_events(key_event)?,
-            Some(Event::Mouse(mouse_event)) => self.handle_mouse_events(mouse_event)?,
+            Some(Event::Key(key_event)) => self.handle_key_events(key_event, state)?,
+            Some(Event::Mouse(mouse_event)) => self.handle_mouse_events(mouse_event, state)?,
             _ => None,
         };
         Ok(r)
@@ -85,7 +85,7 @@ pub trait Component {
     ///
     /// * `Result<Option<Action>>` - An action to be processed or none.
     #[allow(unused_variables)]
-    fn handle_key_events(&mut self, key: KeyEvent) -> Result<Option<Action>> {
+    fn handle_key_events(&mut self, key: KeyEvent, state: &mut State) -> Result<Option<Action>> {
         Ok(None)
     }
     /// Handle mouse events and produce actions if necessary.
@@ -98,7 +98,11 @@ pub trait Component {
     ///
     /// * `Result<Option<Action>>` - An action to be processed or none.
     #[allow(unused_variables)]
-    fn handle_mouse_events(&mut self, mouse: MouseEvent) -> Result<Option<Action>> {
+    fn handle_mouse_events(
+        &mut self,
+        mouse: MouseEvent,
+        state: &mut State,
+    ) -> Result<Option<Action>> {
         Ok(None)
     }
     /// Update the state of the component based on a received action. (REQUIRED)
@@ -111,7 +115,7 @@ pub trait Component {
     ///
     /// * `Result<Option<Action>>` - An action to be processed or none.
     #[allow(unused_variables)]
-    fn update(&mut self, action: Action) -> Result<Option<Action>> {
+    fn update(&mut self, action: Action, state: &mut State) -> Result<Option<Action>> {
         Ok(None)
     }
     /// Render the component on the screen. (REQUIRED)

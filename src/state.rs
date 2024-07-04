@@ -319,4 +319,56 @@ mod tests {
         state.select_prev_page();
         assert_eq!(state.pages.state.selected(), Some(0));
     }
+
+    #[test]
+    fn state_select_book_selects_correct_book() {
+        let books = vec![
+            DnoteBook {
+                name: String::from("Book1"),
+            },
+            DnoteBook {
+                name: String::from("Book2"),
+            },
+        ];
+        let mut state = State::new();
+        state.books = StatefulList::with_items(books.clone());
+
+        state.select_book(DnoteBook {
+            name: String::from("Book2"),
+        });
+        assert_eq!(state.books.state.selected(), Some(1));
+
+        state.select_book(DnoteBook {
+            name: String::from("Book1"),
+        });
+        assert_eq!(state.books.state.selected(), Some(0));
+    }
+
+    #[test]
+    fn state_select_page_selects_correct_page() {
+        let pages = vec![
+            DnotePage {
+                id: 1,
+                summary: String::from("Page1"),
+            },
+            DnotePage {
+                id: 2,
+                summary: String::from("Page2"),
+            },
+        ];
+        let mut state = State::new();
+        state.pages = StatefulList::with_items(pages.clone());
+
+        state.select_page(DnotePage {
+            id: 2,
+            summary: String::from("Page2"),
+        });
+        assert_eq!(state.pages.state.selected(), Some(1));
+
+        state.select_page(DnotePage {
+            id: 1,
+            summary: String::from("Page1"),
+        });
+        assert_eq!(state.pages.state.selected(), Some(0));
+    }
 }

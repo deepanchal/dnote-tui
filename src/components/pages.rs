@@ -31,6 +31,10 @@ impl PagesPane {
         Self::default()
     }
 
+    fn is_focused(&self, state: &State) -> bool {
+        state.mode == Mode::Page
+    }
+
     fn send_action(&self, action: Action) -> Result<()> {
         if let Some(tx) = &self.command_tx {
             tx.send(action.clone())?;
@@ -56,7 +60,15 @@ impl Component for PagesPane {
 
     fn update(&mut self, action: Action, state: &mut State) -> Result<Option<Action>> {
         match action {
-            Action::Tick => {}
+            Action::Tick => {
+                if self.is_focused(state) {
+                    const ARROW: &str = symbols::scrollbar::HORIZONTAL.end;
+                    const ARROW_UP: &str = symbols::scrollbar::VERTICAL.begin;
+                    const ARROW_DOWN: &str = symbols::scrollbar::VERTICAL.begin;
+                    let status_line = format!( "[j/{ARROW_UP} {ARROW} up] [k/{ARROW_DOWN} {ARROW} down] | [e {ARROW} edit] | [a {ARROW} add]");
+                    state.status_line = status_line;
+                }
+            }
             Action::FocusNext => {}
             Action::FocusPrev => {
                 // Change to book pane
@@ -89,18 +101,6 @@ impl Component for PagesPane {
     }
 
     fn draw(&mut self, f: &mut Frame<'_>, area: Rect, state: &mut State) -> Result<()> {
-        const ARROW: &str = symbols::scrollbar::HORIZONTAL.end;
-        const ARROW_UP: &str = symbols::scrollbar::VERTICAL.begin;
-        const ARROW_DOWN: &str = symbols::scrollbar::VERTICAL.begin;
-        let is_focused = state.mode == Mode::Page;
-        if let Some(tx) = &self.command_tx {
-            if is_focused {
-                let status_line = format!(
-                    "[j/{ARROW_UP} {ARROW} up] [k/{ARROW_DOWN} {ARROW} down] | [e {ARROW} edit] | [a {ARROW} add]"
-                );
-                tx.send(Action::StatusLine(status_line))?;
-            }
-        }
         let items: Vec<ListItem> = state
             .pages
             .items
@@ -128,7 +128,7 @@ impl Component for PagesPane {
         }
         .right_aligned();
         let title_padding = Line::from("");
-        let border_style = match is_focused {
+        let border_style = match self.is_focused(state) {
             true => Style::default().green(),
             false => Style::default(),
         };

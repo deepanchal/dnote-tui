@@ -79,7 +79,23 @@ To get a local copy up and running follow these simple example steps.
 1. Install rust: https://www.rust-lang.org/
 2. Install dnote: https://github.com/dnote/dnote#installation
 
-### 🏃 Running project
+### 📥 Installing
+
+Install this project with `cargo`
+
+```bash
+cargo install dnote-tui
+```
+
+If you wish to install from the main branch directly, use
+
+```bash
+cargo install --git https://github.com/deepanchal/dnote-tui
+```
+
+I will offer additional installation methods once the project reaches a more stable state.
+
+### 🏃 Running project locally
 
 1. Clone the repo.
 
@@ -158,19 +174,31 @@ cargo test
 - [x] Show basic TUI with three sections (Books, Pages, & Content)
 - [x] Create a dnote client
   - [x] Parse output from dnote cli to structs used by dnote client
-  - [ ] Add methods to perform write operations with dnote cli in dnote client
-- [ ] Functionalities
+  - [x] Add methods to perform write operations with dnote cli in dnote client
+- [ ] Features
   - [x] Read Operations
     - [x] Read books from dnote cli into tui
     - [x] Read pages from dnote cli into tui
     - [x] Read pages content from dnote cli into tui
     - [x] Show truncated pages content beside page id in pages section
   - [ ] Write Operations
-    - [ ] Create a new book with page
-    - [ ] Edit a book's name
-    - [ ] Edit a page's content
-    - [ ] Delete a book's page
-    - [ ] Delete a book and all it's pages
+    - [ ] Create a new book with page (#19)
+    - [x] Edit a page's content (#37)
+    - [x] Add new page to a book (#49)
+    - [ ] Move page to another book (#60)
+    - [ ] Delete a book's page (#51)
+    - [ ] Delete a book and all its pages (#52)
+    - [ ] Rename book with popup input field (#59)
+  - [ ] Search and Navigation
+    - [ ] Find note within a book (#61)
+    - [ ] Global note search (#47)
+    - [ ] Make page content scrollable (#54)
+  - [ ] Misc (Nice to have)
+    - [ ] Allow note syncing with dnote server (#50)
+    - [ ] Parse keybindings for active mode from current config file and show on footer (#64)
+    - [ ] Add ASCII art in header pane (#57)
+    - [ ] Show command log pane to show user what commands are being run just like lazygit (#63)
+    - [ ] Render note's markdown content with glow and make it toggleable (#53)
 
 See the [open issues](https://github.com/deepanchal/dnote-tui/issues) for a full list of proposed features (and known issues).
 

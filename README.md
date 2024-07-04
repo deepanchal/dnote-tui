@@ -54,7 +54,7 @@
 
 > Note: This is still a **WORK IN PROGRESS**
 
-![Screenshot1](./.github/images/screenshot1.png)
+![Demo](./.github/static/demo.gif)
 
 A TUI (Terminal User Interface) for [`dnote`](https://www.getdnote.com/).
 

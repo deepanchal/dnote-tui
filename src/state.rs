@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use color_eyre::eyre::Result;
 use ratatui::widgets::ListState;
 use serde::{Deserialize, Serialize};
@@ -111,6 +113,29 @@ impl State {
     pub fn select_page(&mut self, page: DnotePage) {
         if let Some(index) = self.pages.items.iter().position(|p| *p == page) {
             self.pages.state.select(Some(index));
+        }
+    }
+
+    pub fn update_pages(&mut self, new_pages: Vec<DnotePage>) {
+        // Create a map for the new pages
+        let new_pages_map = new_pages
+            .into_iter()
+            .map(|page| (page.id, page))
+            .collect::<HashMap<u32, DnotePage>>();
+
+        // Update existing pages
+        for page in self.pages.items.iter_mut() {
+            if let Some(new_page) = new_pages_map.get(&page.id) {
+                page.summary = new_page.summary.clone();
+            }
+        }
+
+        // Add new pages that don't exist
+        for new_page in new_pages_map.values() {
+            let contains_page = self.pages.items.iter().any(|p| p.id == new_page.id);
+            if !contains_page {
+                self.pages.items.push(new_page.clone());
+            }
         }
     }
 }

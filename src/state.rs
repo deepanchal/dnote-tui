@@ -210,6 +210,54 @@ mod tests {
     }
 
     #[test]
+    fn stateful_list_next_does_not_panic_on_empty_list() {
+        let mut list: StatefulList<i32> = StatefulList::with_items(Vec::new());
+
+        list.next();
+        assert_eq!(list.state.selected(), None);
+    }
+
+    #[test]
+    fn stateful_list_previous_does_not_panic_on_empty_list() {
+        let mut list: StatefulList<i32> = StatefulList::with_items(Vec::new());
+
+        list.previous();
+        assert_eq!(list.state.selected(), None);
+    }
+
+    #[test]
+    fn stateful_list_next_selects_first_item_if_none_selected() {
+        let items = vec![1, 2, 3];
+        let mut list = StatefulList::with_items(items);
+
+        list.next();
+        assert_eq!(list.state.selected(), Some(0));
+    }
+
+    #[test]
+    fn stateful_list_previous_selects_first_item_if_none_selected() {
+        let items = vec![1, 2, 3];
+        let mut list = StatefulList::with_items(items);
+
+        list.previous();
+        assert_eq!(list.state.selected(), Some(0));
+    }
+
+    #[test]
+    fn stateful_list_next_does_not_change_selection_if_list_is_empty() {
+        let mut list: StatefulList<i32> = StatefulList::with_items(Vec::new());
+        list.next();
+        assert_eq!(list.state.selected(), None);
+    }
+
+    #[test]
+    fn stateful_list_previous_does_not_change_selection_if_list_is_empty() {
+        let mut list: StatefulList<i32> = StatefulList::with_items(Vec::new());
+        list.previous();
+        assert_eq!(list.state.selected(), None);
+    }
+
+    #[test]
     fn state_new_creates_default_state() {
         let state = State::new();
         assert_eq!(state, State::default());

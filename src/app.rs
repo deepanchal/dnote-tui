@@ -176,41 +176,33 @@ impl App {
                         let books = self.dnote.get_books()?;
                         self.state.books = StatefulList::with_items(books);
                     }
-                    Action::SelectNextBook => {
-                        self.state.books.next();
-                        if let Some(book_index) = self.state.books.state.selected() {
-                            let selected_book = &self.state.books.items[book_index];
-                            action_tx.send(Action::LoadPages(selected_book.name.to_string()))?;
+                    Action::LoadActiveBookPages => {
+                        if let Some(book) = self.state.get_active_book() {
+                            let pages = self.dnote.get_pages(&book.name)?;
+                            self.state.pages = StatefulList::with_items(pages);
                         }
+                    }
+                    Action::LoadActivePageContent => {
+                        if let Some(page) = self.state.get_active_page() {
+                            let page_info = self.dnote.get_page_content(page.id)?;
+                            self.state.page_content = Some(page_info.content);
+                        }
+                    }
+                    Action::SelectNextBook => {
+                        self.state.select_next_book();
+                        action_tx.send(Action::LoadActiveBookPages)?;
                     }
                     Action::SelectPrevBook => {
-                        self.state.books.previous();
-                        if let Some(book_index) = self.state.books.state.selected() {
-                            let selected_book = &self.state.books.items[book_index];
-                            action_tx.send(Action::LoadPages(selected_book.name.to_string()))?;
-                        }
+                        self.state.select_prev_book();
+                        action_tx.send(Action::LoadActiveBookPages)?;
                     }
                     Action::SelectNextPage => {
-                        self.state.pages.next();
-                        if let Some(page_index) = self.state.pages.state.selected() {
-                            let selected_page = &self.state.pages.items[page_index];
-                            action_tx.send(Action::LoadContent(selected_page.id))?;
-                        }
+                        self.state.select_next_page();
+                        action_tx.send(Action::LoadActivePageContent)?;
                     }
                     Action::SelectPrevPage => {
-                        self.state.pages.previous();
-                        if let Some(page_index) = self.state.pages.state.selected() {
-                            let selected_page = &self.state.pages.items[page_index];
-                            action_tx.send(Action::LoadContent(selected_page.id))?;
-                        }
-                    }
-                    Action::LoadPages(ref book_name) => {
-                        let pages = self.dnote.get_pages(book_name)?;
-                        self.state.pages = StatefulList::with_items(pages);
-                    }
-                    Action::LoadContent(page_id) => {
-                        let page_info = self.dnote.get_page_content(page_id)?;
-                        self.state.page_content = Some(page_info.content);
+                        self.state.select_prev_page();
+                        action_tx.send(Action::LoadActivePageContent)?;
                     }
                     Action::AddPageToActiveBook => {
                         if let Some(book) = self.state.get_active_book() {
@@ -220,24 +212,23 @@ impl App {
                                 .arg(&book.name)
                                 .status()?;
                             tui.enter()?;
-                            action_tx.send(Action::LoadPages(book.name))?;
+                            action_tx.send(Action::LoadActiveBookPages)?;
                         } else {
                             log::error!("No active book to add page to");
                         }
                     }
-                    Action::EditPage => {
-                        if let Some(page_index) = self.state.pages.state.selected() {
-                            let selected_page = &self.state.pages.items[page_index];
+                    Action::EditActivePage => {
+                        if let Some(page) = self.state.get_active_page() {
                             tui.exit()?;
                             std::process::Command::new("dnote")
                                 .arg("edit")
-                                .arg(selected_page.id.to_string())
+                                .arg(page.id.to_string())
                                 .status()?;
-                            if let Some(book) = self.state.get_active_book() {
-                                action_tx.send(Action::LoadPages(book.name))?;
-                            }
-                            action_tx.send(Action::LoadContent(selected_page.id))?;
+                            action_tx.send(Action::LoadActiveBookPages)?;
+                            action_tx.send(Action::LoadActivePageContent)?;
                             tui.enter()?;
+                        } else {
+                            log::error!("No active page to edit");
                         }
                     }
                     _ => {}

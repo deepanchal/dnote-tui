@@ -27,7 +27,7 @@
       "up": "SelectPrevPage",
       "<h>": "FocusPrev",
       "<l>": "FocusNext",
-      "<e>": "EditPage",
+      "<e>": "EditActivePage",
       "<a>": "AddPageToActiveBook",
     }
   }

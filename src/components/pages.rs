@@ -14,13 +14,14 @@ use super::{Component, Frame};
 use crate::{
     action::Action,
     config::{Config, KeyBindings},
-    dnote::DnoteBook,
+    dnote::{Dnote, DnoteBook},
     mode::Mode,
-    state::State,
+    state::{State, StatefulList},
 };
 
 #[derive(Default)]
 pub struct PagesPane {
+    dnote: Dnote,
     command_tx: Option<UnboundedSender<Action>>,
     config: Config,
 }
@@ -28,6 +29,13 @@ pub struct PagesPane {
 impl PagesPane {
     pub fn new() -> Self {
         Self::default()
+    }
+
+    fn send_action(&self, action: Action) -> Result<()> {
+        if let Some(tx) = &self.command_tx {
+            tx.send(action.clone())?;
+        }
+        Ok(())
     }
 }
 
@@ -49,7 +57,32 @@ impl Component for PagesPane {
     fn update(&mut self, action: Action, state: &mut State) -> Result<Option<Action>> {
         match action {
             Action::Tick => {}
-            Action::Render => {}
+            Action::FocusNext => {}
+            Action::FocusPrev => {
+                // Change to book pane
+                state.mode = Mode::Book;
+                state.page_content = None;
+            }
+            Action::LoadActiveBookPages => {
+                if let Some(book) = state.get_active_book() {
+                    let pages = self.dnote.get_pages(&book.name)?;
+                    state.pages = StatefulList::with_items(pages);
+                }
+            }
+            Action::UpdateActiveBookPages => {
+                if let Some(book) = state.get_active_book() {
+                    let new_pages = self.dnote.get_pages(&book.name)?;
+                    state.update_pages(new_pages);
+                }
+            }
+            Action::SelectNextPage => {
+                state.select_next_page();
+                self.send_action(Action::LoadActivePageContent)?;
+            }
+            Action::SelectPrevPage => {
+                state.select_prev_page();
+                self.send_action(Action::LoadActivePageContent)?;
+            }
             _ => {}
         }
         Ok(None)

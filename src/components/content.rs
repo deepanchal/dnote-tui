@@ -14,12 +14,13 @@ use super::{Component, Frame};
 use crate::{
     action::Action,
     config::{Config, KeyBindings},
-    dnote::DnoteBook,
+    dnote::{Dnote, DnoteBook},
     state::State,
 };
 
 #[derive(Default)]
 pub struct ContentPane {
+    dnote: Dnote,
     command_tx: Option<UnboundedSender<Action>>,
     config: Config,
 }
@@ -49,6 +50,14 @@ impl Component for ContentPane {
         match action {
             Action::Tick => {}
             Action::Render => {}
+            Action::FocusNext => {}
+            Action::FocusPrev => {}
+            Action::LoadActivePageContent => {
+                if let Some(page) = state.get_active_page() {
+                    let page_info = self.dnote.get_page_content(page.id)?;
+                    state.page_content = Some(page_info.content);
+                }
+            }
             _ => {}
         }
         Ok(None)

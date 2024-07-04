@@ -18,13 +18,14 @@ use super::{Component, Frame};
 use crate::{
     action::Action,
     config::{Config, KeyBindings},
-    dnote::DnoteBook,
+    dnote::{Dnote, DnoteBook},
     mode::Mode,
-    state::State,
+    state::{State, StatefulList},
 };
 
 #[derive(Default)]
 pub struct BooksPane {
+    dnote: Dnote,
     command_tx: Option<UnboundedSender<Action>>,
     config: Config,
 }
@@ -32,6 +33,13 @@ pub struct BooksPane {
 impl BooksPane {
     pub fn new() -> Self {
         Self::default()
+    }
+
+    fn send_action(&self, action: Action) -> Result<()> {
+        if let Some(tx) = &self.command_tx {
+            tx.send(action.clone())?;
+        }
+        Ok(())
     }
 }
 
@@ -57,6 +65,26 @@ impl Component for BooksPane {
         match action {
             Action::Tick => {}
             Action::Render => {}
+            Action::FocusNext => {
+                // Change to page pane
+                if let Some(book_index) = state.books.state.selected() {
+                    state.mode = Mode::Page;
+                    self.send_action(Action::SelectNextPage)?;
+                }
+            }
+            Action::FocusPrev => {}
+            Action::LoadBooks => {
+                let books = self.dnote.get_books()?;
+                state.books = StatefulList::with_items(books);
+            }
+            Action::SelectNextBook => {
+                state.select_next_book();
+                self.send_action(Action::LoadActiveBookPages)?;
+            }
+            Action::SelectPrevBook => {
+                state.select_prev_book();
+                self.send_action(Action::LoadActiveBookPages)?;
+            }
             _ => {}
         }
         Ok(None)

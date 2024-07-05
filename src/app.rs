@@ -8,7 +8,7 @@ use ratatui::{
     prelude::Rect,
 };
 use serde::{Deserialize, Serialize};
-use tokio::sync::mpsc;
+use tokio::sync::mpsc::{self, UnboundedReceiver, UnboundedSender};
 
 use crate::{
     action::Action,
@@ -25,6 +25,9 @@ use crate::{
 
 pub struct App {
     pub config: Config,
+    pub tui: tui::Tui,
+    pub action_tx: UnboundedSender<Action>,
+    pub action_rx: UnboundedReceiver<Action>,
     pub tick_rate: f64,
     pub frame_rate: f64,
     pub components: Vec<Box<dyn Component>>,
@@ -39,6 +42,8 @@ pub struct App {
 
 impl App {
     pub fn new(tick_rate: f64, frame_rate: f64) -> Result<Self> {
+        let tui = tui::Tui::new()?.tick_rate(tick_rate).frame_rate(frame_rate);
+        let (action_tx, action_rx) = mpsc::unbounded_channel();
         let mut state = State::new();
         state.mode = Mode::Book;
         let dnote = Dnote::new();
@@ -49,6 +54,9 @@ impl App {
         let content = ContentPane::default();
         let config = Config::new()?;
         Ok(Self {
+            tui,
+            action_tx,
+            action_rx,
             tick_rate,
             frame_rate,
             components: vec![
@@ -98,16 +106,11 @@ impl App {
     }
 
     pub async fn run(&mut self) -> Result<()> {
-        let (action_tx, mut action_rx) = mpsc::unbounded_channel();
-
-        let mut tui = tui::Tui::new()?
-            .tick_rate(self.tick_rate)
-            .frame_rate(self.frame_rate);
         // tui.mouse(true);
-        tui.enter()?;
+        self.tui.enter()?;
 
         for component in self.components.iter_mut() {
-            component.register_action_handler(action_tx.clone())?;
+            component.register_action_handler(self.action_tx.clone())?;
         }
 
         for component in self.components.iter_mut() {
@@ -115,21 +118,21 @@ impl App {
         }
 
         for component in self.components.iter_mut() {
-            component.init(tui.size()?)?;
+            component.init(self.tui.size()?)?;
         }
 
         loop {
-            if let Some(e) = tui.next().await {
+            if let Some(e) = self.tui.next().await {
                 match e {
-                    tui::Event::Quit => action_tx.send(Action::Quit)?,
-                    tui::Event::Tick => action_tx.send(Action::Tick)?,
-                    tui::Event::Render => action_tx.send(Action::Render)?,
-                    tui::Event::Resize(x, y) => action_tx.send(Action::Resize(x, y))?,
+                    tui::Event::Quit => self.action_tx.send(Action::Quit)?,
+                    tui::Event::Tick => self.action_tx.send(Action::Tick)?,
+                    tui::Event::Render => self.action_tx.send(Action::Render)?,
+                    tui::Event::Resize(x, y) => self.action_tx.send(Action::Resize(x, y))?,
                     tui::Event::Key(key) => {
                         if let Some(keymap) = self.config.keybindings.get(&self.state.mode) {
                             if let Some(action) = keymap.get(&vec![key]) {
                                 log::info!("Got action: {action:?}");
-                                action_tx.send(action.clone())?;
+                                self.action_tx.send(action.clone())?;
                             } else {
                                 // If the key was not handled as a single key action,
                                 // then consider it for multi-key combinations.
@@ -138,7 +141,7 @@ impl App {
                                 // Check for multi-key combinations
                                 if let Some(action) = keymap.get(&self.last_tick_key_events) {
                                     log::info!("Got action: {action:?}");
-                                    action_tx.send(action.clone())?;
+                                    self.action_tx.send(action.clone())?;
                                 }
                             }
                         };
@@ -149,12 +152,12 @@ impl App {
                     if let Some(action) =
                         component.handle_events(Some(e.clone()), &mut self.state)?
                     {
-                        action_tx.send(action)?;
+                        self.action_tx.send(action)?;
                     }
                 }
             }
 
-            while let Ok(action) = action_rx.try_recv() {
+            while let Ok(action) = self.action_rx.try_recv() {
                 if action != Action::Tick && action != Action::Render {
                     log::debug!("{action:?}");
                 }
@@ -165,65 +168,53 @@ impl App {
                     Action::Quit => self.should_quit = true,
                     Action::Suspend => self.should_suspend = true,
                     Action::Resume => self.should_suspend = false,
-                    Action::Refresh => tui.terminal.clear()?,
+                    Action::Refresh => self.tui.terminal.clear()?,
                     Action::Resize(w, h) => {
-                        tui.resize(Rect::new(0, 0, w, h))?;
-                        tui.draw(|f| {
-                            self.draw(f).unwrap_or_else(|err| {
-                                action_tx
-                                    .send(Action::Error(format!("Failed to draw: {:?}", err)))
-                                    .unwrap();
-                            });
-                        })?;
+                        self.tui.resize(Rect::new(0, 0, w, h))?;
+                        self.draw()?;
                     }
                     Action::Render => {
-                        tui.draw(|f| {
-                            self.draw(f).unwrap_or_else(|err| {
-                                action_tx
-                                    .send(Action::Error(format!("Failed to draw: {:?}", err)))
-                                    .unwrap();
-                            });
-                        })?;
+                        self.draw()?;
                     }
                     Action::AddPageToActiveBook => {
                         if let Some(book) = self.state.get_active_book() {
-                            tui.exit()?;
+                            self.tui.exit()?;
                             self.spawn_process("dnote", &["add", &book.name])?;
-                            action_tx.send(Action::UpdateActiveBookPages)?;
-                            action_tx.send(Action::LoadActivePageContent)?;
-                            tui.enter()?;
+                            self.action_tx.send(Action::UpdateActiveBookPages)?;
+                            self.action_tx.send(Action::LoadActivePageContent)?;
+                            self.tui.enter()?;
                         } else {
                             log::error!("No active book to add page to");
                         }
                     }
                     Action::EditActivePage => {
                         if let Some(page) = self.state.get_active_page() {
-                            tui.exit()?;
+                            self.tui.exit()?;
                             self.spawn_process("dnote", &["edit", &page.id.to_string()])?;
-                            action_tx.send(Action::UpdateActiveBookPages)?;
-                            action_tx.send(Action::LoadActivePageContent)?;
-                            tui.enter()?;
+                            self.action_tx.send(Action::UpdateActiveBookPages)?;
+                            self.action_tx.send(Action::LoadActivePageContent)?;
+                            self.tui.enter()?;
                         } else {
                             log::error!("No active page to edit");
                         }
                     }
                     Action::DeleteActivePage => {
                         if let Some(page) = self.state.get_active_page() {
-                            tui.exit()?;
+                            self.tui.exit()?;
                             self.spawn_process("dnote", &["remove", &page.id.to_string()])?;
-                            action_tx.send(Action::FocusPrev)?;
-                            action_tx.send(Action::LoadActiveBookPages)?;
-                            tui.enter()?;
+                            self.action_tx.send(Action::FocusPrev)?;
+                            self.action_tx.send(Action::LoadActiveBookPages)?;
+                            self.tui.enter()?;
                         } else {
                             log::error!("No active page to delete");
                         }
                     }
                     Action::DeleteActiveBook => {
                         if let Some(book) = self.state.get_active_book() {
-                            tui.exit()?;
+                            self.tui.exit()?;
                             self.spawn_process("dnote", &["remove", &book.name])?;
-                            action_tx.send(Action::LoadBooks)?;
-                            tui.enter()?;
+                            self.action_tx.send(Action::LoadBooks)?;
+                            self.tui.enter()?;
                         } else {
                             log::error!("No active page to delete");
                         }
@@ -232,57 +223,81 @@ impl App {
                 }
                 for component in self.components.iter_mut() {
                     if let Some(action) = component.update(action.clone(), &mut self.state)? {
-                        action_tx.send(action)?
+                        self.action_tx.send(action)?
                     };
                 }
             }
             if self.should_suspend {
-                tui.suspend()?;
-                action_tx.send(Action::Resume)?;
-                action_tx.send(Action::Refresh)?;
+                self.tui.suspend()?;
+                self.action_tx.send(Action::Resume)?;
+                self.action_tx.send(Action::Refresh)?;
                 // tui.mouse(true);
-                tui.enter()?;
+                self.tui.enter()?;
             } else if self.should_quit {
-                tui.stop()?;
+                self.tui.stop()?;
                 break;
             }
         }
-        tui.exit()?;
+        self.tui.exit()?;
         Ok(())
     }
 
-    fn draw(&mut self, f: &mut tui::Frame<'_>) -> Result<()> {
-        let vertical_layout = Layout::vertical(vec![
-            Constraint::Max(3),
-            Constraint::Fill(1),
-            Constraint::Max(1),
-        ])
-        .horizontal_margin(1)
-        .split(f.size());
-        let header_chunk = vertical_layout[0];
-        let main_chunk = vertical_layout[1];
-        let footer_chunk = vertical_layout[2];
-
-        let chunks = Layout::default()
-            .direction(Direction::Horizontal)
+    fn draw(&mut self) -> Result<()> {
+        self.tui.draw(|f| {
+            let vertical_layout = Layout::vertical(vec![
+                Constraint::Max(3),
+                Constraint::Fill(1),
+                Constraint::Max(1),
+            ])
             .horizontal_margin(1)
-            .constraints(
-                [
-                    Constraint::Percentage(15),
-                    Constraint::Percentage(35),
-                    Constraint::Percentage(50),
-                ]
-                .as_ref(),
-            )
-            .split(main_chunk);
+            .split(f.size());
 
-        self.header.draw(f, header_chunk, &mut self.state)?;
+            let header_chunk = vertical_layout[0];
+            let main_chunk = vertical_layout[1];
+            let footer_chunk = vertical_layout[2];
 
-        for (index, component) in self.components.iter_mut().enumerate() {
-            component.draw(f, chunks[index], &mut self.state)?;
-        }
+            let chunks = Layout::default()
+                .direction(Direction::Horizontal)
+                .horizontal_margin(1)
+                .constraints(
+                    [
+                        Constraint::Percentage(15),
+                        Constraint::Percentage(35),
+                        Constraint::Percentage(50),
+                    ]
+                    .as_ref(),
+                )
+                .split(main_chunk);
 
-        self.footer.draw(f, footer_chunk, &mut self.state)?;
+            self.header
+                .draw(f, header_chunk, &mut self.state)
+                .unwrap_or_else(|err| {
+                    self.action_tx
+                        .send(Action::Error(format!("Failed to draw header: {:?}", err)))
+                        .unwrap();
+                });
+
+            for (index, component) in self.components.iter_mut().enumerate() {
+                component
+                    .draw(f, chunks[index], &mut self.state)
+                    .unwrap_or_else(|err| {
+                        self.action_tx
+                            .send(Action::Error(format!(
+                                "Failed to draw component: {:?}",
+                                err
+                            )))
+                            .unwrap();
+                    });
+            }
+
+            self.footer
+                .draw(f, footer_chunk, &mut self.state)
+                .unwrap_or_else(|err| {
+                    self.action_tx
+                        .send(Action::Error(format!("Failed to draw footer: {:?}", err)))
+                        .unwrap();
+                });
+        })?;
         Ok(())
     }
 }

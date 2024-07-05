@@ -293,8 +293,9 @@ pub fn build_status_line(config: &Config, mode: &Mode) -> String {
 
     if let Some(keymap) = config.keybindings.get(mode) {
         for (keys, action) in keymap.iter() {
-            let key_strings: Vec<String> = keys.iter().map(key_event_to_string).collect();
-            let keys_joined = key_strings.join(" + ");
+            let mut key_strings: Vec<String> = keys.iter().map(key_event_to_string).collect();
+            key_strings.sort_by_key(|a| a.len()); // Ensuring one-letter keybinds show first
+            let keys_joined = key_strings.join(" | ");
             action_map
                 .entry(action.clone())
                 .or_default()

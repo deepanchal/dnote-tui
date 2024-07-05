@@ -11,7 +11,7 @@ use crate::dnote::DnoteBook;
 type DnoteBookName = String;
 type DnoteBookPageId = u32;
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Display, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Display, Deserialize)]
 pub enum Action {
     Tick,
     Render,

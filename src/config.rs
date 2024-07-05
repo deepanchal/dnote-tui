@@ -314,7 +314,7 @@ pub fn build_status_line(config: &Config, mode: &Mode) -> String {
         let keys_joined = keys.join(", ");
         status_line.push_str(&format!(
             "[{} {} {}]",
-            action.description(),
+            action.label(),
             ARROW_RIGHT,
             keys_joined
         ));
@@ -322,7 +322,6 @@ pub fn build_status_line(config: &Config, mode: &Mode) -> String {
 
     status_line
 }
-
 #[derive(Clone, Debug, Default, Deref, DerefMut)]
 pub struct Styles(pub HashMap<Mode, HashMap<String, Style>>);
 

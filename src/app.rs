@@ -53,7 +53,7 @@ impl App {
         let pages = PagesPane::default();
         let content = ContentPane::default();
         let config = Config::new()?;
-        Ok(Self {
+        let app = Self {
             tui,
             action_tx,
             action_rx,
@@ -73,7 +73,8 @@ impl App {
             last_tick_key_events: Vec::new(),
             dnote,
             state,
-        })
+        };
+        Ok(app)
     }
 
     fn wait_for_enter_to_return(&self) -> Result<()> {
@@ -102,6 +103,16 @@ impl App {
             eprintln!("\nCommand failed with status: {}", status);
         }
         self.wait_for_enter_to_return()?;
+        Ok(())
+    }
+
+    pub fn resume(&mut self) -> Result<()> {
+        self.tui.enter()?;
+        Ok(())
+    }
+
+    pub fn pause(&mut self) -> Result<()> {
+        self.tui.exit()?;
         Ok(())
     }
 
@@ -178,43 +189,43 @@ impl App {
                     }
                     Action::AddPageToActiveBook => {
                         if let Some(book) = self.state.get_active_book() {
-                            self.tui.exit()?;
+                            self.pause()?;
                             self.spawn_process("dnote", &["add", &book.name])?;
                             self.action_tx.send(Action::UpdateActiveBookPages)?;
                             self.action_tx.send(Action::LoadActivePageContent)?;
-                            self.tui.enter()?;
+                            self.resume()?;
                         } else {
                             log::error!("No active book to add page to");
                         }
                     }
                     Action::EditActivePage => {
                         if let Some(page) = self.state.get_active_page() {
-                            self.tui.exit()?;
+                            self.pause()?;
                             self.spawn_process("dnote", &["edit", &page.id.to_string()])?;
                             self.action_tx.send(Action::UpdateActiveBookPages)?;
                             self.action_tx.send(Action::LoadActivePageContent)?;
-                            self.tui.enter()?;
+                            self.resume()?;
                         } else {
                             log::error!("No active page to edit");
                         }
                     }
                     Action::DeleteActivePage => {
                         if let Some(page) = self.state.get_active_page() {
-                            self.tui.exit()?;
+                            self.pause()?;
                             self.spawn_process("dnote", &["remove", &page.id.to_string()])?;
                             self.action_tx.send(Action::FocusPrev)?;
                             self.action_tx.send(Action::LoadActiveBookPages)?;
-                            self.tui.enter()?;
+                            self.resume()?;
                         } else {
                             log::error!("No active page to delete");
                         }
                     }
                     Action::DeleteActiveBook => {
                         if let Some(book) = self.state.get_active_book() {
-                            self.tui.exit()?;
+                            self.pause()?;
                             self.spawn_process("dnote", &["remove", &book.name])?;
                             self.action_tx.send(Action::LoadBooks)?;
-                            self.tui.enter()?;
+                            self.resume()?;
                         } else {
                             log::error!("No active page to delete");
                         }

@@ -163,7 +163,8 @@ impl App {
                                 .arg(&book.name)
                                 .status()?;
                             tui.enter()?;
-                            action_tx.send(Action::LoadActiveBookPages)?;
+                            action_tx.send(Action::UpdateActiveBookPages)?;
+                            action_tx.send(Action::LoadActivePageContent)?;
                         } else {
                             log::error!("No active book to add page to");
                         }

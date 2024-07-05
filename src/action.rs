@@ -65,27 +65,17 @@ impl Action {
 
     pub fn order(&self) -> usize {
         match self {
-            Action::Tick => 100,
-            Action::Render => 100,
-            Action::Resize(_, _) => 100,
-            Action::Suspend => 100,
-            Action::Resume => 100,
-            Action::Refresh => 100,
-            Action::Error(_) => 100,
-            Action::LoadBooks => 100,
-            Action::LoadActiveBookPages => 100,
-            Action::UpdateActiveBookPages => 100,
-            Action::LoadActivePageContent => 100,
             Action::Quit => 80,
             Action::Help => 80,
-            Action::FocusNext => 20,
-            Action::FocusPrev => 20,
+            Action::FocusNext => 30,
+            Action::FocusPrev => 30,
             Action::SelectNextBook => 10,
-            Action::SelectPrevBook => 10,
+            Action::SelectPrevBook => 20,
             Action::SelectNextPage => 10,
-            Action::SelectPrevPage => 10,
+            Action::SelectPrevPage => 20,
             Action::AddPageToActiveBook => 40,
             Action::EditActivePage => 50,
+            _ => 100,
         }
     }
 }

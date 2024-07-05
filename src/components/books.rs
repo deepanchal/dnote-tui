@@ -1,5 +1,3 @@
-use std::{collections::HashMap, time::Duration};
-
 use color_eyre::eyre::Result;
 use crossterm::{
     event::{KeyCode, KeyEvent},
@@ -17,7 +15,7 @@ use tokio::sync::mpsc::UnboundedSender;
 use super::{Component, Frame};
 use crate::{
     action::Action,
-    config::{Config, KeyBindings},
+    config::{build_status_line, Config, KeyBindings},
     dnote::{Dnote, DnoteBook},
     mode::Mode,
     state::{State, StatefulList},
@@ -35,8 +33,16 @@ impl BooksPane {
         Self::default()
     }
 
+    fn mode(&self) -> Mode {
+        Mode::Book
+    }
+
     fn is_focused(&self, state: &State) -> bool {
-        state.mode == Mode::Book
+        state.mode == self.mode()
+    }
+
+    fn get_status_line(&self) -> String {
+        build_status_line(&self.config, &self.mode())
     }
 
     fn send_action(&self, action: Action) -> Result<()> {
@@ -49,9 +55,7 @@ impl BooksPane {
 
 impl Component for BooksPane {
     fn init(&mut self, area: Rect) -> Result<()> {
-        if let Some(tx) = &self.command_tx {
-            tx.send(Action::LoadBooks)?;
-        }
+        self.send_action(Action::LoadBooks)?;
         Ok(())
     }
 
@@ -69,12 +73,7 @@ impl Component for BooksPane {
         match action {
             Action::Tick => {
                 if self.is_focused(state) {
-                    const ARROW: &str = symbols::scrollbar::HORIZONTAL.end;
-                    const ARROW_UP: &str = symbols::scrollbar::VERTICAL.begin;
-                    const ARROW_DOWN: &str = symbols::scrollbar::VERTICAL.begin;
-                    let status_line =
-                        format!("[j/{ARROW_UP} {ARROW} up] [k/{ARROW_DOWN} {ARROW} down]");
-                    state.status_line = status_line;
+                    state.status_line = self.get_status_line();
                 }
             }
             Action::Render => {}

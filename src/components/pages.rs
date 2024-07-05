@@ -13,7 +13,7 @@ use tokio::sync::mpsc::UnboundedSender;
 use super::{Component, Frame};
 use crate::{
     action::Action,
-    config::{Config, KeyBindings},
+    config::{build_status_line, Config, KeyBindings},
     dnote::{Dnote, DnoteBook},
     mode::Mode,
     state::{State, StatefulList},
@@ -31,8 +31,16 @@ impl PagesPane {
         Self::default()
     }
 
+    fn mode(&self) -> Mode {
+        Mode::Page
+    }
+
     fn is_focused(&self, state: &State) -> bool {
-        state.mode == Mode::Page
+        state.mode == self.mode()
+    }
+
+    fn get_status_line(&self) -> String {
+        build_status_line(&self.config, &self.mode())
     }
 
     fn send_action(&self, action: Action) -> Result<()> {
@@ -62,11 +70,7 @@ impl Component for PagesPane {
         match action {
             Action::Tick => {
                 if self.is_focused(state) {
-                    const ARROW: &str = symbols::scrollbar::HORIZONTAL.end;
-                    const ARROW_UP: &str = symbols::scrollbar::VERTICAL.begin;
-                    const ARROW_DOWN: &str = symbols::scrollbar::VERTICAL.begin;
-                    let status_line = format!( "[j/{ARROW_UP} {ARROW} up] [k/{ARROW_DOWN} {ARROW} down] | [e {ARROW} edit] | [a {ARROW} add]");
-                    state.status_line = status_line;
+                    state.status_line = self.get_status_line();
                 }
             }
             Action::FocusNext => {}

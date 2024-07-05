@@ -134,7 +134,7 @@ impl State {
         // Update existing pages
         for page in self.pages.items.iter_mut() {
             if let Some(new_page) = new_pages_map.get(&page.id) {
-                page.summary = new_page.summary.clone();
+                page.summary.clone_from(&new_page.summary);
             }
         }
 

@@ -4,7 +4,10 @@ use color_eyre::eyre::Result;
 use config::Value;
 use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
 use derive_deref::{Deref, DerefMut};
-use ratatui::style::{Color, Modifier, Style};
+use ratatui::{
+    style::{Color, Modifier, Style},
+    symbols,
+};
 use serde::{
     de::{self, Deserializer, MapAccess, Visitor},
     Deserialize, Serialize,
@@ -281,6 +284,42 @@ pub fn parse_key_sequence(raw: &str) -> Result<Vec<KeyEvent>, String> {
         .collect::<Vec<_>>();
 
     sequences.into_iter().map(parse_key_event).collect()
+}
+
+pub fn build_status_line(config: &Config, mode: &Mode) -> String {
+    const ARROW_RIGHT: &str = symbols::scrollbar::HORIZONTAL.end;
+    let mut status_line = String::new();
+    let mut action_map: HashMap<Action, Vec<String>> = HashMap::new();
+
+    if let Some(keymap) = config.keybindings.get(mode) {
+        for (keys, action) in keymap.iter() {
+            let key_strings: Vec<String> = keys.iter().map(key_event_to_string).collect();
+            let keys_joined = key_strings.join(" + ");
+            action_map
+                .entry(action.clone())
+                .or_default()
+                .push(keys_joined);
+        }
+    }
+
+    let mut actions: Vec<_> = action_map.iter().collect();
+    actions.sort_by_key(|(action, _)| action.order());
+
+    for (action, keys) in actions {
+        if !status_line.is_empty() {
+            // status_line.push_str(" | ");
+            status_line.push(' ');
+        }
+        let keys_joined = keys.join(", ");
+        status_line.push_str(&format!(
+            "[{} {} {}]",
+            action.description(),
+            ARROW_RIGHT,
+            keys_joined
+        ));
+    }
+
+    status_line
 }
 
 #[derive(Clone, Debug, Default, Deref, DerefMut)]

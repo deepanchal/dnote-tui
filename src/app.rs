@@ -1,7 +1,8 @@
 use std::process::Command;
 
 use color_eyre::eyre::Result;
-use crossterm::event::KeyEvent;
+use crossterm::style::{Color, Print, ResetColor, SetForegroundColor};
+use crossterm::{event::KeyEvent, ExecutableCommand};
 use ratatui::{
     layout::{Constraint, Direction, Layout},
     prelude::Rect,
@@ -65,6 +66,35 @@ impl App {
             dnote,
             state,
         })
+    }
+
+    fn wait_for_enter_to_return(&self) -> Result<()> {
+        std::io::stdout()
+            .execute(SetForegroundColor(Color::Green))?
+            .execute(Print("\nPress enter to return to dnote-tui"))?
+            .execute(ResetColor)?;
+        use std::io::{self, BufRead};
+        let stdin = io::stdin();
+        stdin.lock().lines().next();
+        Ok(())
+    }
+
+    fn log_command(&self, command: &str, args: &[&str]) -> Result<()> {
+        std::io::stdout()
+            .execute(SetForegroundColor(Color::Blue))?
+            .execute(Print(format!("\n=> {} {}\n\n", command, args.join(" "))))?
+            .execute(ResetColor)?;
+        Ok(())
+    }
+
+    fn spawn_process(&self, command: &str, args: &[&str]) -> Result<()> {
+        self.log_command(command, args)?;
+        let status = Command::new(command).args(args).status()?;
+        if !status.success() {
+            eprintln!("\nCommand failed with status: {}", status);
+        }
+        self.wait_for_enter_to_return()?;
+        Ok(())
     }
 
     pub async fn run(&mut self) -> Result<()> {
@@ -158,13 +188,10 @@ impl App {
                     Action::AddPageToActiveBook => {
                         if let Some(book) = self.state.get_active_book() {
                             tui.exit()?;
-                            std::process::Command::new("dnote")
-                                .arg("add")
-                                .arg(&book.name)
-                                .status()?;
-                            tui.enter()?;
+                            self.spawn_process("dnote", &["add", &book.name])?;
                             action_tx.send(Action::UpdateActiveBookPages)?;
                             action_tx.send(Action::LoadActivePageContent)?;
+                            tui.enter()?;
                         } else {
                             log::error!("No active book to add page to");
                         }
@@ -172,10 +199,7 @@ impl App {
                     Action::EditActivePage => {
                         if let Some(page) = self.state.get_active_page() {
                             tui.exit()?;
-                            std::process::Command::new("dnote")
-                                .arg("edit")
-                                .arg(page.id.to_string())
-                                .status()?;
+                            self.spawn_process("dnote", &["edit", &page.id.to_string()])?;
                             action_tx.send(Action::UpdateActiveBookPages)?;
                             action_tx.send(Action::LoadActivePageContent)?;
                             tui.enter()?;
@@ -186,10 +210,7 @@ impl App {
                     Action::DeleteActivePage => {
                         if let Some(page) = self.state.get_active_page() {
                             tui.exit()?;
-                            std::process::Command::new("dnote")
-                                .arg("remove")
-                                .arg(page.id.to_string())
-                                .status()?;
+                            self.spawn_process("dnote", &["remove", &page.id.to_string()])?;
                             action_tx.send(Action::FocusPrev)?;
                             action_tx.send(Action::LoadActiveBookPages)?;
                             tui.enter()?;
@@ -200,10 +221,7 @@ impl App {
                     Action::DeleteActiveBook => {
                         if let Some(book) = self.state.get_active_book() {
                             tui.exit()?;
-                            std::process::Command::new("dnote")
-                                .arg("remove")
-                                .arg(book.name.clone())
-                                .status()?;
+                            self.spawn_process("dnote", &["remove", &book.name])?;
                             action_tx.send(Action::LoadBooks)?;
                             tui.enter()?;
                         } else {

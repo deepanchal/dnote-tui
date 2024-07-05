@@ -197,6 +197,19 @@ impl App {
                             log::error!("No active page to delete");
                         }
                     }
+                    Action::DeleteActiveBook => {
+                        if let Some(book) = self.state.get_active_book() {
+                            tui.exit()?;
+                            std::process::Command::new("dnote")
+                                .arg("remove")
+                                .arg(book.name.clone())
+                                .status()?;
+                            action_tx.send(Action::LoadBooks)?;
+                            tui.enter()?;
+                        } else {
+                            log::error!("No active page to delete");
+                        }
+                    }
                     _ => {}
                 }
                 for component in self.components.iter_mut() {

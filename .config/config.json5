@@ -10,6 +10,7 @@
       "up": "SelectPrevBook",
       // "<h>": "FocusPrev",
       "<l>": "FocusNext",
+      "<d>": "DeleteActiveBook",
     },
     "Page": {
       "<q>": "Quit",

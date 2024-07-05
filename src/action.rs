@@ -34,6 +34,7 @@ pub enum Action {
     SelectPrevPage,
     AddPageToActiveBook,
     EditActivePage,
+    DeleteActivePage,
 }
 
 impl Action {
@@ -60,6 +61,7 @@ impl Action {
             Action::SelectPrevPage => "Up",
             Action::AddPageToActiveBook => "Add",
             Action::EditActivePage => "Edit",
+            Action::DeleteActivePage => "Delete",
         }
     }
 
@@ -75,6 +77,7 @@ impl Action {
             Action::SelectPrevPage => 20,
             Action::AddPageToActiveBook => 40,
             Action::EditActivePage => 50,
+            Action::DeleteActivePage => 60,
             _ => 100,
         }
     }

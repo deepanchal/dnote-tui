@@ -23,6 +23,7 @@
       // "<l>": "FocusNext",
       "<e>": "EditActivePage",
       "<a>": "AddPageToActiveBook",
+      "<d>": "DeleteActivePage",
     }
   }
 }

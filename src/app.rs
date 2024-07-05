@@ -183,6 +183,20 @@ impl App {
                             log::error!("No active page to edit");
                         }
                     }
+                    Action::DeleteActivePage => {
+                        if let Some(page) = self.state.get_active_page() {
+                            tui.exit()?;
+                            std::process::Command::new("dnote")
+                                .arg("remove")
+                                .arg(page.id.to_string())
+                                .status()?;
+                            action_tx.send(Action::FocusPrev)?;
+                            action_tx.send(Action::LoadActiveBookPages)?;
+                            tui.enter()?;
+                        } else {
+                            log::error!("No active page to delete");
+                        }
+                    }
                     _ => {}
                 }
                 for component in self.components.iter_mut() {

@@ -11,6 +11,7 @@
       // "<h>": "FocusPrev",
       "<l>": "FocusNext",
       "right": "FocusNext",
+      "<r>": "RenameActiveBook",
       "<d>": "DeleteActiveBook",
     },
     "Page": {

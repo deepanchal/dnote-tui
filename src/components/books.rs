@@ -17,8 +17,7 @@ use crate::{
     action::Action,
     config::{build_status_line, Config, KeyBindings},
     dnote::{Dnote, DnoteBook},
-    mode::Mode,
-    state::{State, StatefulList},
+    state::{Mode, State, StatefulList},
 };
 
 #[derive(Default)]

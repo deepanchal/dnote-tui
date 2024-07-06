@@ -18,8 +18,7 @@ use crate::{
     },
     config::Config,
     dnote::Dnote,
-    mode::Mode,
-    state::{State, StatefulList},
+    state::{Mode, State, StatefulList},
     tui,
 };
 

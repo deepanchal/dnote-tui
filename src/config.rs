@@ -14,7 +14,7 @@ use serde::{
 };
 use serde_json::Value as JsonValue;
 
-use crate::{action::Action, mode::Mode};
+use crate::{action::Action, state::Mode};
 
 const CONFIG: &str = include_str!("../.config/config.json5");
 

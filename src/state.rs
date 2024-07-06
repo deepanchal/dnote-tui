@@ -4,10 +4,15 @@ use color_eyre::eyre::Result;
 use ratatui::widgets::ListState;
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    dnote::{DnoteBook, DnotePage},
-    mode::Mode,
-};
+use crate::dnote::{DnoteBook, DnotePage};
+
+#[derive(Default, Debug, Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum Mode {
+    #[default]
+    Book,
+    Page,
+    Content,
+}
 
 #[derive(Default, Debug, Clone, PartialEq, Eq, Hash)]
 pub struct StatefulList<T> {

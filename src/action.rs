@@ -41,14 +41,7 @@ pub enum Action {
 impl Action {
     pub fn label(&self) -> &'static str {
         match self {
-            Action::Tick => "Handle periodic tick",
-            Action::Render => "Render the UI",
-            Action::Resize(_, _) => "Handle UI resize",
-            Action::Suspend => "Suspend",
-            Action::Resume => "Resume",
             Action::Quit => "Quit",
-            Action::Refresh => "Refresh",
-            Action::Error(_) => "Handle an error",
             Action::Help => "Show Help",
             Action::FocusNext => "Next Pane",
             Action::FocusPrev => "Prev Pane",
@@ -64,6 +57,7 @@ impl Action {
             Action::EditActivePage => "Edit",
             Action::DeleteActivePage => "Delete",
             Action::DeleteActiveBook => "Delete",
+            _ => "",
         }
     }
 

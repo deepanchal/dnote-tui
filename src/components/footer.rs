@@ -6,7 +6,7 @@ use crate::{
     action::Action,
     components::Component,
     config::Config,
-    state::State,
+    state::{InputMode, State},
     tui::Frame,
     utils::{PROJECT_NAME, PROJECT_VERSION},
 };
@@ -48,6 +48,14 @@ impl Component for FooterPane {
         let status = format!("  {}  ", self.status_line);
         let footer_line = Line::from(vec![Span::styled(status, Style::default())]).dark_gray();
         f.render_widget(footer_line, area);
+        f.render_widget(
+            Line::from(vec![match state.input_mode {
+                InputMode::Normal => Span::from("  [Normal]  "),
+                InputMode::Insert => Span::from("  [Insert]  "),
+            }])
+            .right_aligned(),
+            area,
+        );
         Ok(())
     }
 }

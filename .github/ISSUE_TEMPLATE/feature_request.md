@@ -10,7 +10,5 @@ assignees: ''
 
 ## Screenshots
 
-## Steps to Reproduce
-
 ## Tasks
 

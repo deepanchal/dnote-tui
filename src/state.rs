@@ -6,6 +6,13 @@ use serde::{Deserialize, Serialize};
 
 use crate::dnote::{DnoteBook, DnotePage};
 
+#[derive(Default, Debug, Copy, Clone, PartialEq, Eq, Hash)]
+pub enum InputMode {
+    #[default]
+    Normal,
+    Insert,
+}
+
 #[derive(Default, Debug, Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum Mode {
     #[default]
@@ -72,6 +79,7 @@ impl<T> StatefulList<T> {
 #[derive(Default, Debug, Clone, PartialEq, Eq, Hash)]
 pub struct State {
     pub mode: Mode,
+    pub input_mode: InputMode,
     pub books: StatefulList<DnoteBook>,
     pub pages: StatefulList<DnotePage>,
     pub page_content: Option<String>,

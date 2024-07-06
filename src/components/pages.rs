@@ -134,7 +134,12 @@ impl Component for PagesPane {
             .map(|i| {
                 let _id = i.id.to_string();
                 let _summary = i.summary.to_string();
-                ListItem::new(format!("({}) {}...", _id, _summary)).white()
+                ListItem::new(Line::from(vec![
+                    Span::styled("[", Style::default().fg(Color::White)),
+                    Span::styled(_id, Style::default().fg(Color::Green)),
+                    Span::styled("]", Style::default().fg(Color::White)),
+                    Span::styled(format!(" {}", _summary), Style::default().fg(Color::White)),
+                ]))
             })
             .collect();
         let total_items = items.len();
@@ -167,7 +172,7 @@ impl Component for PagesPane {
             .title(title_right)
             .title_bottom(title_bottom.green().bold())
             .title_bottom(title_padding.clone().right_aligned());
-        let highlight_style = Style::default().on_black().white().bold();
+        let highlight_style = Style::default().on_black().bold();
         let list = List::new(items)
             .block(block)
             .style(Style::default().white())

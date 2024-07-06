@@ -151,7 +151,7 @@ impl Component for BooksPane {
             .title(title)
             .title_bottom(title_bottom.blue().bold())
             .title_bottom(title_padding.clone().right_aligned());
-        let highlight_style = Style::default().on_black().white().bold();
+        let highlight_style = Style::default().on_black().bold();
         let list = List::new(items)
             .block(block)
             .style(Style::default().white())

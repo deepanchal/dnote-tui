@@ -1,5 +1,85 @@
 # Changelog
 
+## [0.5.0](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.4.1...dnote-tui-v0.5.0) (2024-07-06)
+
+
+### Features
+
+* **action:** add popup related actions, AddBook action ([2100e78](https://github.com/deepanchal/dnote-tui/commit/2100e785107b175165d4392d78ad741b563d2282))
+* **app:** add ability to delete book and all its pages with &lt;d&gt; on books pane ([4c5f69d](https://github.com/deepanchal/dnote-tui/commit/4c5f69dc578dc2f91188fd130a73741b552d1810)), closes [#52](https://github.com/deepanchal/dnote-tui/issues/52)
+* **app:** add ability to delete page with &lt;d&gt; on pages pane ([7dcad80](https://github.com/deepanchal/dnote-tui/commit/7dcad805a5ee7984cea93819c4ad6d763a11249c)), closes [#51](https://github.com/deepanchal/dnote-tui/issues/51)
+* **app:** add add new page to selected book functionality ([14a7fd9](https://github.com/deepanchal/dnote-tui/commit/14a7fd9430bf0cec8c71b14f7834959024c1a327))
+* **app:** add RenameActiveBook functionality with &lt;r&gt; on active book ([0089add](https://github.com/deepanchal/dnote-tui/commit/0089add90ca94503ebfab301f0f385fbee1b95da))
+* **app:** implement add book functionality with popup using &lt;a&gt; keybind ([c93c1cf](https://github.com/deepanchal/dnote-tui/commit/c93c1cfcd858aa7660ec3a4cc90ec485f7fc601a)), closes [#19](https://github.com/deepanchal/dnote-tui/issues/19)
+* **app:** pass mutable state in component trait's handle_events, update, other funcs + update usages ([70d243b](https://github.com/deepanchal/dnote-tui/commit/70d243bf5576be427c11d6c6a892ec452ab55356))
+* **app:** wait for enter to resume app after spawning external process ([6ec88f4](https://github.com/deepanchal/dnote-tui/commit/6ec88f4f72ee4e5f796dcd58e91670adf8fe6d9e))
+* **build:** setup docker for testing dnote operations with tui ([1235233](https://github.com/deepanchal/dnote-tui/commit/1235233d7d0900b30217530c6d363528135cedef))
+* **comps:** add Popup component, update components mod ([0af8e1a](https://github.com/deepanchal/dnote-tui/commit/0af8e1a0f373c3d8cb2197470e5661986234700b))
+* **comps:** build status line dynamically from config for components ([f0a754a](https://github.com/deepanchal/dnote-tui/commit/f0a754ae3c4d1e3d03f48c3347196995beb8b111)), closes [#64](https://github.com/deepanchal/dnote-tui/issues/64)
+* **comps:** fix list highlight style, format page ids in different color ([af2a1c9](https://github.com/deepanchal/dnote-tui/commit/af2a1c9713cdea8be351f1050c7dc8e2d299e8da))
+* **comps:** show selected book on top right of pages pane ([ea7404d](https://github.com/deepanchal/dnote-tui/commit/ea7404d0130d5e695d3116d91e4e41b2d6a93679))
+* **config:** add build_status_line func to dynamically build status line from mode's keybindings ([0499b75](https://github.com/deepanchal/dnote-tui/commit/0499b758b9b8d4ce2323468f816c582e9bdd57f8))
+* **config:** update keybinds in config.json5 ([cef3054](https://github.com/deepanchal/dnote-tui/commit/cef3054681d194ce28d0722f97547709253dcc06))
+* **deps:** add tui-input dep, update lockfile ([bbce5f9](https://github.com/deepanchal/dnote-tui/commit/bbce5f9a3329db04468eb490fd9ff7a5a35af873))
+* **dx:** setup git hooks w/ cargo-husky ([198b5ef](https://github.com/deepanchal/dnote-tui/commit/198b5ef698229a47b48354189a69b11a264b669c)), closes [#55](https://github.com/deepanchal/dnote-tui/issues/55)
+* **footer:** show current input mode on footer ([e42b95a](https://github.com/deepanchal/dnote-tui/commit/e42b95a899dcb77c22ad1ee2dbe1d1313bcca735))
+* **scripts:** add seed-dnote-db script ([455a006](https://github.com/deepanchal/dnote-tui/commit/455a0064ec81c93a47be40e3805439e7160b5751))
+* **state:** add helper funcs to State ([3660f62](https://github.com/deepanchal/dnote-tui/commit/3660f628c83ebbef48bd921babf20fe0328defbb))
+* **state:** add InputMode enum, store input_mode in State ([3266972](https://github.com/deepanchal/dnote-tui/commit/3266972ccaefb1e25eabefe0996436055cbfaa27))
+* **state:** add select_book & select_page helpers on State struct ([114dd6d](https://github.com/deepanchal/dnote-tui/commit/114dd6dee2cbbced8f45523b7aa1884860a09d1d))
+* **state:** add update_pages method on State ([cc52d80](https://github.com/deepanchal/dnote-tui/commit/cc52d8000698c9210967b1af2f334728bfce8610))
+
+
+### Bug Fixes
+
+* **action:** add missing action label & order methods ([c00c0e0](https://github.com/deepanchal/dnote-tui/commit/c00c0e031f004c029ab5d1477a1acaacbbb495ab))
+* **action:** derive Hash trait for Action enum ([198b0f8](https://github.com/deepanchal/dnote-tui/commit/198b0f85e2eef100d82aa2aefcb951f4d559d224))
+* **action:** remove unused action types from label getter ([5b2cd68](https://github.com/deepanchal/dnote-tui/commit/5b2cd68f9b42dcbe6389e485baf9a6fee8d3cf80))
+* **app:** add + use UpdateActiveBookPages action to keep page selected after edit ([e7604ae](https://github.com/deepanchal/dnote-tui/commit/e7604ae3c597fcd1455ea78eb2a702bb16657c14)), closes [#71](https://github.com/deepanchal/dnote-tui/issues/71)
+* **app:** add missing init & update calls for header & footer components in App ([84a9a14](https://github.com/deepanchal/dnote-tui/commit/84a9a147ff113f715178277199d8d5820745cd25))
+* **app:** give more space to pages pane by changing layout constraints ([057d1f1](https://github.com/deepanchal/dnote-tui/commit/057d1f1926b70674f3dc06d0dcc5c5354577bd48))
+* **app:** keep page pane selected after adding new page to book ([4ccc132](https://github.com/deepanchal/dnote-tui/commit/4ccc132b334296f3073360800217312a08ab527c))
+* **app:** refresh book page content & summary after editing page ([1cd9793](https://github.com/deepanchal/dnote-tui/commit/1cd979396c2fe537d41501bf425fa69e1090afad))
+* **config:** sort keybind keys by length for consistency ([fff7e5a](https://github.com/deepanchal/dnote-tui/commit/fff7e5a90d2c74f9b0c86ea62428833879aa0d3e))
+* **config:** update keybindings in config.json5 ([3872604](https://github.com/deepanchal/dnote-tui/commit/3872604f56a743cd96b3a29f077c89a22fdd73fd))
+* **config:** use correct method for action label ([3c35d29](https://github.com/deepanchal/dnote-tui/commit/3c35d2978a7732370cf7d06ea3bf73dc328021f0))
+* **lint:** fix lint issue with state.rs ([1cbe3ab](https://github.com/deepanchal/dnote-tui/commit/1cbe3abbba393054b2a4a3e205b4825008ac38c2))
+* **mode:** remove default Home mode, update tests & keybindings ([b4201b1](https://github.com/deepanchal/dnote-tui/commit/b4201b1b950e7466212acadddb326e343edbd4b9))
+* **popup:** fix colors in popup ([c23f6de](https://github.com/deepanchal/dnote-tui/commit/c23f6de10fc2e0f671a9743bb6bb8617dfaf7a7a))
+* **state:** skip next and previous on StatefulList if list is empty ([62092a5](https://github.com/deepanchal/dnote-tui/commit/62092a55faaadc07ecbee54778021ae7a3bdd979)), closes [#58](https://github.com/deepanchal/dnote-tui/issues/58)
+
+
+### Documentation
+
+* add demo vhs & gif, remove old screenshot, update demo in readme ([2618624](https://github.com/deepanchal/dnote-tui/commit/2618624968316b46801797ba1e61095a0a98106b))
+* **README:** add command to run app once installed section in readme ([dc35e57](https://github.com/deepanchal/dnote-tui/commit/dc35e57f2cee738d08a8ec06e3dbfc663e8992d9))
+* **README:** add docker docs to README.md ([7040c22](https://github.com/deepanchal/dnote-tui/commit/7040c22f108b7f630a0bede319667f3af12d028b))
+* **README:** add installation docs, update roadmap ([7690730](https://github.com/deepanchal/dnote-tui/commit/7690730700a78d231a8a10a4a4b70952f278b55c))
+* **README:** fix issue links in roadmap checklist ([34fb2fd](https://github.com/deepanchal/dnote-tui/commit/34fb2fd8bf32d96bace7c5cd8cc825bab52156a4))
+* **README:** update roadmap section ([9cb4269](https://github.com/deepanchal/dnote-tui/commit/9cb426963f737a0f7784d67ecd0fd0a00f99ba33))
+* **static:** update demo.gif with new layout ([cddcf80](https://github.com/deepanchal/dnote-tui/commit/cddcf80347e4a5fcfce926ba5051d43a1045f28a))
+
+
+### Code Refactoring
+
+* **action:** remove unused types from action ([26b62d5](https://github.com/deepanchal/dnote-tui/commit/26b62d5bfaf1a7c80b1bb3cce7ed790e03ee29df))
+* **app:** add ExecuteCommand action, move external command spawning actions to their corresponding panes ([54dafcd](https://github.com/deepanchal/dnote-tui/commit/54dafcdbd5713fe9a7e5cc1eb5bfc5348b218a66))
+* **app:** add pause & resume helper funcs, update usages for external process handlers ([0be13f2](https://github.com/deepanchal/dnote-tui/commit/0be13f264db4046c5f2e9615b243ab7d3194a96d))
+* **app:** improve status line updates from within books and pages pane ([50f415a](https://github.com/deepanchal/dnote-tui/commit/50f415ad3e5ee8b3a921ab80e9ea91b3d68c2f9b))
+* **app:** move out all global action handlers to where they belong ([730ec98](https://github.com/deepanchal/dnote-tui/commit/730ec982de42387d66081e478f9fc10cbceea584))
+* **app:** move status line state to footer and update via StatusLine action, update usages ([724a02d](https://github.com/deepanchal/dnote-tui/commit/724a02d4c99f846b0b77853b014af35bb065bef0))
+* **app:** store tui, action_tx, action_rx in app for better flexibility ([b71bbee](https://github.com/deepanchal/dnote-tui/commit/b71bbee724e622586bcbc1bbfb7f48059c1f547a))
+* **app:** update action names, use state helper funcs for updating books/pages/content ([1119d52](https://github.com/deepanchal/dnote-tui/commit/1119d5201fa589fc53ef4e5ba19f1ede4ec7c08d))
+* **mode:** move Mode enum to state.rs, update usages ([67eaab7](https://github.com/deepanchal/dnote-tui/commit/67eaab7335a4d2565381540b23edd3583b0c6624))
+
+
+### Tests
+
+* **unit:** add test cases for empty stateful list bug [#58](https://github.com/deepanchal/dnote-tui/issues/58) ([7baa3d5](https://github.com/deepanchal/dnote-tui/commit/7baa3d59adc1555caee606d0c0ca1cf3209b7463))
+* **unit:** add tests for select_book & select_page methods ([15ab596](https://github.com/deepanchal/dnote-tui/commit/15ab596d5143e17cf19973fe633a8f5824dd7bdb))
+* **unit:** add tests for update_pages method in State struct ([b7f9ee3](https://github.com/deepanchal/dnote-tui/commit/b7f9ee351c50217df4066227706c6f08bb300b4f))
+* **unit:** add unit tests for State struct ([4cff058](https://github.com/deepanchal/dnote-tui/commit/4cff058e6170463fa9352d024355fa461eae190c))
+
 ## [0.4.1](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.4.0...dnote-tui-v0.4.1) (2024-07-03)
 
 

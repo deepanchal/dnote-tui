@@ -132,6 +132,9 @@ impl App {
             component.init(self.tui.size()?)?;
         }
 
+        self.header.init(self.tui.size()?)?;
+        self.footer.init(self.tui.size()?)?;
+
         loop {
             if let Some(e) = self.tui.next().await {
                 match e {
@@ -201,6 +204,12 @@ impl App {
                         self.action_tx.send(action)?
                     };
                 }
+                if let Some(action) = self.header.update(action.clone(), &mut self.state)? {
+                    self.action_tx.send(action)?
+                };
+                if let Some(action) = self.footer.update(action.clone(), &mut self.state)? {
+                    self.action_tx.send(action)?
+                };
             }
             if self.should_suspend {
                 self.tui.suspend()?;

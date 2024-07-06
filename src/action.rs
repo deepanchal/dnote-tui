@@ -26,6 +26,7 @@ pub enum Action {
     FocusPrev,
     LoadBooks,
     ExecuteCommand(Command, CommandArgs),
+    StatusLine(String),
     LoadActiveBookPages,
     UpdateActiveBookPages,
     LoadActivePageContent,

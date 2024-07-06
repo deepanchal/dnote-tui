@@ -15,6 +15,7 @@ use crate::{
 pub struct FooterPane {
     command_tx: Option<UnboundedSender<Action>>,
     config: Config,
+    status_line: String,
 }
 
 impl FooterPane {
@@ -36,13 +37,15 @@ impl Component for FooterPane {
 
     fn update(&mut self, action: Action, state: &mut State) -> Result<Option<Action>> {
         match action {
-            Action::Tick => Ok(None),
-            _ => Ok(None),
+            Action::Tick => {}
+            Action::StatusLine(ref s) => self.status_line.clone_from(s),
+            _ => {}
         }
+        Ok(None)
     }
 
     fn draw(&mut self, f: &mut Frame<'_>, area: Rect, state: &mut State) -> Result<()> {
-        let status = format!("  {}  ", state.status_line.clone());
+        let status = format!("  {}  ", self.status_line);
         let footer_line = Line::from(vec![Span::styled(status, Style::default())]).dark_gray();
         f.render_widget(footer_line, area);
         Ok(())

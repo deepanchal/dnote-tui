@@ -70,7 +70,8 @@ impl Component for PagesPane {
         match action {
             Action::Tick => {
                 if self.is_focused(state) {
-                    state.status_line = self.get_status_line();
+                    let status_line = self.get_status_line();
+                    self.send_action(Action::StatusLine(status_line))?;
                 }
             }
             Action::FocusNext => {}

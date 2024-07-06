@@ -187,48 +187,12 @@ impl App {
                     Action::Render => {
                         self.draw()?;
                     }
-                    Action::AddPageToActiveBook => {
-                        if let Some(book) = self.state.get_active_book() {
-                            self.pause()?;
-                            self.spawn_process("dnote", &["add", &book.name])?;
-                            self.action_tx.send(Action::UpdateActiveBookPages)?;
-                            self.action_tx.send(Action::LoadActivePageContent)?;
-                            self.resume()?;
-                        } else {
-                            log::error!("No active book to add page to");
-                        }
-                    }
-                    Action::EditActivePage => {
-                        if let Some(page) = self.state.get_active_page() {
-                            self.pause()?;
-                            self.spawn_process("dnote", &["edit", &page.id.to_string()])?;
-                            self.action_tx.send(Action::UpdateActiveBookPages)?;
-                            self.action_tx.send(Action::LoadActivePageContent)?;
-                            self.resume()?;
-                        } else {
-                            log::error!("No active page to edit");
-                        }
-                    }
-                    Action::DeleteActivePage => {
-                        if let Some(page) = self.state.get_active_page() {
-                            self.pause()?;
-                            self.spawn_process("dnote", &["remove", &page.id.to_string()])?;
-                            self.action_tx.send(Action::FocusPrev)?;
-                            self.action_tx.send(Action::LoadActiveBookPages)?;
-                            self.resume()?;
-                        } else {
-                            log::error!("No active page to delete");
-                        }
-                    }
-                    Action::DeleteActiveBook => {
-                        if let Some(book) = self.state.get_active_book() {
-                            self.pause()?;
-                            self.spawn_process("dnote", &["remove", &book.name])?;
-                            self.action_tx.send(Action::LoadBooks)?;
-                            self.resume()?;
-                        } else {
-                            log::error!("No active page to delete");
-                        }
+                    Action::ExecuteCommand(ref command, ref args) => {
+                        self.pause()?;
+                        let cmd = command.to_string();
+                        let cmd_args = args.iter().map(|s| s.as_str()).collect::<Vec<&str>>();
+                        self.spawn_process(&cmd, &cmd_args)?;
+                        self.resume()?;
                     }
                     _ => {}
                 }

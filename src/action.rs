@@ -8,6 +8,9 @@ use strum::Display;
 
 use crate::dnote::DnoteBook;
 
+type Command = String;
+type CommandArgs = Vec<String>;
+
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Display, Deserialize)]
 pub enum Action {
     Tick,
@@ -22,6 +25,7 @@ pub enum Action {
     FocusNext,
     FocusPrev,
     LoadBooks,
+    ExecuteCommand(Command, CommandArgs),
     LoadActiveBookPages,
     UpdateActiveBookPages,
     LoadActivePageContent,

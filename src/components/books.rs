@@ -97,6 +97,27 @@ impl Component for BooksPane {
                 state.select_prev_book();
                 self.send_action(Action::LoadActiveBookPages)?;
             }
+            Action::AddPageToActiveBook => {
+                if let Some(book) = state.get_active_book() {
+                    let cmd = String::from("dnote");
+                    let cmd_args = vec!["add".into(), book.name.clone()];
+                    self.send_action(Action::ExecuteCommand(cmd, cmd_args))?;
+                    self.send_action(Action::UpdateActiveBookPages)?;
+                    self.send_action(Action::LoadActivePageContent)?;
+                } else {
+                    log::error!("No active book to add page to");
+                }
+            }
+            Action::DeleteActiveBook => {
+                if let Some(book) = state.get_active_book() {
+                    let cmd = String::from("dnote");
+                    let cmd_args = vec!["remove".into(), book.name.clone()];
+                    self.send_action(Action::ExecuteCommand(cmd, cmd_args))?;
+                    self.send_action(Action::LoadBooks)?;
+                } else {
+                    log::error!("No active book to delete");
+                }
+            }
             _ => {}
         }
         Ok(None)

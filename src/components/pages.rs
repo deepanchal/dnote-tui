@@ -99,6 +99,28 @@ impl Component for PagesPane {
                 state.select_prev_page();
                 self.send_action(Action::LoadActivePageContent)?;
             }
+            Action::EditActivePage => {
+                if let Some(page) = state.get_active_page() {
+                    let cmd = String::from("dnote");
+                    let cmd_args = vec!["edit".into(), page.id.to_string()];
+                    self.send_action(Action::ExecuteCommand(cmd, cmd_args))?;
+                    self.send_action(Action::UpdateActiveBookPages)?;
+                    self.send_action(Action::LoadActivePageContent)?;
+                } else {
+                    log::error!("No active page to edit");
+                }
+            }
+            Action::DeleteActivePage => {
+                if let Some(page) = state.get_active_page() {
+                    let cmd = String::from("dnote");
+                    let cmd_args = vec!["remove".into(), page.id.to_string()];
+                    self.send_action(Action::ExecuteCommand(cmd, cmd_args))?;
+                    self.send_action(Action::FocusPrev)?;
+                    self.send_action(Action::LoadActiveBookPages)?;
+                } else {
+                    log::error!("No active page to delete");
+                }
+            }
             _ => {}
         }
         Ok(None)

@@ -13,6 +13,7 @@
       "right": "FocusNext",
       "<r>": "RenameActiveBook",
       "<d>": "DeleteActiveBook",
+      "<a>": "AddBook",
     },
     "Page": {
       "<q>": "Quit",

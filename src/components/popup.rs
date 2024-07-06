@@ -20,33 +20,38 @@ use tui_input::backend::crossterm::EventHandler;
 use tui_input::Input;
 
 #[derive(Default)]
+pub enum PopupType {
+    #[default]
+    Normal,
+    NewBook,
+    RenameBook,
+}
+
+#[derive(Default)]
 pub struct Popup {
     title: String,
     input: Input,
     input_label: String,
     note: Option<String>,
+    popup_type: PopupType,
     command_tx: Option<UnboundedSender<Action>>,
     config: Config,
-    on_submit: Option<Box<dyn Fn(String) -> Result<()>>>,
-    on_cancel: Option<Box<dyn Fn() -> Result<()>>>,
 }
 
 impl Popup {
-    pub fn new(title: String, input_label: String, note: Option<String>) -> Self {
+    pub fn new(
+        title: String,
+        input_label: String,
+        note: Option<String>,
+        popup_type: PopupType,
+    ) -> Self {
         Self {
             title,
             input_label,
             note,
+            popup_type,
             ..Default::default()
         }
-    }
-
-    pub fn on_submit(&mut self, handler: impl Fn(String) -> Result<()> + 'static) {
-        self.on_submit = Some(Box::new(handler));
-    }
-
-    pub fn on_cancel(&mut self, handler: impl Fn() -> Result<()> + 'static) {
-        self.on_cancel = Some(Box::new(handler));
     }
 
     fn send_action(&self, action: Action) -> Result<()> {
@@ -81,18 +86,21 @@ impl Component for Popup {
         match state.input_mode {
             InputMode::Normal => Ok(None),
             InputMode::Insert => match key.code {
-                KeyCode::Enter => {
-                    if let Some(handler) = &self.on_submit {
-                        handler(self.input.value().to_string())?;
+                KeyCode::Enter => match self.popup_type {
+                    PopupType::Normal => Ok(Some(Action::SubmitPopup)),
+                    PopupType::NewBook => {
+                        let book_name = self.input.value().to_string();
+                        let cmd = String::from("dnote");
+                        let cmd_args = vec!["add".into(), book_name];
+                        let action = Action::ExecuteCommand(cmd, cmd_args);
+                        self.send_action(action)?;
+                        self.send_action(Action::ClosePopup)?;
+                        self.send_action(Action::LoadBooks)?;
+                        Ok(None)
                     }
-                    Ok(Some(Action::SubmitPopup))
-                }
-                KeyCode::Esc => {
-                    if let Some(handler) = &self.on_cancel {
-                        handler()?;
-                    }
-                    Ok(Some(Action::ClosePopup))
-                }
+                    _ => Ok(None),
+                },
+                KeyCode::Esc => Ok(Some(Action::ClosePopup)),
                 _ => {
                     self.input.handle_event(&Event::Key(key));
                     Ok(None)

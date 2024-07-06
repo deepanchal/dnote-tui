@@ -129,7 +129,7 @@ impl Component for Popup {
             .title_top(format!("> {} <", self.title.clone()))
             .title_alignment(Alignment::Center)
             .padding(Padding::horizontal(4))
-            .style(Style::default());
+            .style(Style::default().blue());
 
         f.render_widget(outer_block.clone(), area);
 
@@ -158,7 +158,7 @@ impl Component for Popup {
         let input = Paragraph::new(self.input.value())
             .style(match state.input_mode {
                 InputMode::Normal => Style::default(),
-                InputMode::Insert => Style::default().fg(Color::Yellow),
+                InputMode::Insert => Style::default().yellow(),
             })
             .scroll((0, scroll as u16))
             .block(
@@ -171,14 +171,14 @@ impl Component for Popup {
         f.render_widget(input, chunks[1]);
 
         let bottom_text = Paragraph::new("Press Esc to cancel, Enter to submit")
-            .style(Style::default().fg(Color::DarkGray))
+            .style(Style::default().dark_gray())
             .alignment(Alignment::Center);
 
         f.render_widget(bottom_text, chunks[2]);
 
         if let Some(note) = &self.note {
             let note_paragraph = Paragraph::new(note.as_str())
-                .style(Style::default().fg(Color::DarkGray))
+                .style(Style::default().yellow())
                 .alignment(Alignment::Center);
             f.render_widget(note_paragraph, chunks[3]);
         }

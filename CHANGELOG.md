@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.3](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.5.2...dnote-tui-v0.5.3) (2024-07-07)
+
+
+### Continuous Integration
+
+* **workflows:** merge release workflow with cd.yml, make assets release after release-please ([52276c9](https://github.com/deepanchal/dnote-tui/commit/52276c96410062557249a287e12b32cd0b5a2592))
+
 ## [0.5.2](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.5.1...dnote-tui-v0.5.2) (2024-07-07)
 
 

@@ -23,11 +23,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
       - name: Get version from Cargo.toml
         id: get_version
         run: |
           VERSION=$(cargo pkgid | sed 's/.*#//')
-          echo "::set-output name=version::${VERSION}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
   release-please:
     name: Release Please 🏷️

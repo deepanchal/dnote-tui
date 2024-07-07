@@ -69,7 +69,6 @@ impl Popup {
 
 impl Component for Popup {
     fn init(&mut self, area: Rect) -> Result<()> {
-        self.send_action(Action::LoadBooks)?;
         Ok(())
     }
 
@@ -103,13 +102,15 @@ impl Component for Popup {
                         Ok(None)
                     }
                     PopupType::RenameBook => {
-                        let old_name = self.initial_value.clone();
-                        let new_name = self.input.value().to_string();
-                        let cmd = String::from("dnote");
-                        let cmd_args = vec!["edit".into(), old_name, "-n".into(), new_name];
-                        self.send_action(Action::ExecuteCommand(cmd, cmd_args))?;
-                        self.send_action(Action::ClosePopup)?;
-                        self.send_action(Action::LoadBooks)?;
+                        if let Some(book) = state.get_active_book() {
+                            let old_name = book.name.clone();
+                            let new_name = self.input.value().to_string();
+                            let cmd = String::from("dnote");
+                            let cmd_args = vec!["edit".into(), old_name, "-n".into(), new_name];
+                            self.send_action(Action::ExecuteCommand(cmd, cmd_args))?;
+                            self.send_action(Action::ClosePopup)?;
+                            self.send_action(Action::LoadBooks)?;
+                        }
                         Ok(None)
                     }
                     _ => Ok(None),

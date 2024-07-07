@@ -194,7 +194,7 @@ cargo test
     - [ ] Move page to another book [#60](https://github.com/deepanchal/dnote-tui/issues/60)
     - [x] Delete a book's page [#51](https://github.com/deepanchal/dnote-tui/issues/51)
     - [x] Delete a book and all its pages [#52](https://github.com/deepanchal/dnote-tui/issues/52)
-    - [ ] Rename book with popup input field [#59](https://github.com/deepanchal/dnote-tui/issues/59)
+    - [x] Rename book with popup input field [#59](https://github.com/deepanchal/dnote-tui/issues/59)
   - [ ] Search and Navigation
     - [ ] Find note within a book [#61](https://github.com/deepanchal/dnote-tui/issues/61)
     - [ ] Global note search [#47](https://github.com/deepanchal/dnote-tui/issues/47)

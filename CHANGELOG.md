@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.7](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.5.6...dnote-tui-v0.5.7) (2024-07-07)
+
+
+### Continuous Integration
+
+* **workflows:** get app version in another job since windows matrix job can't figure out app version ([396609c](https://github.com/deepanchal/dnote-tui/commit/396609cb334ff47f3f492b578ed5bba59d6779dd))
+
 ## [0.5.6](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.5.5...dnote-tui-v0.5.6) (2024-07-07)
 
 

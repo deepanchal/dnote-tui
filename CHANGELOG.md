@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.5.1](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.5.0...dnote-tui-v0.5.1) (2024-07-07)
+
+
+### Bug Fixes
+
+* **app:** allow book rename via popup ([cb687f7](https://github.com/deepanchal/dnote-tui/commit/cb687f7400ae7c1fba1c88e0824ebc53432ba71b))
+* **comps:** remove unnecessary load books call from popup, use active book state to rename book ([37d4bcb](https://github.com/deepanchal/dnote-tui/commit/37d4bcbbe44c4fd5a69f2e2f34410d0f9e1db3e0))
+* **deps:** update rust crate serde to v1.0.204 ([6abcf32](https://github.com/deepanchal/dnote-tui/commit/6abcf3230a81f9f43b438e0d81c7e013ea0938b5))
+
+
+### Documentation
+
+* **README:** update readme ([7444903](https://github.com/deepanchal/dnote-tui/commit/74449032ccf0714117a019505368a4251924ab03))
+* **README:** update roadmap in README.md ([15a0c3f](https://github.com/deepanchal/dnote-tui/commit/15a0c3f9126b5b07b1b4ff2af842c49d5bff02ac))
+* **README:** update roadmap in README.md ([72f280a](https://github.com/deepanchal/dnote-tui/commit/72f280a669145cde731b60d178fb2fb02045398c))
+* **static:** update demo vhs tape & gif for new features ([03859cc](https://github.com/deepanchal/dnote-tui/commit/03859ccdc5e065aa580a0ae72dde5bdfc7b13165))
+
+
+### Continuous Integration
+
+* **workflows:** add base cd.yml workflow from ratatui templates repo ([1736a1a](https://github.com/deepanchal/dnote-tui/commit/1736a1aee189c628b54cb921f70ade8ceec7a963))
+* **workflows:** update cd workflow ([eb96248](https://github.com/deepanchal/dnote-tui/commit/eb96248348403aa3906b8efc40debb1b851f7620))
+
 ## [0.5.0](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.4.1...dnote-tui-v0.5.0) (2024-07-06)
 
 

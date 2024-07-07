@@ -1,17 +1,38 @@
 name: CD # Continuous Deployment
 
 on:
+  workflow_dispatch:
   push:
-    tags:
-      - 'dnote-tui-[v]?[0-9]+.[0-9]+.[0-9]+'
-      # - '[v]?[0-9]+.[0-9]+.[0-9]+'
+    branches:
+      - main
+      - master
+
+env:
+  CARGO_TERM_COLOR: always
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
-  publish:
+  release-please:
+    name: Release Please 🏷️
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      created: ${{ steps.release.outputs.release_created }}
+    steps:
+      - uses: google-github-actions/release-please-action@v4
+        id: release
+        with:
+          command: manifest
+
+  release-assets:
     name: Publishing for ${{ matrix.os }}
+    needs: [release-please]
+    if: needs.release-please.outputs.created
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -120,3 +141,20 @@ jobs:
             target/${{ matrix.target }}/release/${{ matrix.binary-name }}-*.sha256
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    name: Publish to crates.io 📦
+    runs-on: ubuntu-latest
+    needs: [release-please]
+    if: needs.release-please.outputs.created
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: swatinem/rust-cache@v2
+      - name: Publish
+      # https://doc.rust-lang.org/cargo/reference/config.html?highlight=CARGO_REGISTRY_TOKEN#credentials
+        run: >
+          cargo publish
+          --verbose
+          --locked
+          --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
+    

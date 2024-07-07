@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.8](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.5.7...dnote-tui-v0.5.8) (2024-07-07)
+
+
+### Continuous Integration
+
+* **workflows:** add missing rust toolchain setup in extract-version, use new syntax for setting output ([9809c08](https://github.com/deepanchal/dnote-tui/commit/9809c084ae8192ef540bf84f2d67b80b89647c9d))
+
 ## [0.5.7](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.5.6...dnote-tui-v0.5.7) (2024-07-07)
 
 

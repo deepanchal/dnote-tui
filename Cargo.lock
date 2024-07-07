@@ -554,7 +554,7 @@ dependencies = [
 
 [[package]]
 name = "dnote-tui"
-version = "0.5.7"
+version = "0.5.8"
 dependencies = [
  "better-panic",
  "cargo-husky",

@@ -104,6 +104,11 @@ jobs:
               sudo apt update
               sudo apt-get install -y binutils-aarch64-linux-gnu
           fi
+      - name: Get version from Cargo.toml
+        id: get_version
+        run: |
+          VERSION=$(cargo pkgid | sed 's/.*#//')
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
       - name: Packaging final binary
         shell: bash
         run: |
@@ -121,7 +126,7 @@ jobs:
 
           ########## create tar.gz ##########
 
-          RELEASE_NAME=${{ matrix.binary-name }}-${GITHUB_REF/refs\/tags\//}-${{ matrix.os-name }}-${{ matrix.architecture }}
+          RELEASE_NAME=${{ matrix.binary-name }}-${{ env.VERSION }}-${{ matrix.os-name }}-${{ matrix.architecture }}
 
           tar czvf $RELEASE_NAME.tar.gz $BINARY_NAME
 
@@ -151,7 +156,7 @@ jobs:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - uses: swatinem/rust-cache@v2
       - name: Publish
-      # https://doc.rust-lang.org/cargo/reference/config.html?highlight=CARGO_REGISTRY_TOKEN#credentials
+        # https://doc.rust-lang.org/cargo/reference/config.html?highlight=CARGO_REGISTRY_TOKEN#credentials
         run: >
           cargo publish
           --verbose

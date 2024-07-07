@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.5](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.5.4...dnote-tui-v0.5.5) (2024-07-07)
+
+
+### Continuous Integration
+
+* **workflows:** pass tag_name from release-please to release asset step ([f8ae6d7](https://github.com/deepanchal/dnote-tui/commit/f8ae6d74e0057def4910bd515614b11be3dd62ea))
+
 ## [0.5.4](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.5.3...dnote-tui-v0.5.4) (2024-07-07)
 
 

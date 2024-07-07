@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.4](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.5.3...dnote-tui-v0.5.4) (2024-07-07)
+
+
+### Continuous Integration
+
+* **workflows:** get current version using cargo to fix release name in release-assets job ([0f6b6b4](https://github.com/deepanchal/dnote-tui/commit/0f6b6b48a006dcf4af6bb0ff1a31c0ce0ea3de4a))
+
 ## [0.5.3](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.5.2...dnote-tui-v0.5.3) (2024-07-07)
 
 

@@ -142,7 +142,7 @@ jobs:
       - name: Releasing assets 📦
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: needs.release-please.outputs.tag_name
+          tag_name: ${{ needs.release-please.outputs.tag_name }}
           files: |
             target/${{ matrix.target }}/release/${{ matrix.binary-name }}-*.tar.gz
             target/${{ matrix.target }}/release/${{ matrix.binary-name }}-*.sha256

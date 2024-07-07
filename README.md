@@ -32,7 +32,7 @@
   <!--   <img src="images/logo.png" alt="Logo" width="80" height="80"> -->
   <!-- </a> -->
 
-<h3 align="center">Dnote TUI (Work In Progress)</h3>
+<h3 align="center">Dnote TUI</h3>
 
   <p align="center">
     TUI for dnote (https://www.getdnote.com/)
@@ -52,11 +52,9 @@
 
 ## 🌟 About The Project
 
-> Note: This is still a **WORK IN PROGRESS**
+A TUI (Terminal User Interface) for [`dnote`](https://www.getdnote.com/).
 
 ![Demo](./.github/static/demo.gif)
-
-A TUI (Terminal User Interface) for [`dnote`](https://www.getdnote.com/).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

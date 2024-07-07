@@ -188,7 +188,7 @@ cargo test
     - [x] Read pages content from dnote cli into tui
     - [x] Show truncated pages content beside page id in pages section
   - [ ] Write Operations
-    - [ ] Create a new book with page [#19](https://github.com/deepanchal/dnote-tui/issues/19)
+    - [x] Create a new book with page [#19](https://github.com/deepanchal/dnote-tui/issues/19)
     - [x] Edit a page's content [#37](https://github.com/deepanchal/dnote-tui/issues/37)
     - [x] Add new page to a book [#49](https://github.com/deepanchal/dnote-tui/issues/49)
     - [ ] Move page to another book [#60](https://github.com/deepanchal/dnote-tui/issues/60)

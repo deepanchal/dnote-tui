@@ -32,6 +32,7 @@ pub struct Popup {
     title: String,
     input: Input,
     input_label: String,
+    initial_value: String,
     note: Option<String>,
     popup_type: PopupType,
     command_tx: Option<UnboundedSender<Action>>,
@@ -42,12 +43,16 @@ impl Popup {
     pub fn new(
         title: String,
         input_label: String,
+        initial_value: String,
         note: Option<String>,
         popup_type: PopupType,
     ) -> Self {
+        let input = Input::new(initial_value.clone());
         Self {
             title,
+            input,
             input_label,
+            initial_value,
             note,
             popup_type,
             ..Default::default()
@@ -87,13 +92,22 @@ impl Component for Popup {
             InputMode::Normal => Ok(None),
             InputMode::Insert => match key.code {
                 KeyCode::Enter => match self.popup_type {
-                    PopupType::Normal => Ok(Some(Action::SubmitPopup)),
                     PopupType::NewBook => {
                         let book_name = self.input.value().to_string();
                         let cmd = String::from("dnote");
                         let cmd_args = vec!["add".into(), book_name];
                         let action = Action::ExecuteCommand(cmd, cmd_args);
                         self.send_action(action)?;
+                        self.send_action(Action::ClosePopup)?;
+                        self.send_action(Action::LoadBooks)?;
+                        Ok(None)
+                    }
+                    PopupType::RenameBook => {
+                        let old_name = self.initial_value.clone();
+                        let new_name = self.input.value().to_string();
+                        let cmd = String::from("dnote");
+                        let cmd_args = vec!["edit".into(), old_name, "-n".into(), new_name];
+                        self.send_action(Action::ExecuteCommand(cmd, cmd_args))?;
                         self.send_action(Action::ClosePopup)?;
                         self.send_action(Action::LoadBooks)?;
                         Ok(None)

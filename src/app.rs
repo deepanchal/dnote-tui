@@ -256,6 +256,7 @@ impl App {
                         let input_popup = Popup::new(
                             "Add New Book".into(),
                             "Name".into(),
+                            "".into(),
                             Some("Note: Book names cannot contain spaces!".into()),
                             PopupType::NewBook,
                         );
@@ -266,6 +267,26 @@ impl App {
                             popup.init(self.tui.size()?)?;
                         }
                         self.state.input_mode = InputMode::Insert;
+                    }
+                    Action::RenameActiveBook => {
+                        if let Some(ref book) = self.state.get_active_book() {
+                            let input_popup = Popup::new(
+                                "Rename Book".into(),
+                                "Name".into(),
+                                book.name.clone(),
+                                Some("Note: Book names cannot contain spaces!".into()),
+                                PopupType::RenameBook,
+                            );
+                            self.popup = Some(Box::new(input_popup));
+                            if let Some(popup) = &mut self.popup {
+                                popup.register_action_handler(self.action_tx.clone())?;
+                                popup.register_config_handler(self.config.clone())?;
+                                popup.init(self.tui.size()?)?;
+                            }
+                            self.state.input_mode = InputMode::Insert;
+                        } else {
+                            log::error!("No active book to rename");
+                        }
                     }
                     Action::SubmitPopup => {
                         self.popup.take(); // set popup to None

@@ -19,27 +19,74 @@ Hide
 Show
 
 Sleep 1s
-Type "docker compose run --rm dnote-tui"
+Type "docker run --rm -it dnote-tui"
 Enter
-Sleep 5s
-Type "j"
 Sleep 1s
-Type "j"
+Type@300ms "jjjjja"
+Sleep 500ms
+Type "AI"
+Sleep 500ms
+Enter
+Type "i"
 Sleep 1s
+Type "Intro to AI"
+Escape
+Type ":wq"
+Sleep 500ms
+Enter
+Sleep 500ms
+Enter
+Sleep 500ms
+Type "j"
+Sleep 500ms
 Type "l"
+Sleep 1.5s
+Type "ai"
 Sleep 1s
+Type "AI basics"
+Escape
+Type ":wq"
+Enter
+Sleep 500ms
+Enter
 Type "j"
-Sleep 1s
+Sleep 3s
 Type "e"
 Sleep 1s
-Type@100ms "iEdited: "
-Sleep 1s
+Type "iEdited: "
 Escape
-Sleep 1s
+Sleep 500ms
 Type ":wq"
+Enter
 Sleep 1s
 Enter
-Sleep 3s
-Type "q"
 Sleep 2s
+Type "k"
+Sleep 500ms
+Type "d"
+Sleep 1s
+Type "y"
+Sleep 500ms
+Enter
+Sleep 500ms
+Enter
+Sleep 2s
+Type "j"
+Sleep 500ms
+Type "k"
+Sleep 500ms
+Type "d"
+Sleep 500ms
+Type "y"
+Sleep 500ms
+Enter
+Sleep 500ms
+Enter
+Sleep 1s
+Type "jj"
+Sleep 1.5s
+Type "l"
+Sleep 500ms
+Type "q"
+Sleep 1.5s
 

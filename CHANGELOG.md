@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.2](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.5.1...dnote-tui-v0.5.2) (2024-07-07)
+
+
+### Continuous Integration
+
+* **workflows:** update tag regex, add contents write permission to cd workflow ([78e99cb](https://github.com/deepanchal/dnote-tui/commit/78e99cb91b511c98d901e226f4e430af68ccba94))
+
 ## [0.5.1](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.5.0...dnote-tui-v0.5.1) (2024-07-07)
 
 

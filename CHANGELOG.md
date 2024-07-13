@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.5.9](https://github.com/deepanchal/dnote-tui/compare/v0.5.8...v0.5.9) (2024-07-13)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate clap to v4.5.9 ([d8aa6e3](https://github.com/deepanchal/dnote-tui/commit/d8aa6e31dadd1492299a8efebaf90bc9de230ba8))
+
+
+### Documentation
+
+* **README:** add section on direct download under installing in README.md ([4de6135](https://github.com/deepanchal/dnote-tui/commit/4de61355792c2e31bceab657065ad151f202fa91))
+* **README:** remove view demo from readme ([0e47439](https://github.com/deepanchal/dnote-tui/commit/0e474396f256c11ac33e74442320e451b3deba4b))
+
+
+### Continuous Integration
+
+* **config:** don't add prefix to release tags i.e. dnote-tui-v0.5.0 -&gt; v0.5.0 ([76e1402](https://github.com/deepanchal/dnote-tui/commit/76e1402c4ad9bd117adc021542552d45f864b35b))
+
 ## [0.5.8](https://github.com/deepanchal/dnote-tui/compare/dnote-tui-v0.5.7...dnote-tui-v0.5.8) (2024-07-07)
 
 

@@ -79,7 +79,13 @@ To get a local copy up and running follow these simple example steps.
 
 ### 📥 Installing
 
-Install this project with `cargo`
+#### Direct download
+
+You can download the `tar.xz` file matching your operating system from the
+[releases page](https://github.com/deepanchal/dnote-tui/releases), extract it and execute the `dnote-tui`
+binary.
+
+#### Cargo
 
 ```bash
 cargo install dnote-tui

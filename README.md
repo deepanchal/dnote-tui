@@ -40,8 +40,6 @@
     <a href="https://docs.rs/dnote-tui"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/deepanchal/dnote-tui">View Demo</a>
-    ·
     <a href="https://github.com/deepanchal/dnote-tui/issues">Report Bug</a>
     ·
     <a href="https://github.com/deepanchal/dnote-tui/issues">Request Feature</a>

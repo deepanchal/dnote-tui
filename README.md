@@ -40,9 +40,9 @@
     <a href="https://docs.rs/dnote-tui"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/deepanchal/dnote-tui/issues">Report Bug</a>
+    <a href="https://github.com/deepanchal/dnote-tui/issues/new?assignees=&labels=bug&projects=&template=bug_report.md&title=Bug">Report Bug</a>
     ·
-    <a href="https://github.com/deepanchal/dnote-tui/issues">Request Feature</a>
+    <a href="https://github.com/deepanchal/dnote-tui/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=Feature">Request Feature</a>
   </p>
 </div>
 

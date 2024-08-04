@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.5.10](https://github.com/deepanchal/dnote-tui/compare/v0.5.9...v0.5.10) (2024-08-04)
+
+
+### Bug Fixes
+
+* **build:** migrate to vergen v9 which is now replaced by vergen-git2 package ([c036e8c](https://github.com/deepanchal/dnote-tui/commit/c036e8c879e96404bee24594fd2ee47a3ad84ec2))
+* **deps:** update rust crate clap to v4.5.11 ([50b68ce](https://github.com/deepanchal/dnote-tui/commit/50b68cec982b90a2e7ae0934836af6574ccb601f))
+* **deps:** update rust crate clap to v4.5.12 ([5b7bb84](https://github.com/deepanchal/dnote-tui/commit/5b7bb8422cfc919e0c0b7e32d46957833716237c))
+* **deps:** update rust crate clap to v4.5.13 ([c78394e](https://github.com/deepanchal/dnote-tui/commit/c78394eed3d47ff15af5591bce99b2bd76c4e1b4))
+* **deps:** update rust crate serde_json to v1.0.121 ([090c25e](https://github.com/deepanchal/dnote-tui/commit/090c25e4fc7e3899ecfc4e0b6fff7c850326d4cd))
+* **deps:** update rust crate serde_json to v1.0.122 ([4c33c76](https://github.com/deepanchal/dnote-tui/commit/4c33c768abc5ac14f5eeae71954f5fd6eeed6d43))
+* **deps:** update rust crate tokio to v1.38.1 ([20f4d64](https://github.com/deepanchal/dnote-tui/commit/20f4d64a60e0d1d0eaa2955a77887e8a2ac15f22))
+* **deps:** update rust crate tokio to v1.39.2 ([31e8306](https://github.com/deepanchal/dnote-tui/commit/31e8306ed9e047409e64b6f22912b94016966761))
+
+
+### Documentation
+
+* **README:** update report bug & request feature links in readme ([410c03c](https://github.com/deepanchal/dnote-tui/commit/410c03cc542141f909aa6c4e9847c6fdea974282))
+
 ## [0.5.9](https://github.com/deepanchal/dnote-tui/compare/v0.5.8...v0.5.9) (2024-07-13)
 
 

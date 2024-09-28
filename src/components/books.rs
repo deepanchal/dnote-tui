@@ -1,22 +1,16 @@
 use color_eyre::eyre::Result;
-use crossterm::{
-    event::{KeyCode, KeyEvent},
-    style::Color,
-};
 use ratatui::{
     prelude::*,
-    style::Styled,
     symbols::border,
     widgets::{block::Title, *},
 };
-use serde::{Deserialize, Serialize};
 use tokio::sync::mpsc::UnboundedSender;
 
 use super::{Component, Frame};
 use crate::{
     action::Action,
-    config::{build_status_line, Config, KeyBindings},
-    dnote::{Dnote, DnoteBook},
+    config::{build_status_line, Config},
+    dnote::Dnote,
     state::{Mode, State, StatefulList},
 };
 
@@ -53,7 +47,7 @@ impl BooksPane {
 }
 
 impl Component for BooksPane {
-    fn init(&mut self, area: Size) -> Result<()> {
+    fn init(&mut self, _area: Size) -> Result<()> {
         self.send_action(Action::LoadBooks)?;
         Ok(())
     }
@@ -79,7 +73,7 @@ impl Component for BooksPane {
             Action::Render => {}
             Action::FocusNext => {
                 // Change to page pane
-                if let Some(book_index) = state.books.state.selected() {
+                if state.books.state.selected().is_some() {
                     state.mode = Mode::Page;
                     self.send_action(Action::SelectNextPage)?;
                 }

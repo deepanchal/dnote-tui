@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 
-use color_eyre::eyre::Result;
 use ratatui::widgets::ListState;
 use serde::{Deserialize, Serialize};
 

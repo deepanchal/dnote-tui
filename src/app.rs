@@ -1,4 +1,4 @@
-use std::{borrow::BorrowMut, process::Command};
+use std::process::Command;
 
 use color_eyre::eyre::Result;
 use crossterm::style::{Color, Print, ResetColor, SetForegroundColor};
@@ -7,7 +7,6 @@ use ratatui::{
     layout::{Constraint, Direction, Layout},
     prelude::Rect,
 };
-use serde::{Deserialize, Serialize};
 use tokio::sync::mpsc::{self, UnboundedReceiver, UnboundedSender};
 
 use crate::{
@@ -23,7 +22,7 @@ use crate::{
     },
     config::Config,
     dnote::Dnote,
-    state::{InputMode, Mode, State, StatefulList},
+    state::{InputMode, Mode, State},
     tui,
 };
 
@@ -114,6 +113,7 @@ impl App {
 
     pub fn resume(&mut self) -> Result<()> {
         self.tui.enter()?;
+        self.tui.clear()?;
         Ok(())
     }
 
@@ -161,7 +161,7 @@ impl App {
         }
 
         loop {
-            if let Some(e) = self.tui.next().await {
+            if let Some(e) = self.tui.next_event().await {
                 match e {
                     tui::Event::Quit if self.state.input_mode == InputMode::Normal => {
                         self.action_tx.send(Action::Quit)?
@@ -321,6 +321,7 @@ impl App {
                 self.action_tx.send(Action::Refresh)?;
                 // tui.mouse(true);
                 self.tui.enter()?;
+                self.tui.clear()?;
             } else if self.should_quit {
                 self.tui.stop()?;
                 break;

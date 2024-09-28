@@ -1,20 +1,16 @@
-use std::{collections::HashMap, time::Duration};
-
 use color_eyre::eyre::Result;
-use crossterm::event::{KeyCode, KeyEvent};
 use ratatui::{
     prelude::*,
     symbols::border,
     widgets::{block::Title, *},
 };
-use serde::{Deserialize, Serialize};
 use tokio::sync::mpsc::UnboundedSender;
 
 use super::{Component, Frame};
 use crate::{
     action::Action,
-    config::{build_status_line, Config, KeyBindings},
-    dnote::{Dnote, DnoteBook},
+    config::{build_status_line, Config},
+    dnote::Dnote,
     state::{Mode, State, StatefulList},
 };
 
@@ -51,10 +47,6 @@ impl PagesPane {
 }
 
 impl Component for PagesPane {
-    fn init(&mut self, area: Size) -> Result<()> {
-        Ok(())
-    }
-
     fn register_action_handler(&mut self, tx: UnboundedSender<Action>) -> Result<()> {
         self.command_tx = Some(tx);
         Ok(())

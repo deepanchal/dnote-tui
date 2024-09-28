@@ -1,22 +1,13 @@
-use std::{collections::HashMap, time::Duration};
-
 use color_eyre::eyre::Result;
-use crossterm::event::{KeyCode, KeyEvent};
 use ratatui::{
     prelude::*,
     symbols::border,
     widgets::{block::Title, *},
 };
-use serde::{Deserialize, Serialize};
 use tokio::sync::mpsc::UnboundedSender;
 
 use super::{Component, Frame};
-use crate::{
-    action::Action,
-    config::{Config, KeyBindings},
-    dnote::{Dnote, DnoteBook},
-    state::State,
-};
+use crate::{action::Action, config::Config, dnote::Dnote, state::State};
 
 #[derive(Default)]
 pub struct ContentPane {
@@ -32,10 +23,6 @@ impl ContentPane {
 }
 
 impl Component for ContentPane {
-    fn init(&mut self, area: Size) -> Result<()> {
-        Ok(())
-    }
-
     fn register_action_handler(&mut self, tx: UnboundedSender<Action>) -> Result<()> {
         self.command_tx = Some(tx);
         Ok(())

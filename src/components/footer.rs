@@ -7,8 +7,6 @@ use crate::{
     components::Component,
     config::Config,
     state::{InputMode, State},
-    tui::Frame,
-    utils::{PROJECT_NAME, PROJECT_VERSION},
 };
 
 #[derive(Default)]
@@ -35,7 +33,7 @@ impl Component for FooterPane {
         Ok(())
     }
 
-    fn update(&mut self, action: Action, state: &mut State) -> Result<Option<Action>> {
+    fn update(&mut self, action: Action, _state: &mut State) -> Result<Option<Action>> {
         match action {
             Action::Tick => {}
             Action::StatusLine(ref s) => self.status_line.clone_from(s),

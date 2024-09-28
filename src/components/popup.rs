@@ -1,20 +1,17 @@
 use color_eyre::eyre::Result;
-use crossterm::event::{Event, KeyCode, KeyEvent};
+use crossterm::event::{Event, KeyCode};
 use ratatui::{
     prelude::*,
-    style::Styled,
     symbols::border,
-    widgets::{block::Title, *},
+    widgets::{Block, Borders, Clear, Padding, Paragraph},
 };
-use serde::{Deserialize, Serialize};
 use tokio::sync::mpsc::UnboundedSender;
 
 use super::{Component, Frame};
 use crate::{
     action::Action,
-    config::{build_status_line, Config, KeyBindings},
-    dnote::{Dnote, DnoteBook},
-    state::{InputMode, Mode, State, StatefulList},
+    config::Config,
+    state::{InputMode, State},
 };
 use tui_input::backend::crossterm::EventHandler;
 use tui_input::Input;
@@ -32,7 +29,6 @@ pub struct Popup {
     title: String,
     input: Input,
     input_label: String,
-    initial_value: String,
     note: Option<String>,
     popup_type: PopupType,
     command_tx: Option<UnboundedSender<Action>>,
@@ -52,7 +48,6 @@ impl Popup {
             title,
             input,
             input_label,
-            initial_value,
             note,
             popup_type,
             ..Default::default()
@@ -68,10 +63,6 @@ impl Popup {
 }
 
 impl Component for Popup {
-    fn init(&mut self, area: Size) -> Result<()> {
-        Ok(())
-    }
-
     fn register_action_handler(&mut self, tx: UnboundedSender<Action>) -> Result<()> {
         self.command_tx = Some(tx);
         Ok(())
@@ -122,15 +113,6 @@ impl Component for Popup {
                 }
             },
         }
-    }
-
-    fn update(&mut self, action: Action, state: &mut State) -> Result<Option<Action>> {
-        match action {
-            Action::Tick => {}
-            Action::Render => {}
-            _ => {}
-        }
-        Ok(None)
     }
 
     fn draw(&mut self, f: &mut Frame<'_>, area: Rect, state: &mut State) -> Result<()> {

@@ -49,7 +49,8 @@ tracing-subscriber = { version = "0.3.18", features = ["env-filter", "serde"] }
 tui-input = "0.10.1"
 
 [build-dependencies]
-vergen-git2 = { version = "1.0.0", features = ["build"] }
+anyhow = "1.0.89"
+vergen-gix = { version = "1.0.2", features = ["build", "cargo"] }
 
 [dev-dependencies]
 cargo-husky = { version = "1.5.0", features = [

@@ -338,7 +338,7 @@ impl App {
                 Constraint::Max(1),
             ])
             .horizontal_margin(1)
-            .split(f.size());
+            .split(f.area());
 
             let header_chunk = vertical_layout[0];
             let main_chunk = vertical_layout[1];
@@ -384,7 +384,7 @@ impl App {
                     Constraint::Length(10),
                     Constraint::Min(1),
                 ])
-                .split(f.size());
+                .split(f.area());
 
                 let popup_layout = Layout::horizontal(vec![
                     Constraint::Min(3),

@@ -32,7 +32,7 @@ impl ContentPane {
 }
 
 impl Component for ContentPane {
-    fn init(&mut self, area: Rect) -> Result<()> {
+    fn init(&mut self, area: Size) -> Result<()> {
         Ok(())
     }
 

@@ -68,7 +68,7 @@ impl Popup {
 }
 
 impl Component for Popup {
-    fn init(&mut self, area: Rect) -> Result<()> {
+    fn init(&mut self, area: Size) -> Result<()> {
         Ok(())
     }
 
@@ -204,10 +204,10 @@ impl Component for Popup {
             }
             InputMode::Insert => {
                 // Make the cursor visible and put it at the specified coordinates after rendering
-                f.set_cursor(
-                    chunks[1].x + ((self.input.visual_cursor()).max(scroll) - scroll) as u16 + 1,
-                    chunks[1].y + 1,
-                );
+                f.set_cursor_position(Position {
+                    x: chunks[1].x + ((self.input.visual_cursor()).max(scroll) - scroll) as u16 + 1,
+                    y: chunks[1].y + 1,
+                });
             }
         }
 

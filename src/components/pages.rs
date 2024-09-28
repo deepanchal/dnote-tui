@@ -51,7 +51,7 @@ impl PagesPane {
 }
 
 impl Component for PagesPane {
-    fn init(&mut self, area: Rect) -> Result<()> {
+    fn init(&mut self, area: Size) -> Result<()> {
         Ok(())
     }
 

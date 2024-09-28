@@ -53,7 +53,7 @@ impl BooksPane {
 }
 
 impl Component for BooksPane {
-    fn init(&mut self, area: Rect) -> Result<()> {
+    fn init(&mut self, area: Size) -> Result<()> {
         self.send_action(Action::LoadBooks)?;
         Ok(())
     }

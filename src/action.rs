@@ -1,12 +1,5 @@
-use std::{fmt, string::ToString};
-
-use serde::{
-    de::{self, Deserializer, Visitor},
-    Deserialize, Serialize,
-};
+use serde::{Deserialize, Serialize};
 use strum::Display;
-
-use crate::dnote::DnoteBook;
 
 type Command = String;
 type CommandArgs = Vec<String>;

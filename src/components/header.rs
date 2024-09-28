@@ -1,15 +1,10 @@
 use color_eyre::eyre::Result;
-use ratatui::{
-    prelude::*,
-    symbols::border,
-    widgets::{Block, Borders, Paragraph},
-};
+use ratatui::{prelude::*, widgets::Paragraph};
 
 use crate::{
     components::Component,
+    config::{PROJECT_NAME, PROJECT_VERSION},
     state::State,
-    tui::Frame,
-    utils::{PROJECT_NAME, PROJECT_VERSION},
 };
 
 #[derive(Default)]
@@ -22,7 +17,7 @@ impl HeaderPane {
 }
 
 impl Component for HeaderPane {
-    fn draw(&mut self, f: &mut Frame<'_>, area: Rect, state: &mut State) -> Result<()> {
+    fn draw(&mut self, f: &mut Frame<'_>, area: Rect, _state: &mut State) -> Result<()> {
         let app_name = PROJECT_NAME.to_string();
         let app_version = PROJECT_VERSION.to_string();
         let line = Line::from(vec![
@@ -42,9 +37,6 @@ impl Component for HeaderPane {
             Line::from("").centered(),
         ])
         .centered();
-        let block = Block::default()
-            .borders(Borders::ALL)
-            .border_set(border::ROUNDED);
         let paragraph = Paragraph::new(text).centered();
         f.render_widget(paragraph, area);
 

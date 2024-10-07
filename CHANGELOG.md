@@ -1,5 +1,54 @@
 # Changelog
 
+## [0.5.10](https://github.com/deepanchal/dnote-tui/compare/v0.5.9...v0.5.10) (2024-10-07)
+
+
+### Bug Fixes
+
+* **app:** upgrade ratatui to 0.28.1, update related deps, update code usages ([360d481](https://github.com/deepanchal/dnote-tui/commit/360d4810cebcf59917153cd080342291bf15ef59))
+* **build:** migrate to vergen v9 which is now replaced by vergen-git2 package ([c036e8c](https://github.com/deepanchal/dnote-tui/commit/c036e8c879e96404bee24594fd2ee47a3ad84ec2))
+* **build:** upgrade build-deps & build.rs ([4af35f2](https://github.com/deepanchal/dnote-tui/commit/4af35f29dc6554050c678375b10fe6e875f26592))
+* **deps:** update rust crate clap to v4.5.11 ([50b68ce](https://github.com/deepanchal/dnote-tui/commit/50b68cec982b90a2e7ae0934836af6574ccb601f))
+* **deps:** update rust crate clap to v4.5.12 ([5b7bb84](https://github.com/deepanchal/dnote-tui/commit/5b7bb8422cfc919e0c0b7e32d46957833716237c))
+* **deps:** update rust crate clap to v4.5.13 ([c78394e](https://github.com/deepanchal/dnote-tui/commit/c78394eed3d47ff15af5591bce99b2bd76c4e1b4))
+* **deps:** update rust crate clap to v4.5.15 ([97169a7](https://github.com/deepanchal/dnote-tui/commit/97169a78e6cc559dc8dd66e77fe528b9bda4516d))
+* **deps:** update rust crate clap to v4.5.16 ([aae0184](https://github.com/deepanchal/dnote-tui/commit/aae018430710d1cc69769cf210cf79e99ca925e3))
+* **deps:** update rust crate clap to v4.5.17 ([ea7931b](https://github.com/deepanchal/dnote-tui/commit/ea7931b5b2079647dc8bfadc85e69d558c81fcfa))
+* **deps:** update rust crate clap to v4.5.18 ([b2898f1](https://github.com/deepanchal/dnote-tui/commit/b2898f1727078e63c09ad2b8b7c76462b0fe819c))
+* **deps:** update rust crate clap to v4.5.19 ([60d0118](https://github.com/deepanchal/dnote-tui/commit/60d0118d2b9691cb05e30a3e3e1eac27c7b5f78e))
+* **deps:** update rust crate futures to v0.3.31 ([33be427](https://github.com/deepanchal/dnote-tui/commit/33be4275f345ae60d28ba5d7af5cd5ca038062e1))
+* **deps:** update rust crate libc to v0.2.157 ([98cd2ef](https://github.com/deepanchal/dnote-tui/commit/98cd2efddacc385792bc609616d29c3c3275e915))
+* **deps:** update rust crate libc to v0.2.158 ([ebf3e2c](https://github.com/deepanchal/dnote-tui/commit/ebf3e2c929733895a014181ffb530cf60a99b961))
+* **deps:** update rust crate libc to v0.2.159 ([0ced055](https://github.com/deepanchal/dnote-tui/commit/0ced0552cf54466af659db80a9b38fbc8e66ce5e))
+* **deps:** update rust crate pretty_assertions to v1.4.1 ([a20f977](https://github.com/deepanchal/dnote-tui/commit/a20f9776c40b4e27d243f3d037206886e098cfa5))
+* **deps:** update rust crate serde to v1.0.206 ([763a46c](https://github.com/deepanchal/dnote-tui/commit/763a46c9a90fe7e4c5725a754ab508ae42579f34))
+* **deps:** update rust crate serde to v1.0.207 ([7f6b5d9](https://github.com/deepanchal/dnote-tui/commit/7f6b5d9b0d4996079858821f90f4b220a055269e))
+* **deps:** update rust crate serde to v1.0.208 ([1468cf7](https://github.com/deepanchal/dnote-tui/commit/1468cf7961e01a0a292cfa0177f7f947c6f963b8))
+* **deps:** update rust crate serde to v1.0.209 ([7a4e7e9](https://github.com/deepanchal/dnote-tui/commit/7a4e7e9ee07a0e938e0ce290c670b1b36bd59e98))
+* **deps:** update rust crate serde to v1.0.210 ([57284f4](https://github.com/deepanchal/dnote-tui/commit/57284f4057a88f3ed0357ca36bd5d0e0f1cce827))
+* **deps:** update rust crate serde_json to v1.0.121 ([090c25e](https://github.com/deepanchal/dnote-tui/commit/090c25e4fc7e3899ecfc4e0b6fff7c850326d4cd))
+* **deps:** update rust crate serde_json to v1.0.122 ([4c33c76](https://github.com/deepanchal/dnote-tui/commit/4c33c768abc5ac14f5eeae71954f5fd6eeed6d43))
+* **deps:** update rust crate serde_json to v1.0.124 ([9c5801c](https://github.com/deepanchal/dnote-tui/commit/9c5801caaa66bae64da2346a5cfbf3ae18785842))
+* **deps:** update rust crate serde_json to v1.0.125 ([e25f2a8](https://github.com/deepanchal/dnote-tui/commit/e25f2a841c14b568d397aafdaeb673798ac20396))
+* **deps:** update rust crate serde_json to v1.0.127 ([8bb8f43](https://github.com/deepanchal/dnote-tui/commit/8bb8f43ca48aaf44fa7df6a228f21736d6ddcf22))
+* **deps:** update rust crate serde_json to v1.0.128 ([ad40bac](https://github.com/deepanchal/dnote-tui/commit/ad40bac64d18289452dba87f217e5ae6a61d55f1))
+* **deps:** update rust crate tokio to v1.38.1 ([20f4d64](https://github.com/deepanchal/dnote-tui/commit/20f4d64a60e0d1d0eaa2955a77887e8a2ac15f22))
+* **deps:** update rust crate tokio to v1.39.2 ([31e8306](https://github.com/deepanchal/dnote-tui/commit/31e8306ed9e047409e64b6f22912b94016966761))
+* **deps:** update rust crate tokio to v1.39.3 ([b1c8fd3](https://github.com/deepanchal/dnote-tui/commit/b1c8fd3c8cf51aa444f96088c5cafcd85f922104))
+* **deps:** update rust crate tokio to v1.40.0 ([0b8dfd1](https://github.com/deepanchal/dnote-tui/commit/0b8dfd16776f3cdb18e4516e17fc77479cff6bd8))
+* **deps:** update rust crate tokio-util to v0.7.12 ([9d07633](https://github.com/deepanchal/dnote-tui/commit/9d07633a1468bea29d40367a81cbb61ec7dacacf))
+* **deps:** upgrade other app deps ([e2bf785](https://github.com/deepanchal/dnote-tui/commit/e2bf7852911878725f98f0cd1f57aa07c99135ba))
+
+
+### Documentation
+
+* **README:** update report bug & request feature links in readme ([410c03c](https://github.com/deepanchal/dnote-tui/commit/410c03cc542141f909aa6c4e9847c6fdea974282))
+
+
+### Code Refactoring
+
+* **app:** improve app structure from latest component template, upgrade human-panic dep, fix lint errors ([06d4702](https://github.com/deepanchal/dnote-tui/commit/06d47020153f4fd8954af213d1119652482b42b3))
+
 ## [0.5.9](https://github.com/deepanchal/dnote-tui/compare/v0.5.8...v0.5.9) (2024-07-13)
 
 

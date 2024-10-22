@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.5.11](https://github.com/deepanchal/dnote-tui/compare/v0.5.10...v0.5.11) (2024-10-22)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate clap to v4.5.20 ([e27f219](https://github.com/deepanchal/dnote-tui/commit/e27f2197638a26624579de20116713f3de75d905))
+* **deps:** update rust crate human-panic to v2.0.2 ([36e1791](https://github.com/deepanchal/dnote-tui/commit/36e17918eea1adafefb57af55946bc884874f397))
+* **deps:** update rust crate libc to v0.2.161 ([06d86dc](https://github.com/deepanchal/dnote-tui/commit/06d86dcad90435ecd182b792baade2c57bce73d1))
+* **deps:** update rust crate serde to v1.0.213 ([ab0e80a](https://github.com/deepanchal/dnote-tui/commit/ab0e80a5bd6c9200d238231f8c405dab3b9fa091))
+* **deps:** update rust crate serde_json to v1.0.130 ([24f864e](https://github.com/deepanchal/dnote-tui/commit/24f864e0b80bb42e75aa3205cffef6992ea2808d))
+* **deps:** update rust crate serde_json to v1.0.132 ([8f06cd8](https://github.com/deepanchal/dnote-tui/commit/8f06cd894c9180e93a03c35885703535b22c3ea9))
+* **deps:** update rust crate tokio to v1.41.0 ([a8802ec](https://github.com/deepanchal/dnote-tui/commit/a8802eca19867aab2786d15db8a23487a1786c6c))
+
 ## [0.5.10](https://github.com/deepanchal/dnote-tui/compare/v0.5.9...v0.5.10) (2024-10-07)
 
 

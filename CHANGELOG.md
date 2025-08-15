@@ -1,5 +1,38 @@
 # Changelog
 
+## [0.5.11](https://github.com/deepanchal/dnote-tui/compare/v0.5.10...v0.5.11) (2025-08-15)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate clap to v4.5.20 ([e27f219](https://github.com/deepanchal/dnote-tui/commit/e27f2197638a26624579de20116713f3de75d905))
+* **deps:** update rust crate clap to v4.5.21 ([140a13d](https://github.com/deepanchal/dnote-tui/commit/140a13df294dd42715cefc4f2aa49399ae66c695))
+* **deps:** update rust crate clap to v4.5.27 ([45d7b15](https://github.com/deepanchal/dnote-tui/commit/45d7b153f86d6b27452afcfad21451c3add6441e))
+* **deps:** update rust crate config to v0.14.1 ([02c23e2](https://github.com/deepanchal/dnote-tui/commit/02c23e24525706b988ca27fca92f422ca218374a))
+* **deps:** update rust crate human-panic to v2.0.2 ([36e1791](https://github.com/deepanchal/dnote-tui/commit/36e17918eea1adafefb57af55946bc884874f397))
+* **deps:** update rust crate libc to v0.2.161 ([06d86dc](https://github.com/deepanchal/dnote-tui/commit/06d86dcad90435ecd182b792baade2c57bce73d1))
+* **deps:** update rust crate libc to v0.2.162 ([b499c0d](https://github.com/deepanchal/dnote-tui/commit/b499c0dfd50f369b33d9d10d3bdc0d24e33bc717))
+* **deps:** update rust crate libc to v0.2.164 ([631e93c](https://github.com/deepanchal/dnote-tui/commit/631e93cd1f2bc90c16c6b72b0284a4627ad9ac85))
+* **deps:** update rust crate log to v0.4.27 ([1adfe93](https://github.com/deepanchal/dnote-tui/commit/1adfe93b2225a896bf68cebc8bf9d6ceaf63ed51))
+* **deps:** update rust crate ratatui to 0.29.0 ([cba6502](https://github.com/deepanchal/dnote-tui/commit/cba65027167c3cb87df5d3f17467227646e0e18a))
+* **deps:** update rust crate serde to v1.0.213 ([ab0e80a](https://github.com/deepanchal/dnote-tui/commit/ab0e80a5bd6c9200d238231f8c405dab3b9fa091))
+* **deps:** update rust crate serde to v1.0.214 ([35651d3](https://github.com/deepanchal/dnote-tui/commit/35651d3660ab928e927b95b196b3498431b04663))
+* **deps:** update rust crate serde to v1.0.215 ([fb3fcf4](https://github.com/deepanchal/dnote-tui/commit/fb3fcf4b1520c465c31990c682846bdd7097e5a3))
+* **deps:** update rust crate serde to v1.0.217 ([58bb9fc](https://github.com/deepanchal/dnote-tui/commit/58bb9fc0889a52d42f903f4a51ab8290df11b11e))
+* **deps:** update rust crate serde to v1.0.219 ([0aa3f9c](https://github.com/deepanchal/dnote-tui/commit/0aa3f9c0cbf79345b4068bb6bbc1eb907fd21a6b))
+* **deps:** update rust crate serde_json to v1.0.130 ([24f864e](https://github.com/deepanchal/dnote-tui/commit/24f864e0b80bb42e75aa3205cffef6992ea2808d))
+* **deps:** update rust crate serde_json to v1.0.132 ([8f06cd8](https://github.com/deepanchal/dnote-tui/commit/8f06cd894c9180e93a03c35885703535b22c3ea9))
+* **deps:** update rust crate serde_json to v1.0.138 ([9ce2edf](https://github.com/deepanchal/dnote-tui/commit/9ce2edf10ddbbc44994f03a16663e333b856e033))
+* **deps:** update rust crate strip-ansi-escapes to v0.2.1 ([a275f6d](https://github.com/deepanchal/dnote-tui/commit/a275f6d14ebb36d6ce0fe879a2a4fd18fc7cd5ae))
+* **deps:** update rust crate tokio to v1.41.0 ([a8802ec](https://github.com/deepanchal/dnote-tui/commit/a8802eca19867aab2786d15db8a23487a1786c6c))
+* **deps:** update rust crate tokio to v1.41.1 ([59fb986](https://github.com/deepanchal/dnote-tui/commit/59fb986aa3b74a7ecbb31ae0fe20bc54860cbdbd))
+* **deps:** update rust crate tokio to v1.43.0 ([5e20796](https://github.com/deepanchal/dnote-tui/commit/5e20796dd3c388beb4d11df13ac1e013f2face83))
+* **deps:** update rust crate tokio to v1.43.1 [security] ([fc61a35](https://github.com/deepanchal/dnote-tui/commit/fc61a3563cdd9594c721ea73323b7b4655609575))
+* **deps:** update rust crate tokio-util to v0.7.13 ([46a6a9b](https://github.com/deepanchal/dnote-tui/commit/46a6a9b1bd3adf8abbc737fdbb4ef3cdbc1e1cbf))
+* **deps:** update rust crate tui-input to 0.11.0 ([bda16d0](https://github.com/deepanchal/dnote-tui/commit/bda16d0cc599a8fd8efe6ad789d6b21f50ffb243))
+* **deps:** update rust crate tui-input to v0.11.1 ([ebe9a47](https://github.com/deepanchal/dnote-tui/commit/ebe9a478a2480a47ebf0302bd9b5b0dcfe3fb499))
+* **deps:** update tokio-tracing monorepo ([a2284a4](https://github.com/deepanchal/dnote-tui/commit/a2284a422ecc7d4c0c330d52170d06eb901e3b9e))
+
 ## [0.5.10](https://github.com/deepanchal/dnote-tui/compare/v0.5.9...v0.5.10) (2024-10-07)
 
 
